@@ -1,0 +1,16 @@
+{
+  "site_title": "StellarTask — задачи астрономических олимпиад",
+  "nav_topics": "Темы",
+  "nav_notes": "Конспекты",
+  "nav_games": "Игры",
+  "lang_en": "EN",
+  "lang_ru": "RU",
+  "hero_title_start": "Выберите",
+  "hero_title_highlight": "созвездие",
+  "hero_subtitle": "Рисованная карта тем астрономических олимпиад.",
+  "games_heading": "Игры",
+  "games_tagline": "чтобы отвлечься от задач",
+  "play": "играть ↗",
+  "footer_made": "StellarTask · сделано командой Starsy",
+  "footer_source": "у каждой задачи есть свой источник"
+}

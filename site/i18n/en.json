@@ -1,0 +1,16 @@
+{
+  "site_title": "StellarTask — astronomy olympiad problems",
+  "nav_topics": "Topics",
+  "nav_notes": "Theory notes",
+  "nav_games": "Games",
+  "lang_en": "EN",
+  "lang_ru": "RU",
+  "hero_title_start": "Choose a",
+  "hero_title_highlight": "constellation",
+  "hero_subtitle": "A hand-drawn map of astronomy olympiad topics.",
+  "games_heading": "Games",
+  "games_tagline": "for a break between problems",
+  "play": "play ↗",
+  "footer_made": "StellarTask · made by Starsy",
+  "footer_source": "every problem shows its original source"
+}

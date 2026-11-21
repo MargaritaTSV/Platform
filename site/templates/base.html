@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ t.site_title }}</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&amp;family=Onest:wght@300;400;500&amp;family=JetBrains+Mono:wght@400&amp;display=swap">
+<link rel="stylesheet" href="/static/tokens.css">
+<link rel="stylesheet" href="/static/app.css">
+<script src="/static/js/i18n.js" defer></script>
+</head>
+<body>
+<div class="page">
+  <div class="wrap">
+    <header class="site-header">
+      <a class="logo-link" href="{{ '/' if lang == 'en' else '/ru/' }}">
+        <svg class="logo-star" viewBox="0 0 100 100" width="44" height="44" aria-hidden="true">
+          <path d="M50 4 L63 37 L98 39 L70 60 L80 95 L50 74 L19 94 L31 59 L3 37 L38 37 Z" fill="none" stroke="#161616" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M48 11 L60 40 L92 42 L65 61 L75 89 L49 70 L24 88 L35 58 L9 41 L42 40 Z" fill="none" stroke="#161616" stroke-width="1.2" stroke-linejoin="round" opacity="0.6"/>
+          <path d="M52 1 L65 35 L100 37 L72 59 L82 98 L51 76 L17 97 L29 60 L0 36 L36 35 Z" fill="none" stroke="#161616" stroke-width="0.8" stroke-linejoin="round" opacity="0.35"/>
+        </svg>
+        <span class="logo-text serif">StellarTask</span>
+      </a>
+      <nav class="main-nav" aria-label="Main">
+        <a class="nav-link is-disabled" href="#" aria-disabled="true">{{ t.nav_topics }}</a>
+        <a class="nav-link is-disabled" href="#" aria-disabled="true">{{ t.nav_notes }}</a>
+        <a class="nav-link" href="#games">{{ t.nav_games }}</a>
+        <span class="lang-switch mono" role="group" aria-label="{{ t.lang_ru }} / {{ t.lang_en }}">
+          {% if lang == 'en' %}
+          <a class="lang-link" href="/ru/" aria-pressed="false">{{ t.lang_ru }}</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link is-active" href="/" aria-pressed="true" aria-current="page">{{ t.lang_en }}</a>
+          {% else %}
+          <a class="lang-link is-active" href="/ru/" aria-pressed="true" aria-current="page">{{ t.lang_ru }}</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="/" aria-pressed="false">{{ t.lang_en }}</a>
+          {% endif %}
+        </span>
+      </nav>
+    </header>
+
+    <svg class="divider" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M2 5 C 140 2, 300 8, 470 5 S 800 2, 998 6" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    </svg>
+
+    {% block content %}{% endblock %}
+
+    <svg class="divider divider-muted" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M2 5 C 140 2, 300 8, 470 5 S 800 2, 998 6" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <footer class="site-footer mono">
+      <span>{{ t.footer_made }}</span>
+      <span>{{ t.footer_source }}</span>
+    </footer>
+  </div>
+</div>
+</body>
+</html>

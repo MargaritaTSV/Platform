@@ -1,11 +1,16 @@
 games:
   - key: constellation-game
     name: { en: ConstellationGame, ru: ConstellationGame }
-    blurb: { en: "Navigate the constellations and race an AI opponent across the sky.", ru: "" }
+    blurb:
+      en: "Navigate the constellations and race an AI opponent across the sky."
+      ru: "Прокладывайте путь по созвездиям и обгоняйте ИИ-соперника в ночном небе."
     url: /games/constellation-game/
     cover: design/svg/game-constellationgame.svg
   - key: constellation-finder
     name: { en: ConstellationFinder, ru: ConstellationFinder }
-    blurb: { en: "TODO: one-line description", ru: "" }
+    # TODO (open question for Starsy): real one-line description of ConstellationFinder.
+    blurb:
+      en: "An astronomy game — more details coming soon."
+      ru: "Астрономическая игра — подробности скоро."
     url: /games/constellation-finder/
     cover: design/svg/game-constellationfinder.svg

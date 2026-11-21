@@ -151,7 +151,7 @@ input:focus-visible {
   width: 100%;
   max-width: 1088px;
   aspect-ratio: 1088 / 520;
-  margin: 0 auto;
+  margin: 0 auto 64px;
 }
 
 .map-lines {
@@ -247,7 +247,7 @@ input:focus-visible {
 .games-grid {
   display: flex;
   align-items: stretch;
-  gap: 48px;
+  gap: 72px;
   flex-wrap: wrap;
 }
 
@@ -299,7 +299,7 @@ input:focus-visible {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.65;
-  color: #45423D;
+  color: var(--ink);
   max-width: 420px;
 }
 

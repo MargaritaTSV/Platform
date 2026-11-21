@@ -22,8 +22,8 @@
         <span class="logo-text serif">StellarTask</span>
       </a>
       <nav class="main-nav" aria-label="Main">
-        <a class="nav-link is-disabled" href="#" aria-disabled="true">{{ t.nav_topics }}</a>
-        <a class="nav-link is-disabled" href="#" aria-disabled="true">{{ t.nav_notes }}</a>
+        <a class="nav-link is-disabled" href="#" aria-disabled="true" tabindex="-1">{{ t.nav_topics }}</a>
+        <a class="nav-link is-disabled" href="#" aria-disabled="true" tabindex="-1">{{ t.nav_notes }}</a>
         <a class="nav-link" href="#games">{{ t.nav_games }}</a>
         <span class="lang-switch mono" role="group" aria-label="{{ t.lang_ru }} / {{ t.lang_en }}">
           {% if lang == 'en' %}

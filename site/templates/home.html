@@ -39,6 +39,22 @@
   </ul>
 </div>
 
+<section class="topics-list" aria-labelledby="topics-heading">
+  <h2 id="topics-heading" class="mono topics-list-heading">{{ t.nav_topics }}</h2>
+  {% for area in taxonomy.areas %}
+  {% if not loop.first %}
+  <svg class="row-rule" viewBox="0 0 1000 8" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M2 4 C 180 1, 420 7, 640 4 S 880 1, 998 5" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+  </svg>
+  {% endif %}
+  <a class="topic-item" href="{{ lang_prefix }}/topics/{{ area.key }}/">
+    <span class="serif topic-item-name">{{ area.name[lang] }}</span>
+    <span class="topic-item-desc">{{ area.description[lang] or area.description.en }}</span>
+    <span class="mono topic-item-count">{{ area_count[area.key] }}</span>
+  </a>
+  {% endfor %}
+</section>
+
 <svg class="divider" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
   <path d="M2 5 C 160 8, 380 2, 600 5 S 880 7, 998 4" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
 </svg>

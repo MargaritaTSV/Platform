@@ -1,0 +1,134 @@
+{
+  "viewBox": [
+    0,
+    0,
+    1088,
+    520
+  ],
+  "note": "Star positions are the star's centre in viewBox units. Labels sit under each star, centred. The selected star gets design/svg/ring.svg behind it and an italic label.",
+  "stars": [
+    {
+      "area": "celestial-mechanics",
+      "x": 110,
+      "y": 300,
+      "size": 26,
+      "filled": true
+    },
+    {
+      "area": "coordinates-and-time",
+      "x": 282,
+      "y": 104,
+      "size": 20,
+      "filled": false
+    },
+    {
+      "area": "stellar-physics",
+      "x": 436,
+      "y": 340,
+      "size": 32,
+      "filled": true
+    },
+    {
+      "area": "binary-and-variable-stars",
+      "x": 588,
+      "y": 166,
+      "size": 24,
+      "filled": false
+    },
+    {
+      "area": "telescopes-and-optics",
+      "x": 740,
+      "y": 410,
+      "size": 20,
+      "filled": false
+    },
+    {
+      "area": "observational-astronomy",
+      "x": 784,
+      "y": 66,
+      "size": 22,
+      "filled": true
+    },
+    {
+      "area": "solar-system",
+      "x": 958,
+      "y": 250,
+      "size": 28,
+      "filled": true
+    },
+    {
+      "area": "galaxies-and-cosmology",
+      "x": 936,
+      "y": 450,
+      "size": 18,
+      "filled": false
+    }
+  ],
+  "lines": [
+    {
+      "d": "M110 300 C 160 230, 210 160, 282 104",
+      "strokeWidth": 1.1,
+      "opacity": 1
+    },
+    {
+      "d": "M112 304 C 164 232, 214 164, 280 108",
+      "strokeWidth": 0.5,
+      "opacity": 0.5
+    },
+    {
+      "d": "M282 104 C 380 118, 480 146, 588 166",
+      "strokeWidth": 1.1,
+      "opacity": 1
+    },
+    {
+      "d": "M284 108 C 382 120, 482 150, 586 170",
+      "strokeWidth": 0.5,
+      "opacity": 0.5
+    },
+    {
+      "d": "M588 166 C 540 240, 490 300, 436 340",
+      "strokeWidth": 1.1,
+      "opacity": 1
+    },
+    {
+      "d": "M436 340 C 330 332, 220 318, 110 300",
+      "strokeWidth": 1.1,
+      "opacity": 1
+    },
+    {
+      "d": "M434 344 C 330 336, 220 322, 112 304",
+      "strokeWidth": 0.5,
+      "opacity": 0.5
+    },
+    {
+      "d": "M588 166 C 650 118, 720 86, 784 66",
+      "strokeWidth": 1.1,
+      "opacity": 1
+    },
+    {
+      "d": "M784 66 C 850 120, 910 190, 958 250",
+      "strokeWidth": 1.1,
+      "opacity": 1
+    },
+    {
+      "d": "M786 70 C 850 124, 906 192, 954 252",
+      "strokeWidth": 0.5,
+      "opacity": 0.5
+    },
+    {
+      "d": "M958 250 C 880 320, 810 380, 740 410",
+      "strokeWidth": 1.1,
+      "opacity": 1
+    },
+    {
+      "d": "M740 410 C 640 392, 530 364, 436 340",
+      "strokeWidth": 1.1,
+      "opacity": 1
+    },
+    {
+      "d": "M958 250 C 952 330, 944 390, 936 450",
+      "strokeWidth": 1.1,
+      "opacity": 1
+    }
+  ]
+}

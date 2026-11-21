@@ -1,0 +1,142 @@
+# DRAFT topic structure for StellarTask. Replace names and subtopics with the real list.
+# Two levels: areas (the stars on the home-page map) contain subtopics.
+# Every problem file sets `area` and `subtopic` to keys from this file.
+# `star` = position on the map in design/map.json units (viewBox 1088 x 520).
+# Russian descriptions are left empty (TODO).
+
+areas:
+  - key: celestial-mechanics
+    name: { en: "Celestial mechanics", ru: "Небесная механика" }
+    description: { en: "How bodies move under gravity: orbits, periods, speeds and masses.", ru: "" }
+    star: { x: 110, y: 300, size: 26, filled: true }
+    subtopics:
+      - key: keplers-laws
+        name: { en: "Kepler’s laws", ru: "Законы Кеплера" }
+        description: { en: "Periods, semi-major axes, areal velocity", ru: "" }
+      - key: orbital-speed-and-energy
+        name: { en: "Orbital speed and energy", ru: "Орбитальные скорости и энергия" }
+        description: { en: "Vis-viva, circular and escape speeds", ru: "" }
+      - key: masses-from-orbits
+        name: { en: "Masses from orbits", ru: "Массы по орбитам" }
+        description: { en: "The two-body problem, masses of planets and binaries", ru: "" }
+      - key: synodic-and-sidereal-periods
+        name: { en: "Synodic and sidereal periods", ru: "Синодический и сидерический периоды" }
+        description: { en: "Conjunctions, oppositions, configurations", ru: "" }
+      - key: transfer-orbits
+        name: { en: "Transfer orbits", ru: "Перелётные орбиты" }
+        description: { en: "Hohmann transfers, launches, spaceflight", ru: "" }
+      - key: tides-and-the-roche-limit
+        name: { en: "Tides and the Roche limit", ru: "Приливы и предел Роша" }
+        description: { en: "Tidal forces, rings, disruption", ru: "" }
+  - key: coordinates-and-time
+    name: { en: "Coordinates and time", ru: "Координаты и время" }
+    description: { en: "Where objects are on the sky and when: coordinates, time and visibility.", ru: "" }
+    star: { x: 282, y: 104, size: 20, filled: false }
+    subtopics:
+      - key: the-celestial-sphere
+        name: { en: "The celestial sphere", ru: "Небесная сфера" }
+        description: { en: "Equatorial and horizontal coordinates", ru: "" }
+      - key: rising-setting-culmination
+        name: { en: "Rising, setting, culmination", ru: "Восход, заход, кульминация" }
+        description: { en: "Visibility at a given latitude", ru: "" }
+      - key: time
+        name: { en: "Time", ru: "Время" }
+        description: { en: "Sidereal, solar and standard time", ru: "" }
+      - key: calendars-and-seasons
+        name: { en: "Calendars and seasons", ru: "Календари и времена года" }
+        description: { en: "Year lengths, solstices, equinoxes", ru: "" }
+  - key: stellar-physics
+    name: { en: "Stellar physics", ru: "Физика звёзд" }
+    description: { en: "How stars shine and how far away they are: light, spectra and evolution.", ru: "" }
+    star: { x: 436, y: 340, size: 32, filled: true }
+    subtopics:
+      - key: magnitudes-and-distances
+        name: { en: "Magnitudes and distances", ru: "Звёздные величины и расстояния" }
+        description: { en: "Parallax, distance modulus", ru: "" }
+      - key: radiation-laws
+        name: { en: "Radiation laws", ru: "Законы излучения" }
+        description: { en: "Black body, Wien, Stefan–Boltzmann", ru: "" }
+      - key: spectra-and-doppler-shift
+        name: { en: "Spectra and Doppler shift", ru: "Спектры и эффект Доплера" }
+        description: { en: "Spectral classes, radial velocity", ru: "" }
+      - key: structure-and-evolution
+        name: { en: "Structure and evolution", ru: "Строение и эволюция звёзд" }
+        description: { en: "The HR diagram, stellar lifetimes", ru: "" }
+  - key: binary-and-variable-stars
+    name: { en: "Binary and variable stars", ru: "Двойные и переменные звёзды" }
+    description: { en: "Pairs of stars and stars that change: orbits, eclipses and pulsations.", ru: "" }
+    star: { x: 588, y: 166, size: 24, filled: false }
+    subtopics:
+      - key: visual-binaries
+        name: { en: "Visual binaries", ru: "Визуально-двойные звёзды" }
+        description: { en: "Orbits and masses", ru: "" }
+      - key: eclipsing-binaries
+        name: { en: "Eclipsing binaries", ru: "Затменные двойные" }
+        description: { en: "Light curves, radii", ru: "" }
+      - key: spectroscopic-binaries
+        name: { en: "Spectroscopic binaries", ru: "Спектрально-двойные" }
+        description: { en: "Velocity curves", ru: "" }
+      - key: variable-stars
+        name: { en: "Variable stars", ru: "Переменные звёзды" }
+        description: { en: "Cepheids, period–luminosity", ru: "" }
+  - key: telescopes-and-optics
+    name: { en: "Telescopes and optics", ru: "Телескопы и оптика" }
+    description: { en: "How instruments collect light: resolution, magnification and detectors.", ru: "" }
+    star: { x: 740, y: 410, size: 20, filled: false }
+    subtopics:
+      - key: resolution-and-magnification
+        name: { en: "Resolution and magnification", ru: "Разрешение и увеличение" }
+        description: { en: "Diffraction limit, eyepieces", ru: "" }
+      - key: limiting-magnitude
+        name: { en: "Limiting magnitude", ru: "Проницающая способность" }
+        description: { en: "Aperture and light-gathering", ru: "" }
+      - key: detectors-and-photometry
+        name: { en: "Detectors and photometry", ru: "Приёмники излучения и фотометрия" }
+        description: { en: "Exposure, signal-to-noise", ru: "" }
+  - key: observational-astronomy
+    name: { en: "Observational astronomy", ru: "Наблюдательная астрономия" }
+    description: { en: "Working with the real sky: charts, constellations and observing tasks.", ru: "" }
+    star: { x: 784, y: 66, size: 22, filled: true }
+    subtopics:
+      - key: star-charts-and-constellations
+        name: { en: "Star charts and constellations", ru: "Звёздные карты и созвездия" }
+        description: { en: "Identifying objects", ru: "" }
+      - key: practical-rounds
+        name: { en: "Practical rounds", ru: "Практические туры" }
+        description: { en: "Observing tasks and estimates", ru: "" }
+      - key: the-atmosphere
+        name: { en: "The atmosphere", ru: "Атмосфера" }
+        description: { en: "Refraction, extinction", ru: "" }
+  - key: solar-system
+    name: { en: "Solar system", ru: "Солнечная система" }
+    description: { en: "The Sun, the planets and the small bodies of our own system.", ru: "" }
+    star: { x: 958, y: 250, size: 28, filled: true }
+    subtopics:
+      - key: planets-and-moons
+        name: { en: "Planets and moons", ru: "Планеты и спутники" }
+        description: { en: "Sizes, densities, albedo", ru: "" }
+      - key: phases-and-eclipses
+        name: { en: "Phases and eclipses", ru: "Фазы и затмения" }
+        description: { en: "Lunar and solar eclipses", ru: "" }
+      - key: small-bodies
+        name: { en: "Small bodies", ru: "Малые тела" }
+        description: { en: "Comets, asteroids, meteors", ru: "" }
+      - key: the-sun
+        name: { en: "The Sun", ru: "Солнце" }
+        description: { en: "Activity, luminosity, the solar constant", ru: "" }
+  - key: galaxies-and-cosmology
+    name: { en: "Galaxies and cosmology", ru: "Галактики и космология" }
+    description: { en: "Our galaxy, other galaxies and the universe as a whole.", ru: "" }
+    star: { x: 936, y: 450, size: 18, filled: false }
+    subtopics:
+      - key: the-milky-way
+        name: { en: "The Milky Way", ru: "Млечный Путь" }
+        description: { en: "Structure and rotation", ru: "" }
+      - key: galaxies
+        name: { en: "Galaxies", ru: "Галактики" }
+        description: { en: "Types and distances", ru: "" }
+      - key: cosmology
+        name: { en: "Cosmology", ru: "Космология" }
+        description: { en: "Redshift, Hubble’s law, the age of the universe", ru: "" }
+
+olympiads: []   # e.g. - { key: iao, name: { en: International Astronomy Olympiad, ru: Международная астрономическая олимпиада } }

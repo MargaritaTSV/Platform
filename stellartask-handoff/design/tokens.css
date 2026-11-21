@@ -1,0 +1,34 @@
+/* StellarTask design tokens. Load the fonts with:
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Onest:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap"> */
+:root {
+  --bg: #FDFCFA;
+  --ink: #161616;
+  --muted: #6F6B64;
+  --faint: #9A958C;
+  --rule: #BDB7AB;
+  --rule-light: #D9D5CC;
+  --hover: #3B6E99;
+  --scan-bg: #F5F3EE;
+  --wavy-underline: #A9B9C7;
+
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Onest', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --content-max: 1088px;
+  --page-pad-x: 64px;
+  --section-gap: 72px;
+  --section-gap-lg: 96px;
+}
+
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
+a { color: var(--ink); }
+a:hover { color: var(--hover); }
+.serif { font-family: var(--font-serif); font-weight: 500; }
+.mono { font-family: var(--font-mono); }
+
+/* Filter-sentence choices: italic serif with a wavy underline */
+.pick {
+  font: inherit; font-style: italic; background: none; border: 0; padding: 0 2px; color: var(--ink); cursor: pointer;
+  text-decoration: underline wavy var(--wavy-underline); text-decoration-thickness: 1.3px; text-underline-offset: 8px;
+}

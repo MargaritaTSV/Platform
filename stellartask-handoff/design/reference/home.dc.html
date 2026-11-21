@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>StellarTask v1: home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Onest:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+body{margin:0}
+a{color:#161616}a:hover{color:#3B6E99}
+.sr{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500}
+.mo{font-family:'JetBrains Mono',monospace}
+.nv{font-size:14px;text-decoration:none;padding:10px 0}
+.nd{position:absolute;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:#161616;transform:translate(-50%,-14px);text-align:center;background:none;border:0;padding:0;cursor:pointer;font:inherit}
+.nd:hover .sr{font-style:italic}
+.tr{display:grid;grid-template-columns:40px 300px minmax(0,1fr) 60px;align-items:baseline;column-gap:24px;padding:16px 0 14px;text-decoration:none}
+.tr:hover .sr{font-style:italic}
+.gm{display:flex;flex-direction:column;gap:14px;text-decoration:none}
+.gm:hover .sr{font-style:italic}
+.rl{display:flex;align-items:center;gap:16px;min-height:38px;width:100%;font:400 15px 'Onest',sans-serif;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.pk{font:inherit;font-style:italic;background:none;border:0;padding:0 2px;color:#161616;text-decoration:underline wavy #A9B9C7;text-decoration-thickness:1.3px;text-underline-offset:8px;cursor:pointer}
+</style>
+</helmet>
+<div style="min-height: 100%; background: #FDFCFA; font-family: 'Onest', system-ui, sans-serif; color: #161616">
+<div style="max-width: 1216px; margin: 0 auto; padding: 0 64px">
+<header style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; padding: 32px 0 22px">
+<a href="F1-Home.dc.html" style="display: flex; align-items: center; gap: 14px; text-decoration: none">
+<svg viewBox="0 0 100 100" width="44" height="44" aria-hidden="true"><path d="M50 4 L63 37 L98 39 L70 60 L80 95 L50 74 L19 94 L31 59 L3 37 L38 37 Z" fill="none" stroke="#161616" stroke-width="2.2" stroke-linejoin="round"/><path d="M48 11 L60 40 L92 42 L65 61 L75 89 L49 70 L24 88 L35 58 L9 41 L42 40 Z" fill="none" stroke="#161616" stroke-width="1.2" stroke-linejoin="round" opacity="0.6"/><path d="M52 1 L65 35 L100 37 L72 59 L82 98 L51 76 L17 97 L29 60 L0 36 L36 35 Z" fill="none" stroke="#161616" stroke-width="0.8" stroke-linejoin="round" opacity="0.35"/></svg>
+<span style="display: flex; flex-direction: column; gap: 2px"><span class="sr" style="font-size: 30px; font-style: italic; line-height: 1">StellarTask</span></span>
+</a>
+<nav aria-label="Main" style="display: flex; gap: 36px; align-items: center; flex-wrap: wrap"><a class="nv" href="F1-Home.dc.html" aria-current="page" style="text-decoration: underline; text-underline-offset: 6px">Topics</a><a class="nv" href="#">Theory notes</a><a class="nv" href="F1-Home.dc.html#games">Games</a><span class="mo" style="font-size: 12px; color: #6F6B64">RU · <span style="color: #161616">EN</span></span></nav>
+</header>
+<svg viewBox="0 0 1000 10" preserveAspectRatio="none" width="100%" height="10" aria-hidden="true" style="display: block"><path d="M2 5 C 140 2, 300 8, 470 5 S 800 2, 998 6" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
+<div style="text-align: center; padding: 80px 0 40px">
+<h1 class="sr" style="margin: 0; font-size: 64px; font-weight: 400">Choose a <span style="font-style: italic">constellation</span></h1>
+<p class="mo" style="margin: 16px 0 0; font-size: 12px; color: #6F6B64">8 topics · [N] problems · ru / en</p>
+</div>
+<nav aria-label="Topics" style="position: relative; width: 1088px; height: 520px; margin: 0 auto">
+<svg viewBox="0 0 1088 520" width="1088" height="520" aria-hidden="true" style="position: absolute; inset: 0"><g fill="none" stroke="#161616" stroke-linecap="round">
+<path d="M110 300 C 160 230, 210 160, 282 104" stroke-width="1.1"/><path d="M112 304 C 164 232, 214 164, 280 108" stroke-width="0.5" opacity="0.5"/>
+<path d="M282 104 C 380 118, 480 146, 588 166" stroke-width="1.1"/><path d="M284 108 C 382 120, 482 150, 586 170" stroke-width="0.5" opacity="0.5"/>
+<path d="M588 166 C 540 240, 490 300, 436 340" stroke-width="1.1"/>
+<path d="M436 340 C 330 332, 220 318, 110 300" stroke-width="1.1"/><path d="M434 344 C 330 336, 220 322, 112 304" stroke-width="0.5" opacity="0.5"/>
+<path d="M588 166 C 650 118, 720 86, 784 66" stroke-width="1.1"/>
+<path d="M784 66 C 850 120, 910 190, 958 250" stroke-width="1.1"/><path d="M786 70 C 850 124, 906 192, 954 252" stroke-width="0.5" opacity="0.5"/>
+<path d="M958 250 C 880 320, 810 380, 740 410" stroke-width="1.1"/>
+<path d="M740 410 C 640 392, 530 364, 436 340" stroke-width="1.1"/>
+<path d="M958 250 C 952 330, 944 390, 936 450" stroke-width="1.1"/>
+</g></svg>
+<a href="F1-Topic.dc.html" class="nd" style="left: 110px; top: 300px"><svg viewBox="0 0 100 100" width="26" height="26" aria-hidden="true"><path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="#161616" stroke="#161616" stroke-width="4" stroke-linejoin="round"/></svg><span class="sr" style="font-size: 23px">Celestial mechanics</span><span class="mo" style="font-size: 11.5px; color: #6F6B64">[N]</span></a>
+<a href="F1-Topic.dc.html" class="nd" style="left: 282px; top: 104px"><svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="#FDFCFA" stroke="#161616" stroke-width="6" stroke-linejoin="round"/></svg><span class="sr" style="font-size: 23px">Coordinates and time</span><span class="mo" style="font-size: 11.5px; color: #6F6B64">[N]</span></a>
+<a href="F1-Topic.dc.html" class="nd" style="left: 436px; top: 340px"><svg viewBox="0 0 100 100" width="32" height="32" aria-hidden="true"><path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="#161616" stroke="#161616" stroke-width="4" stroke-linejoin="round"/></svg><span class="sr" style="font-size: 23px">Stellar physics</span><span class="mo" style="font-size: 11.5px; color: #6F6B64">[N]</span></a>
+<a href="F1-Topic.dc.html" class="nd" style="left: 588px; top: 166px"><svg viewBox="0 0 100 100" width="24" height="24" aria-hidden="true"><path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="#FDFCFA" stroke="#161616" stroke-width="6" stroke-linejoin="round"/></svg><span class="sr" style="font-size: 23px">Binary and variable stars</span><span class="mo" style="font-size: 11.5px; color: #6F6B64">[N]</span></a>
+<a href="F1-Topic.dc.html" class="nd" style="left: 740px; top: 410px"><svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="#FDFCFA" stroke="#161616" stroke-width="6" stroke-linejoin="round"/></svg><span class="sr" style="font-size: 23px">Telescopes and optics</span><span class="mo" style="font-size: 11.5px; color: #6F6B64">[N]</span></a>
+<a href="F1-Topic.dc.html" class="nd" style="left: 784px; top: 66px"><svg viewBox="0 0 100 100" width="22" height="22" aria-hidden="true"><path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="#161616" stroke="#161616" stroke-width="4" stroke-linejoin="round"/></svg><span class="sr" style="font-size: 23px">Observational astronomy</span><span class="mo" style="font-size: 11.5px; color: #6F6B64">[N]</span></a>
+<a href="F1-Topic.dc.html" class="nd" style="left: 958px; top: 250px"><svg viewBox="0 0 100 100" width="28" height="28" aria-hidden="true"><path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="#161616" stroke="#161616" stroke-width="4" stroke-linejoin="round"/></svg><span class="sr" style="font-size: 23px">Solar system</span><span class="mo" style="font-size: 11.5px; color: #6F6B64">[N]</span></a>
+<a href="F1-Topic.dc.html" class="nd" style="left: 936px; top: 450px"><svg viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="#FDFCFA" stroke="#161616" stroke-width="6" stroke-linejoin="round"/></svg><span class="sr" style="font-size: 23px">Galaxies and cosmology</span><span class="mo" style="font-size: 11.5px; color: #6F6B64">[N]</span></a>
+</nav>
+<div style="height: 64px"></div>
+<svg viewBox="0 0 1000 10" preserveAspectRatio="none" width="100%" height="10" aria-hidden="true" style="display: block"><path d="M2 5 C 160 8, 380 2, 600 5 S 880 7, 998 4" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
+<section id="games" aria-label="Games" style="padding: 88px 0 96px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 48px">
+<h2 class="sr" style="margin: 0; font-size: 52px; font-weight: 400">Games</h2>
+<span class="mo" style="font-size: 12px; color: #6F6B64">for a break between problems</span>
+</div>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 2px minmax(0, 1fr); column-gap: 72px">
+<a href="#" class="gm">
+<svg viewBox="0 0 440 130" width="440" height="130" aria-hidden="true" style="max-width: 100%"><path d="M20 104 C 60 80, 90 62, 128 50 C 168 64, 200 78, 240 82 C 280 60, 320 36, 380 22" fill="none" stroke="#161616" stroke-width="1" stroke-dasharray="2 6" stroke-linecap="round"/><circle cx="20" cy="104" r="5" fill="#161616"/><circle cx="128" cy="50" r="3.5" fill="#161616"/><circle cx="240" cy="82" r="4.5" fill="#161616"/><circle cx="380" cy="22" r="7" fill="none" stroke="#161616" stroke-width="1.3"/></svg>
+<span class="mo" style="font-size: 12px; color: #6F6B64">game 01</span>
+<span class="sr" style="font-size: 40px; line-height: 1">ConstellationGame</span>
+<span style="font-size: 16px; line-height: 1.65; color: #45423D; max-width: 420px">Navigate the constellations and race an AI opponent across the sky.</span>
+<span class="mo" style="font-size: 13px">play ↗</span>
+</a>
+<svg viewBox="0 0 2 300" preserveAspectRatio="none" width="2" height="100%" aria-hidden="true"><path d="M1 0 C 1.8 80, 0.2 180, 1 300" stroke="#161616" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/></svg>
+<a href="#" class="gm">
+<svg viewBox="0 0 440 130" width="440" height="130" aria-hidden="true" style="max-width: 100%"><circle cx="70" cy="62" r="50" fill="none" stroke="#161616" stroke-width="1.2"/><circle cx="71" cy="61" r="44" fill="none" stroke="#161616" stroke-width="0.6" opacity="0.5"/><path d="M106 98 L134 124" stroke="#161616" stroke-width="3" stroke-linecap="round"/><circle cx="56" cy="52" r="3" fill="#161616"/><circle cx="82" cy="58" r="2.5" fill="#161616"/><circle cx="70" cy="78" r="3" fill="#161616"/><path d="M56 52 L82 58 L70 78" fill="none" stroke="#161616" stroke-width="0.8"/></svg>
+<span class="mo" style="font-size: 12px; color: #6F6B64">game 02</span>
+<span class="sr" style="font-size: 40px; line-height: 1">ConstellationFinder</span>
+<span style="font-size: 16px; line-height: 1.65; color: #45423D; max-width: 420px">[One-line description of the game]</span>
+<span class="mo" style="font-size: 13px">play ↗</span>
+</a>
+</div>
+</section>
+<svg viewBox="0 0 1000 10" preserveAspectRatio="none" width="100%" height="10" aria-hidden="true" style="display: block"><path d="M2 5 C 140 2, 300 8, 470 5 S 800 2, 998 6" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
+<footer class="mo" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 22px 0 40px; font-size: 12px; color: #6F6B64">
+<span>StellarTask · made by Starsy</span><span>every problem shows its original source</span>
+</footer>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -11,6 +11,15 @@
   "games_heading": "Игры",
   "games_tagline": "чтобы отвлечься от задач",
   "play": "играть ↗",
+  "topics_word": "тем",
+  "problems_word": "задач",
+  "subtopics_heading": "Подтемы",
+  "difficulty_label": "сложность",
+  "no_problems": "В этой теме пока нет задач.",
+  "no_statement": "Условие недоступно.",
+  "shown_in": "показано на",
+  "prev": "предыдущая",
+  "next": "следующая",
   "footer_made": "StellarTask · сделано командой Starsy",
   "footer_source": "у каждой задачи есть свой источник"
 }

@@ -1,0 +1,15 @@
+area: stellar-physics
+subtopic: magnitudes-and-distances
+difficulty: 3
+olympiad: iao
+year: 2021
+grade: senior
+round: theory
+number: "2"
+statement:
+  en: |
+    A star has apparent magnitude m = 7.5 and absolute magnitude M = 2.5.
+    Find its distance in parsecs, and the parallax angle you would measure.
+  ru: |
+    Звезда имеет видимую звёздную величину m = 7,5 и абсолютную величину M = 2,5.
+    Найдите расстояние до неё в парсеках и параллакс, который вы бы измерили.

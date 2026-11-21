@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="topic-head">
+  <h1 class="serif topic-title">{{ area.name }}</h1>
+  {% if area.description %}<p class="topic-desc">{{ area.description }}</p>{% endif %}
+  <p class="mono topic-count">{{ area_count }} {{ t.problems_word }}</p>
+</div>
+
+<div class="topic-body">
+  <aside class="subtopic-rail" aria-label="{{ t.subtopics_heading }}">
+    <h2 class="mono rail-heading">{{ t.subtopics_heading }}</h2>
+    <ul class="rail-list">
+      {% for s in area.subtopics %}
+      <li class="rail-item">
+        <span class="serif rail-name">{{ s.name }}</span>
+        <span class="mono rail-count">{{ s.count }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </aside>
+
+  <div class="problem-list">
+    {% if problems %}
+    {% for p in problems %}
+    {% if not loop.first %}
+    <svg class="row-rule" viewBox="0 0 1000 8" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M2 4 C 180 1, 420 7, 640 4 S 880 1, 998 5" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    </svg>
+    {% endif %}
+    <a class="problem-row" href="{{ lang_prefix }}/problems/{{ p.id }}/">
+      <div class="serif row-num">{{ loop.index }}</div>
+      <div class="row-main">
+        <div class="row-meta">
+          <span class="stars" role="img" aria-label="{{ t.difficulty_label }} {{ p.difficulty }}/5">
+            {% for i in range(1, 6) %}
+            <svg class="star" viewBox="0 0 100 100" width="13" height="13" aria-hidden="true"><path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="{{ '#161616' if i <= p.difficulty else 'none' }}" stroke="#161616" stroke-width="{{ '4' if i <= p.difficulty else '6' }}" stroke-linejoin="round"/></svg>
+            {% endfor %}
+          </span>
+          <span class="mono row-subtopic">{{ p.subtopic_name }}</span>
+        </div>
+        {% if p.statement.text %}
+        <p class="serif row-statement">{{ p.statement.text }}</p>
+        {% endif %}
+        <div class="row-source mono">
+          {% if p.source %}<span>{{ p.source }}</span>{% endif %}
+          {% if p.statement.fallback %}<span class="badge">{{ p.statement.shown_lang | upper }}</span>{% endif %}
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+    {% else %}
+    <p class="empty mono">{{ t.no_problems }}</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

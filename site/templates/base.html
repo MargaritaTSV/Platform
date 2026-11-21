@@ -27,9 +27,9 @@
         <a class="nav-link" href="#games">{{ t.nav_games }}</a>
         <span class="lang-switch mono" role="group" aria-label="{{ t.lang_ru }} / {{ t.lang_en }}">
           {% if lang == 'en' %}
-          <a class="lang-link" href="/ru/" aria-pressed="false">{{ t.lang_ru }}</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link is-active" href="/" aria-pressed="true" aria-current="page">{{ t.lang_en }}</a>
+          <a class="lang-link" href="{{ url_ru }}" aria-pressed="false">{{ t.lang_ru }}</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link is-active" href="{{ url_en }}" aria-pressed="true" aria-current="page">{{ t.lang_en }}</a>
           {% else %}
-          <a class="lang-link is-active" href="/ru/" aria-pressed="true" aria-current="page">{{ t.lang_ru }}</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="/" aria-pressed="false">{{ t.lang_en }}</a>
+          <a class="lang-link is-active" href="{{ url_ru }}" aria-pressed="true" aria-current="page">{{ t.lang_ru }}</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="{{ url_en }}" aria-pressed="false">{{ t.lang_en }}</a>
           {% endif %}
         </span>
       </nav>

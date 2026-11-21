@@ -172,12 +172,25 @@ input:focus-visible {
 
 .map-star {
   position: absolute;
+  transform: translate(-50%, -14px);
+}
+
+.map-star-link {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   text-align: center;
-  transform: translate(-50%, -14px);
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.map-star-link:hover {
+  color: var(--hover);
+}
+
+.map-star-link:hover .map-star-label {
+  font-style: italic;
 }
 
 .map-star-label {
@@ -185,6 +198,15 @@ input:focus-visible {
   font-weight: 500;
   color: var(--ink);
   white-space: nowrap;
+}
+
+.map-star-link:hover .map-star-label {
+  color: var(--hover);
+}
+
+.map-star-count {
+  font-size: 11.5px;
+  color: var(--muted);
 }
 
 /* Phones: the map becomes a vertical list of stars (no absolute layout, no connecting lines). */
@@ -211,6 +233,9 @@ input:focus-visible {
     left: auto !important;
     top: auto !important;
     transform: none;
+  }
+
+  .map-star-link {
     flex-direction: row;
     justify-content: flex-start;
     gap: 14px;
@@ -346,5 +371,276 @@ input:focus-visible {
 
   .game-name {
     font-size: 30px;
+  }
+}
+
+/* ---------- topic (area) page ---------- */
+
+.topic-head {
+  padding: 64px 0 36px;
+}
+
+.topic-title {
+  margin: 0;
+  font-size: 56px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.topic-desc {
+  margin: 14px 0 0;
+  max-width: 640px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.topic-count {
+  margin: 18px 0 0;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.topic-body {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  column-gap: 56px;
+  padding-bottom: 72px;
+}
+
+.subtopic-rail {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+}
+
+.rail-heading {
+  margin: 0 0 16px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  font-weight: 400;
+}
+
+.rail-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rail-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 34px;
+  padding: 4px 0;
+}
+
+.rail-name {
+  font-size: 17px;
+  color: var(--ink);
+}
+
+.rail-count {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.problem-list {
+  min-width: 0;
+}
+
+.row-rule {
+  display: block;
+  width: 100%;
+  height: 8px;
+}
+
+.problem-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  column-gap: 20px;
+  padding: 22px 0;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.problem-row:hover {
+  color: var(--hover);
+}
+
+.row-num {
+  font-size: 34px;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.row-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.stars {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.star {
+  display: block;
+}
+
+.row-subtopic {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.row-statement {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink);
+  white-space: pre-line;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.problem-row:hover .row-statement {
+  font-style: italic;
+}
+
+.row-source {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.badge {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  padding: 1px 6px;
+  border-radius: 2px;
+  background: var(--scan-bg);
+}
+
+.empty {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- single problem page ---------- */
+
+.problem {
+  padding: 40px 0 72px;
+  max-width: 720px;
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 36px;
+}
+
+.back-link:hover {
+  color: var(--hover);
+}
+
+.problem-head {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.problem-number {
+  font-size: 72px;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.problem-headmeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.problem-subtopic {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.problem-source {
+  margin: 20px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.problem-fallback {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.statement {
+  margin: 28px 0 40px;
+  font-size: 22px;
+  line-height: 1.6;
+  color: var(--ink);
+  white-space: pre-line;
+}
+
+.prevnext {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 20px;
+  font-size: 13px;
+}
+
+.prevnext a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.prevnext a:hover {
+  color: var(--hover);
+}
+
+@media (max-width: 720px) {
+  .topic-title {
+    font-size: 40px;
+  }
+
+  .topic-body {
+    grid-template-columns: 1fr;
+    row-gap: 32px;
+  }
+
+  .subtopic-rail {
+    position: static;
+  }
+
+  .problem-number {
+    font-size: 54px;
+  }
+
+  .statement {
+    font-size: 19px;
   }
 }

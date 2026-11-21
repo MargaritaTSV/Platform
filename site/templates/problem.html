@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="problem">
+  <a class="mono back-link" href="{{ area_url }}">&larr; {{ problem.area_name }}</a>
+
+  <div class="problem-head">
+    {% if problem.number %}<div class="serif problem-number">{{ problem.number }}</div>{% endif %}
+    <div class="problem-headmeta">
+      <span class="stars" role="img" aria-label="{{ t.difficulty_label }} {{ problem.difficulty }}/5">
+        {% for i in range(1, 6) %}
+        <svg class="star" viewBox="0 0 100 100" width="16" height="16" aria-hidden="true"><path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="{{ '#161616' if i <= problem.difficulty else 'none' }}" stroke="#161616" stroke-width="{{ '4' if i <= problem.difficulty else '6' }}" stroke-linejoin="round"/></svg>
+        {% endfor %}
+      </span>
+      <span class="mono problem-subtopic">{{ problem.subtopic_name }}</span>
+    </div>
+  </div>
+
+  {% if problem.source %}<p class="mono problem-source">{{ problem.source }}</p>{% endif %}
+  {% if problem.statement.fallback %}<p class="mono problem-fallback">{{ t.shown_in }} {{ problem.statement.shown_lang | upper }}</p>{% endif %}
+
+  {% if problem.statement.text %}
+  <div class="serif statement">{{ problem.statement.text }}</div>
+  {% else %}
+  <p class="empty mono">{{ t.no_statement }}</p>
+  {% endif %}
+
+  <svg class="divider divider-muted" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M2 5 C 140 2, 300 8, 470 5 S 800 2, 998 6" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+  </svg>
+
+  <nav class="prevnext mono" aria-label="{{ t.prev }} / {{ t.next }}">
+    {% if prev_url %}<a href="{{ prev_url }}">&larr; {{ t.prev }}</a>{% else %}<span></span>{% endif %}
+    {% if next_url %}<a href="{{ next_url }}">{{ t.next }} &rarr;</a>{% else %}<span></span>{% endif %}
+  </nav>
+</article>
+{% endblock %}

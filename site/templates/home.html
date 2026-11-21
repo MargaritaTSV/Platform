@@ -3,7 +3,7 @@
 {% block content %}
 <div class="hero">
   <h1 class="serif hero-title">{{ t.hero_title_start }} <span class="hero-highlight">{{ t.hero_title_highlight }}</span></h1>
-  <p class="mono hero-subtitle">{{ t.hero_subtitle }}</p>
+  <p class="mono hero-subtitle">{{ taxonomy.areas | length }} {{ t.topics_word }} · {{ total_problems }} {{ t.problems_word }} · ru / en</p>
 </div>
 
 <div class="map-outer">
@@ -27,10 +27,13 @@
   <ul class="map-stars">
     {% for area in taxonomy.areas %}
     <li class="map-star" style="left: {{ '%.3f' % (area.star.x / 1088 * 100) }}%; top: {{ '%.3f' % (area.star.y / 520 * 100) }}%;">
-      <svg viewBox="0 0 100 100" width="{{ area.star.size }}" height="{{ area.star.size }}" aria-hidden="true">
-        <path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="{{ '#161616' if area.star.filled else '#FDFCFA' }}" stroke="#161616" stroke-width="{{ '4' if area.star.filled else '6' }}" stroke-linejoin="round"/>
-      </svg>
-      <span class="serif map-star-label">{{ area.name[lang] }}</span>
+      <a class="map-star-link" href="{{ lang_prefix }}/topics/{{ area.key }}/">
+        <svg viewBox="0 0 100 100" width="{{ area.star.size }}" height="{{ area.star.size }}" aria-hidden="true">
+          <path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="{{ '#161616' if area.star.filled else '#FDFCFA' }}" stroke="#161616" stroke-width="{{ '4' if area.star.filled else '6' }}" stroke-linejoin="round"/>
+        </svg>
+        <span class="serif map-star-label">{{ area.name[lang] }}</span>
+        <span class="mono map-star-count">{{ area_count[area.key] }}</span>
+      </a>
     </li>
     {% endfor %}
   </ul>

@@ -11,6 +11,15 @@
   "games_heading": "Games",
   "games_tagline": "for a break between problems",
   "play": "play ↗",
+  "topics_word": "topics",
+  "problems_word": "problems",
+  "subtopics_heading": "Subtopics",
+  "difficulty_label": "difficulty",
+  "no_problems": "No problems in this topic yet.",
+  "no_statement": "No statement available.",
+  "shown_in": "shown in",
+  "prev": "previous",
+  "next": "next",
   "footer_made": "StellarTask · made by Starsy",
   "footer_source": "every problem shows its original source"
 }

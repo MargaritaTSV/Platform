@@ -139,4 +139,8 @@ areas:
         name: { en: "Cosmology", ru: "Космология" }
         description: { en: "Redshift, Hubble’s law, the age of the universe", ru: "" }
 
-olympiads: []   # e.g. - { key: iao, name: { en: International Astronomy Olympiad, ru: Международная астрономическая олимпиада } }
+olympiads:
+  - key: iao
+    name: { en: "International Astronomy Olympiad", ru: "Международная астрономическая олимпиада" }
+  - key: ioaa
+    name: { en: "International Olympiad on Astronomy and Astrophysics", ru: "Международная олимпиада по астрономии и астрофизике" }

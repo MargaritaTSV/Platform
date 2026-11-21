@@ -243,60 +243,134 @@ input:focus-visible {
   }
 }
 
-/* ---------- topics list (under the map) ---------- */
+/* ---------- selected-star marker ---------- */
 
-.topics-list {
+.map-star-mark {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-star-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.map-star.is-active .map-star-ring {
+  display: block;
+}
+
+.map-star-icon {
+  display: block;
+}
+
+/* ---------- subtopic block (under the map) ---------- */
+
+.topic-blocks {
   padding: 8px 0 32px;
 }
 
-.topics-list-heading {
-  margin: 0 0 8px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--faint);
-  font-weight: 400;
+/* With JS, show one area's subtopics at a time; without JS, show them all. */
+.topic-blocks.has-js .topic-block {
+  display: none;
 }
 
-.topic-item {
+.topic-blocks.has-js .topic-block.is-active {
+  display: block;
+}
+
+.topic-block {
+  padding: 8px 0 12px;
+}
+
+.topic-block + .topic-block {
+  margin-top: 40px;
+}
+
+.topic-block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.topic-block-title {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.all-problems-link {
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.all-problems-link:hover {
+  color: var(--hover);
+}
+
+.topic-block-desc {
+  margin: 10px 0 20px;
+  max-width: 640px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.subtopic-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.subtopic-row {
   display: grid;
-  grid-template-columns: minmax(0, 320px) minmax(0, 1fr) 48px;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr) 48px;
   align-items: baseline;
   column-gap: 24px;
-  padding: 16px 0 14px;
+  padding: 14px 0 12px;
   text-decoration: none;
   color: var(--ink);
 }
 
-.topic-item:hover {
+.subtopic-row:hover {
   color: var(--hover);
 }
 
-.topic-item-name {
-  font-size: 23px;
+.subtopic-row-name {
+  font-size: 20px;
   font-weight: 500;
 }
 
-.topic-item-desc {
-  font-size: 15px;
+.subtopic-row-desc {
+  font-size: 14px;
   line-height: 1.5;
   color: var(--muted);
 }
 
-.topic-item-count {
+.subtopic-row-count {
   font-size: 12px;
   color: var(--muted);
   text-align: right;
 }
 
 @media (max-width: 720px) {
-  .topic-item {
+  .subtopic-row {
     grid-template-columns: 1fr auto;
     column-gap: 16px;
     row-gap: 4px;
   }
 
-  .topic-item-desc {
+  .subtopic-row-desc {
     grid-column: 1 / -1;
   }
 }
@@ -491,6 +565,10 @@ input:focus-visible {
 .rail-name {
   font-size: 17px;
   color: var(--ink);
+}
+
+.rail-item.is-active .rail-name {
+  color: var(--hover);
 }
 
 .rail-count {

@@ -12,7 +12,7 @@
     <h2 class="mono rail-heading">{{ t.subtopics_heading }}</h2>
     <ul class="rail-list">
       {% for s in area.subtopics %}
-      <li class="rail-item">
+      <li class="rail-item" data-sub="{{ s.key }}">
         <span class="serif rail-name">{{ s.name }}</span>
         <span class="mono rail-count">{{ s.count }}</span>
       </li>
@@ -20,7 +20,7 @@
     </ul>
   </aside>
 
-  <div class="problem-list">
+  <div class="problem-list" data-empty="{{ t.no_problems }}">
     {% if problems %}
     {% for p in problems %}
     {% if not loop.first %}
@@ -28,7 +28,7 @@
       <path d="M2 4 C 180 1, 420 7, 640 4 S 880 1, 998 5" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
     </svg>
     {% endif %}
-    <a class="problem-row" href="{{ lang_prefix }}/problems/{{ p.id }}/">
+    <a class="problem-row" data-subtopic="{{ p.subtopic_key }}" href="{{ lang_prefix }}/problems/{{ p.id }}/">
       <div class="serif row-num">{{ loop.index }}</div>
       <div class="row-main">
         <div class="row-meta">

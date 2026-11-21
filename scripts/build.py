@@ -417,7 +417,8 @@ def render_site(env: Environment, taxonomy: dict, games: list,
 
         # Home.
         home_ctx = dict(common(""), taxonomy=taxonomy, games=games,
-                        area_count=area_count, total_problems=total_problems)
+                        area_count=area_count, sub_count=sub_count,
+                        total_problems=total_problems)
         targets = [DIST_DIR / lang_prefix(lang).lstrip("/") / "index.html"]
         if lang == DEFAULT_LANGUAGE:
             targets = [DIST_DIR / "index.html", DIST_DIR / "en" / "index.html"]

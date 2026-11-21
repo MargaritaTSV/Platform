@@ -26,11 +26,14 @@
   </svg>
   <ul class="map-stars">
     {% for area in taxonomy.areas %}
-    <li class="map-star" style="left: {{ '%.3f' % (area.star.x / 1088 * 100) }}%; top: {{ '%.3f' % (area.star.y / 520 * 100) }}%;">
-      <a class="map-star-link" href="{{ lang_prefix }}/topics/{{ area.key }}/">
-        <svg viewBox="0 0 100 100" width="{{ area.star.size }}" height="{{ area.star.size }}" aria-hidden="true">
-          <path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="{{ '#161616' if area.star.filled else '#FDFCFA' }}" stroke="#161616" stroke-width="{{ '4' if area.star.filled else '6' }}" stroke-linejoin="round"/>
-        </svg>
+    <li class="map-star{% if loop.first %} is-active{% endif %}" data-area="{{ area.key }}" style="left: {{ '%.3f' % (area.star.x / 1088 * 100) }}%; top: {{ '%.3f' % (area.star.y / 520 * 100) }}%;">
+      <a class="map-star-link" href="{{ lang_prefix }}/topics/{{ area.key }}/" data-area="{{ area.key }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">
+        <span class="map-star-mark">
+          <svg class="map-star-ring" viewBox="0 0 60 60" aria-hidden="true"><path d="M30 4 C 46 3, 57 15, 56 30 C 55 46, 43 57, 29 56 C 14 55, 4 44, 4 29 C 5 15, 15 5, 32 5" fill="none" stroke="#161616" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <svg class="map-star-icon" viewBox="0 0 100 100" width="{{ area.star.size }}" height="{{ area.star.size }}" aria-hidden="true">
+            <path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="{{ '#161616' if area.star.filled else '#FDFCFA' }}" stroke="#161616" stroke-width="{{ '4' if area.star.filled else '6' }}" stroke-linejoin="round"/>
+          </svg>
+        </span>
         <span class="serif map-star-label">{{ area.name[lang] }}</span>
         <span class="mono map-star-count">{{ area_count[area.key] }}</span>
       </a>
@@ -39,21 +42,35 @@
   </ul>
 </div>
 
-<section class="topics-list" aria-labelledby="topics-heading">
-  <h2 id="topics-heading" class="mono topics-list-heading">{{ t.nav_topics }}</h2>
+<div class="topic-blocks">
   {% for area in taxonomy.areas %}
-  {% if not loop.first %}
-  <svg class="row-rule" viewBox="0 0 1000 8" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M2 4 C 180 1, 420 7, 640 4 S 880 1, 998 5" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
-  </svg>
-  {% endif %}
-  <a class="topic-item" href="{{ lang_prefix }}/topics/{{ area.key }}/">
-    <span class="serif topic-item-name">{{ area.name[lang] }}</span>
-    <span class="topic-item-desc">{{ area.description[lang] or area.description.en }}</span>
-    <span class="mono topic-item-count">{{ area_count[area.key] }}</span>
-  </a>
+  <section class="topic-block{% if loop.first %} is-active{% endif %}" data-area="{{ area.key }}" aria-label="{{ area.name[lang] }}">
+    <div class="topic-block-head">
+      <h2 class="serif topic-block-title">{{ area.name[lang] }}</h2>
+      <a class="mono all-problems-link" href="{{ lang_prefix }}/topics/{{ area.key }}/">{{ t.all_problems }} ({{ area_count[area.key] }})</a>
+    </div>
+    {% if area.description[lang] or area.description.en %}
+    <p class="topic-block-desc">{{ area.description[lang] or area.description.en }}</p>
+    {% endif %}
+    <ul class="subtopic-rows">
+      {% for s in area.subtopics %}
+      <li>
+        {% if not loop.first %}
+        <svg class="row-rule" viewBox="0 0 1000 8" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M2 4 C 180 1, 420 7, 640 4 S 880 1, 998 5" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+        </svg>
+        {% endif %}
+        <a class="subtopic-row" href="{{ lang_prefix }}/topics/{{ area.key }}/?sub={{ s.key }}">
+          <span class="serif subtopic-row-name">{{ s.name[lang] }}</span>
+          <span class="subtopic-row-desc">{{ s.description[lang] or s.description.en }}</span>
+          <span class="mono subtopic-row-count">{{ sub_count[area.key][s.key] }}</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
   {% endfor %}
-</section>
+</div>
 
 <svg class="divider" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
   <path d="M2 5 C 160 8, 380 2, 600 5 S 880 7, 998 4" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>

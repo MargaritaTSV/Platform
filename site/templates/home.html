@@ -1,27 +1,35 @@
 {% extends "base.html" %}
+{% set active_nav = 'home' %}
 
 {% block content %}
 <div class="hero">
   <h1 class="serif hero-title">{{ t.hero_title_start }} <span class="hero-highlight">{{ t.hero_title_highlight }}</span></h1>
-  <p class="mono hero-subtitle">{{ taxonomy.areas | length }} {{ t.topics_word }} · {{ total_problems }} {{ t.problems_word }} · ru / en</p>
 </div>
 
 <div class="map-outer">
   <svg class="map-lines" viewBox="0 0 1088 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
     <g fill="none" stroke="#161616" stroke-linecap="round">
-      <path d="M110 300 C 160 230, 210 160, 282 104" stroke-width="1.1"/>
-      <path d="M112 304 C 164 232, 214 164, 280 108" stroke-width="0.5" opacity="0.5"/>
-      <path d="M282 104 C 380 118, 480 146, 588 166" stroke-width="1.1"/>
-      <path d="M284 108 C 382 120, 482 150, 586 170" stroke-width="0.5" opacity="0.5"/>
-      <path d="M588 166 C 540 240, 490 300, 436 340" stroke-width="1.1"/>
-      <path d="M436 340 C 330 332, 220 318, 110 300" stroke-width="1.1"/>
-      <path d="M434 344 C 330 336, 220 322, 112 304" stroke-width="0.5" opacity="0.5"/>
-      <path d="M588 166 C 650 118, 720 86, 784 66" stroke-width="1.1"/>
-      <path d="M784 66 C 850 120, 910 190, 958 250" stroke-width="1.1"/>
-      <path d="M786 70 C 850 124, 906 192, 954 252" stroke-width="0.5" opacity="0.5"/>
-      <path d="M958 250 C 880 320, 810 380, 740 410" stroke-width="1.1"/>
-      <path d="M740 410 C 640 392, 530 364, 436 340" stroke-width="1.1"/>
-      <path d="M958 250 C 952 330, 944 390, 936 450" stroke-width="1.1"/>
+      <!-- celestial-mechanics -> coordinates-and-time -->
+      <path d="M110 300 C 115 100, 200 70, 282 104" stroke-width="1.1"/>
+      <path d="M112 304 C 117 104, 202 74, 284 108" stroke-width="0.5" opacity="0.5"/>
+      <!-- coordinates-and-time -> observational-astronomy -->
+      <path d="M282 104 C 420 70, 620 55, 784 66" stroke-width="1.1"/>
+      <path d="M284 108 C 420 74, 620 59, 786 70" stroke-width="0.5" opacity="0.5"/>
+      <!-- observational-astronomy -> solar-system -->
+      <path d="M784 66 C 900 40, 1040 90, 958 250" stroke-width="1.1"/>
+      <path d="M786 70 C 900 44, 1038 94, 956 252" stroke-width="0.5" opacity="0.5"/>
+      <!-- celestial-mechanics -> binary-and-variable-stars -->
+      <path d="M110 300 C 260 245, 440 145, 588 166" stroke-width="1.1"/>
+      <path d="M112 304 C 260 249, 440 149, 586 170" stroke-width="0.5" opacity="0.5"/>
+      <!-- stellar-physics -> binary-and-variable-stars -->
+      <path d="M436 340 C 350 230, 380 150, 588 166" stroke-width="1.1"/>
+      <path d="M434 344 C 350 234, 380 154, 586 170" stroke-width="0.5" opacity="0.5"/>
+      <!-- telescopes-and-optics -> stellar-physics -->
+      <path d="M740 410 C 650 340, 540 260, 436 340" stroke-width="1.1"/>
+      <path d="M740 414 C 650 344, 540 264, 434 344" stroke-width="0.5" opacity="0.5"/>
+      <!-- stellar-physics -> galaxies-and-cosmology -->
+      <path d="M436 340 C 650 300, 820 340, 936 450" stroke-width="1.1"/>
+      <path d="M434 344 C 650 304, 820 344, 934 452" stroke-width="0.5" opacity="0.5"/>
     </g>
   </svg>
   <ul class="map-stars">
@@ -57,7 +65,11 @@
       <li>
         {% if not loop.first %}
         <svg class="row-rule" viewBox="0 0 1000 8" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M2 4 C 180 1, 420 7, 640 4 S 880 1, 998 5" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          {% if loop.index0 % 2 == 0 %}
+          <path d="M1 4 C 60 1, 130 7, 210 3 C 300 6, 390 2, 480 5 C 570 7, 660 2, 750 5 C 830 3, 910 7, 999 4" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          {% else %}
+          <path d="M1 5 C 70 7, 150 2, 230 6 C 320 3, 400 7, 490 3 C 580 6, 660 1, 750 6 C 840 2, 910 6, 999 3" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          {% endif %}
         </svg>
         {% endif %}
         <a class="subtopic-row" href="{{ lang_prefix }}/topics/{{ area.key }}/?sub={{ s.key }}">
@@ -73,7 +85,7 @@
 </div>
 
 <svg class="divider" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
-  <path d="M2 5 C 160 8, 380 2, 600 5 S 880 7, 998 4" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+  <path d="M1 4 C 60 8, 130 2, 210 6 C 290 9, 370 3, 450 7 C 540 2, 620 8, 700 3 C 790 7, 860 2, 930 6 C 960 4, 980 7, 999 5" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
 </svg>
 
 <section id="games" class="games-section" aria-label="{{ t.games_heading }}">
@@ -85,12 +97,11 @@
     {% for game in games %}
     {% if not loop.first %}
     <svg class="games-divider" viewBox="0 0 2 300" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M1 0 C 1.8 80, 0.2 180, 1 300" stroke="#161616" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/>
+      <path d="M1 1 C 1.7 50, 0.3 90, 1.4 140 C 2.1 180, 0.2 220, 1.3 260 C 1.8 280, 0.3 295, 1 299" stroke="#161616" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/>
     </svg>
     {% endif %}
     <a class="game-card" href="{{ game.url }}">
       <img class="game-cover" src="/static/svg/{{ game.cover.split('/')[-1] }}" alt="" aria-hidden="true">
-      <span class="mono muted game-index">{{ 'game %02d' % loop.index }}</span>
       <span class="serif game-name">{{ game.name[lang] }}</span>
       <span class="game-blurb">{{ game.blurb[lang] or game.blurb.en }}</span>
       <span class="mono play-link">{{ t.play }}</span>

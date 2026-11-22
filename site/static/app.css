@@ -40,8 +40,10 @@
   text-decoration: none;
 }
 
-.logo-star path {
-  stroke: var(--ink);
+.logo-star {
+  display: block;
+  width: 44px;
+  height: 44px;
 }
 
 .logo-text {
@@ -106,10 +108,21 @@
 
 a:focus-visible,
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+select:focus-visible {
   outline: 2px solid var(--hover);
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+/* Visually hide text while keeping it available to screen readers. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 /* ---------- dividers ---------- */
@@ -136,12 +149,6 @@ input:focus-visible {
 
 .hero-highlight {
   font-style: italic;
-}
-
-.hero-subtitle {
-  margin: 16px 0 0;
-  font-size: 12px;
-  color: var(--muted);
 }
 
 /* ---------- star map (static, non-interactive in Milestone 1) ---------- */
@@ -432,11 +439,6 @@ input:focus-visible {
   height: auto;
 }
 
-.game-index {
-  font-size: 12px;
-  color: var(--muted);
-}
-
 .game-name {
   font-size: 40px;
   font-weight: 500;
@@ -523,6 +525,73 @@ input:focus-visible {
   margin: 18px 0 0;
   font-size: 12px;
   color: var(--faint);
+}
+
+/* ---------- filter sentence ---------- */
+
+.filter-form {
+  margin-top: 28px;
+}
+
+.filter-sentence {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 21px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.filter-sentence label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.filter-sentence select.pick {
+  font-size: 21px;
+}
+
+.filters-label {
+  font-size: 12px;
+  color: var(--faint);
+  margin-right: 4px;
+}
+
+.filter-clear {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.filter-clear:hover {
+  color: var(--hover);
+}
+
+select.pick {
+  font: inherit;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  background: none;
+  border: 0;
+  padding: 0 18px 0 2px;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: underline wavy var(--wavy-underline);
+  text-decoration-thickness: 1.3px;
+  text-underline-offset: 8px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+select.pick:hover {
+  color: var(--hover);
 }
 
 .topic-body {
@@ -667,81 +736,6 @@ input:focus-visible {
   color: var(--muted);
 }
 
-/* ---------- theory notes index ---------- */
-
-.notes-index {
-  padding: 8px 0 72px;
-}
-
-.notes-group + .notes-group {
-  margin-top: 40px;
-}
-
-.notes-group-title {
-  margin: 0 0 12px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--faint);
-  font-weight: 400;
-}
-
-.notes-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.note-item {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 0;
-  text-decoration: none;
-  color: var(--ink);
-}
-
-.note-item:hover {
-  color: var(--hover);
-}
-
-.note-item-title {
-  font-size: 22px;
-  font-weight: 500;
-}
-
-.note-item-sub {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.note {
-  padding: 40px 0 72px;
-  max-width: 720px;
-}
-
-.note-title {
-  margin: 28px 0 8px;
-  font-size: 44px;
-  font-weight: 400;
-}
-
-.note-meta {
-  margin: 0;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.note-meta a {
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.note-meta a:hover {
-  color: var(--hover);
-}
-
 /* ---------- single problem page ---------- */
 
 .problem {
@@ -819,6 +813,63 @@ input:focus-visible {
 
 .prevnext a:hover {
   color: var(--hover);
+}
+
+/* ---------- theory notes ---------- */
+
+.notes-groups {
+  padding-bottom: 72px;
+}
+
+.notes-group {
+  padding: 32px 0;
+}
+
+.notes-group-title {
+  margin: 0 0 18px;
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.notes-group-items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.note-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 0;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.note-row:hover {
+  color: var(--hover);
+}
+
+.note-row-title {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.note-row-summary {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 640px;
+}
+
+.note-title {
+  font-size: 48px;
+}
+
+.note-body {
+  font-size: 20px;
 }
 
 @media (max-width: 720px) {

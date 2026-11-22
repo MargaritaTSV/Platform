@@ -1,22 +1,37 @@
 {% extends "base.html" %}
+{% set active_nav = 'notes' %}
+{% set notes_groups = notes_groups if notes_groups is defined else [] %}
 
 {% block content %}
 <div class="topic-head">
   <h1 class="serif topic-title">{{ t.notes_heading }}</h1>
-  <p class="topic-count mono">{{ notes_total }}</p>
 </div>
 
-<div class="notes-index">
+<div class="notes-groups">
   {% if notes_groups %}
   {% for group in notes_groups %}
-  <section class="notes-group">
-    <h2 class="mono notes-group-title">{{ group.area_name }}</h2>
-    <ul class="notes-list">
-      {% for note in group.notes %}
+  {% if not loop.first %}
+  <svg class="divider divider-muted" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M1 6 C 65 3, 150 8, 230 5 C 310 2, 390 7, 470 3 C 560 8, 640 3, 720 7 C 800 4, 870 1, 940 6 C 965 7, 985 4, 999 5" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+  </svg>
+  {% endif %}
+  <section class="notes-group" aria-label="{{ group.area_name }}">
+    <h2 class="serif notes-group-title">{{ group.area_name }}</h2>
+    <ul class="notes-group-items">
+      {% for n in group.notes %}
       <li>
-        <a class="note-item" href="{{ lang_prefix }}/notes/{{ note.slug }}/">
-          <span class="serif note-item-title">{{ note.title }}</span>
-          {% if note.subtopic_name %}<span class="mono note-item-sub">{{ note.subtopic_name }}</span>{% endif %}
+        {% if not loop.first %}
+        <svg class="row-rule" viewBox="0 0 1000 8" preserveAspectRatio="none" aria-hidden="true">
+          {% if loop.index0 % 2 == 0 %}
+          <path d="M1 4 C 60 1, 130 7, 210 3 C 300 6, 390 2, 480 5 C 570 7, 660 2, 750 5 C 830 3, 910 7, 999 4" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          {% else %}
+          <path d="M1 5 C 70 7, 150 2, 230 6 C 320 3, 400 7, 490 3 C 580 6, 660 1, 750 6 C 840 2, 910 6, 999 3" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          {% endif %}
+        </svg>
+        {% endif %}
+        <a class="note-row" href="{{ lang_prefix }}/notes/{{ n.slug }}/">
+          <span class="serif note-row-title">{{ n.title }}</span>
+          {% if n.subtopic_name %}<span class="note-row-summary">{{ n.subtopic_name }}</span>{% endif %}
         </a>
       </li>
       {% endfor %}
@@ -24,7 +39,7 @@
   </section>
   {% endfor %}
   {% else %}
-  <p class="empty mono">{{ t.no_notes }}</p>
+  <p class="empty mono">{{ t.notes_empty }}</p>
   {% endif %}
 </div>
 {% endblock %}

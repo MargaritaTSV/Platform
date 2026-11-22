@@ -1,10 +1,43 @@
 {% extends "base.html" %}
+{% set active_nav = 'topics' %}
 
 {% block content %}
 <div class="topic-head">
   <h1 class="serif topic-title">{{ area.name }}</h1>
   {% if area.description %}<p class="topic-desc">{{ area.description }}</p>{% endif %}
   <p class="mono topic-count">{{ area_count }} {{ t.problems_word }}</p>
+
+  <form class="filter-form" id="filters-form" aria-label="{{ t.filters_heading }}">
+    <p class="serif filter-sentence">
+      <span class="mono filters-label">{{ t.filters_heading }}:</span>
+      <label for="filter-subtopic">{{ t.filter_subtopic }}</label>
+      <select class="pick" id="filter-subtopic" name="sub" data-filter="subtopic">
+        <option value="">{{ t.filter_any }}</option>
+        {% for s in area.subtopics %}
+        <option value="{{ s.key }}">{{ s.name }}</option>
+        {% endfor %}
+      </select>,
+      <label for="filter-grade">{{ t.filter_grade }}</label>
+      <select class="pick" id="filter-grade" name="grade" data-filter="grade">
+        <option value="">{{ t.filter_any }}</option>
+        {% if filter_options is defined %}
+        {% for g in filter_options.grades %}
+        <option value="{{ g }}">{{ g }}</option>
+        {% endfor %}
+        {% endif %}
+      </select>,
+      <label for="filter-olympiad">{{ t.filter_olympiad }}</label>
+      <select class="pick" id="filter-olympiad" name="olympiad" data-filter="olympiad">
+        <option value="">{{ t.filter_any }}</option>
+        {% if filter_options is defined %}
+        {% for o in filter_options.olympiads %}
+        <option value="{{ o.key }}">{{ o.name }}</option>
+        {% endfor %}
+        {% endif %}
+      </select>.
+      <button type="button" class="mono filter-clear" id="filter-clear">{{ t.filter_clear }}</button>
+    </p>
+  </form>
 </div>
 
 <div class="topic-body">
@@ -20,15 +53,19 @@
     </ul>
   </aside>
 
-  <div class="problem-list" data-empty="{{ t.no_problems }}">
+  <div class="problem-list" data-empty="{{ t.no_problems }}" data-area="{{ area.key }}">
     {% if problems %}
     {% for p in problems %}
     {% if not loop.first %}
     <svg class="row-rule" viewBox="0 0 1000 8" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M2 4 C 180 1, 420 7, 640 4 S 880 1, 998 5" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+      {% if loop.index0 % 2 == 0 %}
+      <path d="M1 4 C 60 1, 130 7, 210 3 C 300 6, 390 2, 480 5 C 570 7, 660 2, 750 5 C 830 3, 910 7, 999 4" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+      {% else %}
+      <path d="M1 5 C 70 7, 150 2, 230 6 C 320 3, 400 7, 490 3 C 580 6, 660 1, 750 6 C 840 2, 910 6, 999 3" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+      {% endif %}
     </svg>
     {% endif %}
-    <a class="problem-row" data-subtopic="{{ p.subtopic_key }}" href="{{ lang_prefix }}/problems/{{ p.id }}/">
+    <a class="problem-row" data-id="{{ p.id }}" data-subtopic="{{ p.subtopic_key }}" data-grade="{{ p.grade or '' }}" data-olympiad="{{ p.olympiad or '' }}" href="{{ lang_prefix }}/problems/{{ p.id }}/">
       <div class="serif row-num">{{ loop.index }}</div>
       <div class="row-main">
         <div class="row-meta">

@@ -197,10 +197,13 @@ select:focus-visible {
 }
 
 .map-star-label {
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 500;
   color: var(--ink);
-  white-space: nowrap;
+  max-width: 160px;
+  line-height: 1.15;
+  background: var(--bg);
+  padding: 1px 5px;
 }
 
 .map-star-link:hover .map-star-label {
@@ -210,6 +213,8 @@ select:focus-visible {
 .map-star-count {
   font-size: 11.5px;
   color: var(--muted);
+  background: var(--bg);
+  padding: 0 4px;
 }
 
 /* Phones: the map becomes a vertical list of stars (no absolute layout, no connecting lines). */
@@ -544,14 +549,17 @@ select:focus-visible {
   color: var(--ink);
 }
 
+/* Filter NAME = curvy editorial serif; OPTION (the select) = regular sans. */
 .filter-sentence label {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  color: var(--muted);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 21px;
+  color: var(--ink);
 }
 
 .filter-sentence select.pick {
-  font-size: 21px;
+  font-size: 16px;
 }
 
 .filters-label {
@@ -561,22 +569,32 @@ select:focus-visible {
 }
 
 .filter-clear {
-  font-family: var(--font-mono);
-  font-size: 12px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 18px;
   color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 0;
+  margin-left: 12px;
+  cursor: pointer;
   text-decoration: none;
-  margin-left: 10px;
 }
 
 .filter-clear:hover {
   color: var(--hover);
+  text-decoration: underline wavy var(--wavy-underline);
+  text-decoration-thickness: 1.3px;
+  text-underline-offset: 6px;
 }
 
 select.pick {
   font: inherit;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
   background: none;
   border: 0;
   padding: 0 18px 0 2px;
@@ -584,7 +602,7 @@ select.pick {
   cursor: pointer;
   text-decoration: underline wavy var(--wavy-underline);
   text-decoration-thickness: 1.3px;
-  text-underline-offset: 8px;
+  text-underline-offset: 6px;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;

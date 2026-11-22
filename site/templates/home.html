@@ -8,28 +8,27 @@
 
 <div class="map-outer">
   <svg class="map-lines" viewBox="0 0 1088 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-    <g fill="none" stroke="#161616" stroke-linecap="round">
-      <!-- celestial-mechanics -> coordinates-and-time -->
-      <path d="M110 300 C 115 100, 200 70, 282 104" stroke-width="1.1"/>
-      <path d="M112 304 C 117 104, 202 74, 284 108" stroke-width="0.5" opacity="0.5"/>
-      <!-- coordinates-and-time -> observational-astronomy -->
-      <path d="M282 104 C 420 70, 620 55, 784 66" stroke-width="1.1"/>
-      <path d="M284 108 C 420 74, 620 59, 786 70" stroke-width="0.5" opacity="0.5"/>
-      <!-- observational-astronomy -> solar-system -->
-      <path d="M784 66 C 900 40, 1040 90, 958 250" stroke-width="1.1"/>
-      <path d="M786 70 C 900 44, 1038 94, 956 252" stroke-width="0.5" opacity="0.5"/>
-      <!-- celestial-mechanics -> binary-and-variable-stars -->
-      <path d="M110 300 C 260 245, 440 145, 588 166" stroke-width="1.1"/>
-      <path d="M112 304 C 260 249, 440 149, 586 170" stroke-width="0.5" opacity="0.5"/>
-      <!-- stellar-physics -> binary-and-variable-stars -->
-      <path d="M436 340 C 350 230, 380 150, 588 166" stroke-width="1.1"/>
-      <path d="M434 344 C 350 234, 380 154, 586 170" stroke-width="0.5" opacity="0.5"/>
-      <!-- telescopes-and-optics -> stellar-physics -->
-      <path d="M740 410 C 650 340, 540 260, 436 340" stroke-width="1.1"/>
-      <path d="M740 414 C 650 344, 540 264, 434 344" stroke-width="0.5" opacity="0.5"/>
-      <!-- stellar-physics -> galaxies-and-cosmology -->
-      <path d="M436 340 C 650 300, 820 340, 936 450" stroke-width="1.1"/>
-      <path d="M434 344 C 650 304, 820 344, 934 452" stroke-width="0.5" opacity="0.5"/>
+    <g fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round">
+      <!-- spherical-astronomy -> eclipses -->
+      <path d="M110 150 Q 220 112 330 90"/>
+      <!-- spherical-astronomy -> optics -->
+      <path d="M110 150 Q 122 255 120 360"/>
+      <!-- eclipses -> celestial-mechanics -->
+      <path d="M330 90 Q 437 112 545 150"/>
+      <!-- celestial-mechanics -> galaxies -->
+      <path d="M545 150 Q 652 114 760 95"/>
+      <!-- galaxies -> cosmology -->
+      <path d="M760 95 Q 862 114 965 150"/>
+      <!-- celestial-mechanics -> astrophysics -->
+      <path d="M545 150 Q 434 280 340 410"/>
+      <!-- astrophysics -> radiation -->
+      <path d="M340 410 Q 450 388 560 350"/>
+      <!-- radiation -> special-relativity -->
+      <path d="M560 350 Q 665 390 770 415"/>
+      <!-- special-relativity -> history-of-astronomy -->
+      <path d="M770 415 Q 867 395 965 360"/>
+      <!-- astrophysics -> optics -->
+      <path d="M340 410 Q 230 393 120 360"/>
     </g>
   </svg>
   <ul class="map-stars">

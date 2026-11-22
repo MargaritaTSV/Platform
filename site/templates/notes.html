@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="topic-head">
+  <h1 class="serif topic-title">{{ t.notes_heading }}</h1>
+  <p class="topic-count mono">{{ notes_total }}</p>
+</div>
+
+<div class="notes-index">
+  {% if notes_groups %}
+  {% for group in notes_groups %}
+  <section class="notes-group">
+    <h2 class="mono notes-group-title">{{ group.area_name }}</h2>
+    <ul class="notes-list">
+      {% for note in group.notes %}
+      <li>
+        <a class="note-item" href="{{ lang_prefix }}/notes/{{ note.slug }}/">
+          <span class="serif note-item-title">{{ note.title }}</span>
+          {% if note.subtopic_name %}<span class="mono note-item-sub">{{ note.subtopic_name }}</span>{% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
+  {% else %}
+  <p class="empty mono">{{ t.no_notes }}</p>
+  {% endif %}
+</div>
+{% endblock %}

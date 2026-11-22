@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="note">
+  <a class="mono back-link" href="{{ notes_url }}">&larr; {{ t.notes_heading }}</a>
+
+  <h1 class="serif note-title">{{ note.title }}</h1>
+  <p class="mono note-meta">
+    <a href="{{ area_url }}">{{ note.area_name }}</a>{% if note.subtopic_name %} · {{ note.subtopic_name }}{% endif %}
+  </p>
+
+  {% if note.body.fallback %}<p class="mono problem-fallback">{{ t.shown_in }} {{ note.body.shown_lang | upper }}</p>{% endif %}
+
+  {% if note.body.text %}
+  <div class="serif statement note-body">{{ note.body.text }}</div>
+  {% else %}
+  <p class="empty mono">{{ t.no_statement }}</p>
+  {% endif %}
+</article>
+{% endblock %}

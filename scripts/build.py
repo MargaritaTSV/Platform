@@ -70,6 +70,7 @@ CONTENT_DIR = REPO_ROOT / "content"
 TAXONOMY_FILE = CONTENT_DIR / "taxonomy.yml"
 GAMES_FILE = CONTENT_DIR / "games.yml"
 PROBLEMS_DIR = CONTENT_DIR / "problems"
+NOTES_DIR = CONTENT_DIR / "notes"
 
 SITE_DIR = REPO_ROOT / "site"
 TEMPLATES_DIR = SITE_DIR / "templates"
@@ -249,6 +250,77 @@ def validate_problems(problems: list[dict], maps: dict) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
+# Theory notes (content/notes/<slug>.yml): title, area, optional subtopic, body
+# ---------------------------------------------------------------------------
+
+def discover_notes() -> list[dict]:
+    if not NOTES_DIR.is_dir():
+        return []
+    notes = []
+    for path in sorted(NOTES_DIR.glob("*.yml")):
+        data = load_yaml(path)
+        if not isinstance(data, dict):
+            raise BuildError(f"{path.relative_to(REPO_ROOT)}: expected a YAML mapping")
+        data["slug"] = path.stem
+        data["_path"] = path
+        notes.append(data)
+    return notes
+
+
+def validate_notes(notes: list[dict], maps: dict) -> list[dict]:
+    errors: list[str] = []
+    published: list[dict] = []
+    for n in notes:
+        where = n["_path"].relative_to(REPO_ROOT)
+        if n.get("draft") is True:
+            continue
+        area = n.get("area")
+        subtopic = n.get("subtopic")
+        if not n.get("title"):
+            errors.append(f"{where}: missing required field 'title'")
+        if not area:
+            errors.append(f"{where}: missing required field 'area'")
+        elif area not in maps["areas"]:
+            errors.append(f"{where}: unknown area '{area}'")
+        elif subtopic and subtopic not in maps["subtopics"][area]:
+            errors.append(f"{where}: subtopic '{subtopic}' is not in area '{area}'")
+        if not isinstance(n.get("body"), dict) or not any(
+            n["body"].get(l) for l in LANGUAGES
+        ):
+            errors.append(f"{where}: needs a 'body' with at least one language")
+        else:
+            n["languages"] = [l for l in LANGUAGES if n["body"].get(l)]
+        published.append(n)
+    if errors:
+        raise BuildError("note validation failed:\n  - " + "\n  - ".join(errors))
+    return published
+
+
+def note_view(n: dict, maps: dict, lang: str) -> dict:
+    area = maps["areas"][n["area"]]
+    sub = None
+    if n.get("subtopic"):
+        sub = maps["subtopics"][n["area"]][n["subtopic"]]
+    body = n.get("body") or {}
+    text, shown, fallback = None, None, False
+    if body.get(lang):
+        text, shown = body[lang].rstrip(), lang
+    else:
+        for other in LANGUAGES:
+            if body.get(other):
+                text, shown, fallback = body[other].rstrip(), other, True
+                break
+    return {
+        "slug": n["slug"],
+        "title": (n["title"].get(lang) or n["title"].get("en")) if isinstance(n["title"], dict) else n["title"],
+        "area_key": n["area"],
+        "area_name": area["name"][lang],
+        "subtopic_name": sub["name"][lang] if sub else None,
+        "body": {"text": text, "shown_lang": shown, "fallback": fallback},
+    }
+
+
+# ---------------------------------------------------------------------------
 # Derived views + index.json
 # ---------------------------------------------------------------------------
 
@@ -289,6 +361,10 @@ def problem_view(p: dict, maps: dict, lang: str) -> dict:
     """A flat dict of everything a template needs to render one problem."""
     area = maps["areas"][p["area"]]
     sub = maps["subtopics"][p["area"]][p["subtopic"]]
+    olympiad_key = p.get("olympiad")
+    olympiad_name = (
+        maps["olympiads"][olympiad_key]["name"][lang] if olympiad_key else None
+    )
     return {
         "id": p["id"],
         "area_key": p["area"],
@@ -297,6 +373,10 @@ def problem_view(p: dict, maps: dict, lang: str) -> dict:
         "subtopic_name": sub["name"][lang],
         "difficulty": p["difficulty"],
         "number": p.get("number"),
+        "grade": p.get("grade"),
+        "olympiad": olympiad_key,
+        "olympiad_name": olympiad_name,
+        "year": p.get("year"),
         "languages": p["languages"],
         "format": p["format"],
         "source": source_line(p, maps),
@@ -388,8 +468,9 @@ def write_page(env: Environment, template_name: str, out_path: Path, **context) 
 
 
 def render_site(env: Environment, taxonomy: dict, games: list,
-                problems: list[dict], maps: dict, index: dict) -> list[Path]:
-    """Render home, topic (area) and problem pages for every language."""
+                problems: list[dict], notes: list[dict], maps: dict,
+                index: dict) -> list[Path]:
+    """Render home, topic (area), problem and theory-note pages per language."""
     written: list[Path] = []
 
     area_count = {a["key"]: a["count"] for a in index["areas"]}
@@ -427,7 +508,17 @@ def render_site(env: Environment, taxonomy: dict, games: list,
 
         # Topic (area) pages.
         for area in taxonomy["areas"]:
-            views = [problem_view(p, maps, lang) for p in by_area[area["key"]]]
+            group = by_area[area["key"]]
+            views = [problem_view(p, maps, lang) for p in group]
+
+            grades = sorted({p.get("grade") for p in group if p.get("grade")})
+            olympiads, oly_keys = [], set()
+            for p in group:
+                ok = p.get("olympiad")
+                if ok and ok not in oly_keys:
+                    oly_keys.add(ok)
+                    olympiads.append({"key": ok, "name": maps["olympiads"][ok]["name"][lang]})
+
             ctx = dict(
                 common(f"topics/{area['key']}/"),
                 area={
@@ -442,6 +533,7 @@ def render_site(env: Environment, taxonomy: dict, games: list,
                 },
                 problems=views,
                 area_count=area_count[area["key"]],
+                filter_options={"grades": grades, "olympiads": olympiads},
             )
             out = DIST_DIR / lang_prefix(lang).lstrip("/") / "topics" / area["key"] / "index.html"
             written.append(write_page(env, "area.html", out, **ctx))
@@ -462,6 +554,32 @@ def render_site(env: Environment, taxonomy: dict, games: list,
                 )
                 out = DIST_DIR / lang_prefix(lang).lstrip("/") / "problems" / p["id"] / "index.html"
                 written.append(write_page(env, "problem.html", out, **ctx))
+
+        # Theory notes: an index grouped by area, plus one page per note.
+        note_views = [note_view(n, maps, lang) for n in notes]
+        by_area_notes: dict[str, list[dict]] = {}
+        for nv in note_views:
+            by_area_notes.setdefault(nv["area_key"], []).append(nv)
+        notes_groups = [
+            {"area_key": a["key"], "area_name": a["name"][lang],
+             "notes": by_area_notes[a["key"]]}
+            for a in taxonomy["areas"] if a["key"] in by_area_notes
+        ]
+        index_ctx = dict(common("notes/"), notes_groups=notes_groups,
+                         notes_total=len(note_views))
+        out = DIST_DIR / lang_prefix(lang).lstrip("/") / "notes" / "index.html"
+        written.append(write_page(env, "notes.html", out, **index_ctx))
+
+        for n in notes:
+            nv = note_view(n, maps, lang)
+            ctx = dict(
+                common(f"notes/{nv['slug']}/"),
+                note=nv,
+                area_url=lang_prefix(lang) + f"/topics/{nv['area_key']}/",
+                notes_url=lang_prefix(lang) + "/notes/",
+            )
+            out = DIST_DIR / lang_prefix(lang).lstrip("/") / "notes" / nv["slug"] / "index.html"
+            written.append(write_page(env, "note.html", out, **ctx))
 
     return written
 
@@ -549,11 +667,14 @@ def build() -> None:
     problems = validate_problems(discover_problems(), maps)
     print(f"  validated {len(problems)} problem(s)")
 
+    notes = validate_notes(discover_notes(), maps)
+    print(f"  validated {len(notes)} note(s)")
+
     index = build_index(taxonomy, problems, maps)
     print(f"  wrote {write_index_json(index).relative_to(REPO_ROOT)}")
 
     env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=True)
-    written_pages = render_site(env, taxonomy, games, problems, maps, index)
+    written_pages = render_site(env, taxonomy, games, problems, notes, maps, index)
     print(f"  rendered {len(written_pages)} HTML page(s)")
 
     for note in copy_static_assets():

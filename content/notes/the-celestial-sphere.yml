@@ -1,0 +1,28 @@
+title: { en: "The celestial sphere", ru: "Небесная сфера" }
+area: coordinates-and-time
+subtopic: the-celestial-sphere
+body:
+  en: |
+    The celestial sphere is an imaginary sphere of very large radius, centred on
+    the observer, onto which all stars are projected.
+
+    Two coordinate systems are used most often:
+
+    - Horizontal (altitude and azimuth): tied to the observer's horizon, so it
+      changes through the night.
+    - Equatorial (right ascension and declination): tied to the stars, so it
+      stays fixed as the sky turns.
+
+    Converting between them is the heart of most positional-astronomy problems.
+  ru: |
+    Небесная сфера — воображаемая сфера очень большого радиуса с центром в точке
+    наблюдения, на которую проецируются все звёзды.
+
+    Чаще всего используют две системы координат:
+
+    - Горизонтальную (высота и азимут): связана с горизонтом наблюдателя и потому
+      меняется в течение ночи.
+    - Экваториальную (прямое восхождение и склонение): связана со звёздами и
+      потому остаётся неизменной при вращении неба.
+
+    Переход между ними — основа большинства задач по сферической астрономии.

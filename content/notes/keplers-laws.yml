@@ -1,0 +1,24 @@
+title: { en: "Kepler's laws", ru: "Законы Кеплера" }
+area: celestial-mechanics
+subtopic: keplers-laws
+body:
+  en: |
+    Kepler's three laws describe the motion of planets around the Sun.
+
+    1. Each planet moves on an ellipse with the Sun at one focus.
+    2. The line from the Sun to a planet sweeps out equal areas in equal times.
+    3. The square of the orbital period is proportional to the cube of the
+       semi-major axis: P^2 = a^3 (with P in years and a in astronomical units).
+
+    The third law is the one most used in olympiad problems: it links the size
+    of an orbit to how long it takes to go around.
+  ru: |
+    Три закона Кеплера описывают движение планет вокруг Солнца.
+
+    1. Каждая планета движется по эллипсу, в одном из фокусов которого Солнце.
+    2. Радиус-вектор планеты за равные промежутки времени заметает равные площади.
+    3. Квадрат периода обращения пропорционален кубу большой полуоси:
+       P^2 = a^3 (где P в годах, а a в астрономических единицах).
+
+    В олимпиадных задачах чаще всего используется третий закон: он связывает
+    размер орбиты со временем обращения.

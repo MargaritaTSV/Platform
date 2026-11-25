@@ -26,11 +26,16 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
-        run: pip install jinja2 pyyaml
-
-      - name: Build site
-        run: python scripts/build.py
+      # --- MAINTENANCE MODE ---
+      # Publishing the maintenance page instead of the full build.
+      # To restore the real site: uncomment the build steps below,
+      # delete the maintenance upload step, and push.
+      #
+      # - name: Install dependencies
+      #   run: pip install jinja2 pyyaml
+      #
+      # - name: Build site
+      #   run: python scripts/build.py
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -38,7 +43,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site-dist
+          path: maintenance
 
   deploy:
     needs: build

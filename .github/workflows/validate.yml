@@ -1,0 +1,40 @@
+name: validate
+
+on:
+  pull_request:
+  schedule:
+    - cron: "0 3 * * 1"   # weekly: compile the whole bank
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml pillow
+      - run: python scripts/validate.py --selftest
+      - run: python scripts/figures.py selftest
+      - run: python scripts/validate.py
+      - name: Install TeX
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -yq --no-install-recommends texlive-xetex texlive-lang-cyrillic texlive-latex-extra fonts-dejavu
+      - name: XeLaTeX check
+        env:
+          BASE: ${{ github.base_ref }}
+        run: |
+          # A pull request that leaves latex/ and the validator alone compiles only its own problems.
+          if [ -n "$BASE" ] && git diff --quiet "origin/$BASE...HEAD" -- latex scripts/validate.py; then
+            files=$(git diff --name-only --diff-filter=d "origin/$BASE...HEAD" -- 'content/problems/*.tex')
+            if [ -n "$files" ]; then python scripts/validate.py --tex $files; fi
+          else
+            python scripts/validate.py --tex
+          fi

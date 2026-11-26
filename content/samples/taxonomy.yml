@@ -1,0 +1,25 @@
+# DRAFT, guessed from the sample problems only. Replace with your real topic list.
+topics:
+  - id: observations
+    ru: Наблюдательная астрономия
+    en: Observational astronomy
+    subtopics:
+      - {id: telescope-optics, ru: Оптика телескопа, en: Telescope optics}
+      - {id: ccd-photometry,   ru: ПЗС-фотометрия,  en: CCD photometry}
+  - id: solar-system
+    ru: Солнечная система
+    en: Solar System
+    subtopics:
+      - {id: comets,        ru: Кометы,        en: Comets}
+      - {id: planet-phases, ru: Фазы планет,   en: Planet phases}
+  - id: stars
+    ru: Звёзды
+    en: Stars
+    subtopics:
+      - {id: stellar-atmospheres, ru: Атмосферы звёзд,   en: Stellar atmospheres}
+      - {id: star-clusters,       ru: Звёздные скопления, en: Star clusters}
+sources:
+  - {id: camp,      ru: Сборы,      en: Training camp}
+  - {id: olympiad,  ru: Олимпиада,  en: Olympiad}
+grades: ["7", "7-8", "9-10", "9-11", "10"]
+difficulty_scale: "1 (easy) .. 5 (hard); values in samples are placeholders"

@@ -1,0 +1,10 @@
+% Allowed macros for problem bodies. Only \newcommand lines here, so the SAME file
+% works for XeLaTeX (PDF) and for pandoc/KaTeX (website). Keep this list small.
+% ALL macros are math-only: always write them inside $...$ (KaTeX has no \ensuremath).
+% Quantity with a unit:   $\qty{40}{см}$
+\newcommand{\qty}[2]{#1\,\text{#2}}
+% Arc seconds / minutes:  $\asec{1.0}$   $\amin{30}$
+\newcommand{\asec}[1]{#1^{\prime\prime}}
+\newcommand{\amin}[1]{#1^{\prime}}
+% Degrees:                $\adeg{30}$
+\newcommand{\adeg}[1]{#1^{\circ}}

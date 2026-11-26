@@ -1,10 +1,9 @@
-# Topic structure for StellarTask. Areas are the stars on the home-page map;
-# each area contains subtopics. Every problem sets `area` and `subtopic` to keys
-# from this file. `star` = position on the map (viewBox 1088 x 520).
-# Top-level topics come from the author's real topic list (content/_source/topics_list.png).
-# Subtopics here are a starter set; expand them with the real list over time.
+# Topics (the stars on the home map), their subtopics, and problem sources.
+# A problem's `topic`, `subtopic` and `source` must be keys from this file.
+# Keys are permanent once problems use them. `star` = map position (viewBox 1088 x 520).
+# Topics come from content/_source/topics_list.png; subtopics are a starter set.
 
-areas:
+topics:
   - key: spherical-astronomy
     name: { en: "Spherical astronomy", ru: "Сферическая астрономия" }
     description: { en: "Positions on the sky: coordinates, time and the celestial sphere.", ru: "" }
@@ -16,6 +15,9 @@ areas:
       - key: coordinate-systems
         name: { en: "Coordinate systems", ru: "Системы координат" }
         description: { en: "Converting between coordinate systems", ru: "" }
+      - key: angular-sizes
+        name: { en: "Angular sizes", ru: "Угловые размеры" }
+        description: { en: "Sizes and separations on the sky", ru: "" }
       - key: time-and-calendars
         name: { en: "Time and calendars", ru: "Время и календари" }
         description: { en: "Sidereal, solar and standard time", ru: "" }
@@ -31,6 +33,9 @@ areas:
       - key: orbital-speed-and-energy
         name: { en: "Orbital speed and energy", ru: "Орбитальные скорости и энергия" }
         description: { en: "Vis-viva, circular and escape speeds", ru: "" }
+      - key: planet-phases
+        name: { en: "Planet phases", ru: "Фазы планет" }
+        description: { en: "Phases and visibility of planets", ru: "" }
       - key: synodic-and-sidereal-periods
         name: { en: "Synodic and sidereal periods", ru: "Синодический и сидерический периоды" }
         description: { en: "Conjunctions, oppositions, configurations", ru: "" }
@@ -55,6 +60,9 @@ areas:
     description: { en: "How instruments collect light: telescopes, resolution and detectors.", ru: "" }
     star: { x: 120, y: 360, size: 20, filled: false }
     subtopics:
+      - key: ccd-photometry
+        name: { en: "CCD photometry", ru: "ПЗС-фотометрия" }
+        description: { en: "Detectors, noise and signal-to-noise", ru: "" }
       - key: telescopes
         name: { en: "Telescopes", ru: "Телескопы" }
         description: { en: "Apertures, focal length, mounts", ru: "" }
@@ -73,6 +81,9 @@ areas:
       - key: stellar-structure-and-evolution
         name: { en: "Structure and evolution", ru: "Строение и эволюция звёзд" }
         description: { en: "The HR diagram, stellar lifetimes", ru: "" }
+      - key: stellar-atmospheres
+        name: { en: "Stellar atmospheres", ru: "Атмосферы звёзд" }
+        description: { en: "Optical depth and limb darkening", ru: "" }
       - key: spectra
         name: { en: "Spectra", ru: "Спектры" }
         description: { en: "Spectral classes, Doppler shift", ru: "" }
@@ -137,8 +148,14 @@ areas:
         name: { en: "Great discoveries", ru: "Великие открытия" }
         description: { en: "Milestones and the people behind them", ru: "" }
 
-olympiads:
+sources:
+  - key: struve
+    name: { en: "Struve Olympiad", ru: "Олимпиада им. В. Я. Струве" }
+  - key: vsos
+    name: { en: "All-Russian Olympiad", ru: "Всероссийская олимпиада школьников" }
   - key: iao
     name: { en: "International Astronomy Olympiad", ru: "Международная астрономическая олимпиада" }
   - key: ioaa
     name: { en: "International Olympiad on Astronomy and Astrophysics", ru: "Международная олимпиада по астрономии и астрофизике" }
+  - key: camp
+    name: { en: "Training camps", ru: "Учебные сборы" }

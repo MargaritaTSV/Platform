@@ -1,0 +1,15 @@
+id: struve-2023-reg
+kind: booklet
+title: II Олимпиада школьников по астрономии имени В. Я. Струве, региональный этап. Задания, решения и критерии оценивания
+file: struve-2023-regional-with-solutions.pdf
+pages: 26
+problems: 12
+source: olympiad
+event: II олимпиада им. В. Я. Струве, региональный этап
+year: 2023
+grade: 7-8
+lang: ru
+has_solutions: true
+has_criteria: true
+has_text_source: false
+note: official booklet (pdfTeX); problem 7.1 is converted to .tex (RU, EN, solution) in ../problems

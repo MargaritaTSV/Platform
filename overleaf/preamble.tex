@@ -1,0 +1,17 @@
+% Shared preamble: Overleaf and the CI XeLaTeX check. Macros live in macros.tex.
+% overleaf/preamble.tex must be an identical copy.
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{russian}
+\setotherlanguage{english}
+% Any font WITH Cyrillic glyphs.
+\setmainfont{DejaVu Serif}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[a4paper,margin=1.8cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\sloppy
+\input{macros}

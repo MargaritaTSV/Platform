@@ -1,0 +1,23 @@
+% Test sheet assembled from problem files. Compile from this folder: xelatex camp-sheet.tex
+\documentclass[12pt]{article}
+\input{preamble}
+\pagestyle{plain}
+
+\newcounter{prob}
+\newcommand{\problem}[2]{%
+  \stepcounter{prob}%
+  \par\medskip\noindent\textbf{\theprob. #1}\par\smallskip
+  \input{problems/#2}\par}
+
+\begin{document}
+\begin{center}{\Large\bfseries Тестовый лист}\\[2pt] сборка из файлов задач\end{center}
+\hrule\bigskip
+
+\problem{Space Oddity}{praki-2026-001-space-oddity}
+\problem{Black Hole Sun}{praki-2026-002-black-hole-sun}
+\problem{Очень простая задача №1}{optics-2026-001-simple-1}
+\problem{Очень простая задача №3}{optics-2026-003-jupiter}
+\problem{Серп и Марс}{struve-2023-7-1-crescent.ru}
+\problem{The Great Gig in the Sky}{optics-2026-004-goto}
+
+\end{document}

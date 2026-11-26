@@ -9,7 +9,7 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
 | [x] | T1 | Cleanup of old content, games, subagents; .gitignore | | Nov 28 |
 | [x] | T2 | Cloudflare: nameservers, R2 bucket `astroolymp` at files.astroolymp.com, Pages project `stellartask` | | Nov 29 |
 | [~] | T3 | Real taxonomy.yml + sources | check names and subtopics; grades need no list | Nov 30 |
-| [~] | T4 | figures.py + lock; samples migrated; 4 figures live on R2 | confirm topics/difficulties | Dec 1 |
+| [x] | T4 | figures.py + lock; samples migrated; 4 figures live on R2 |  | Dec 1 |
 | [~] | T5 | Overleaf starter | upload and compile once | Dec 2 |
 | [~] | T6 | CI: `validate.yml` written (never run yet); `deploy.yml`, coming-soon page, remove GH Pages/CNAME open | token + account id as repo secrets | Dec 3 |
 | [x] | T7 | build.py: pandoc fragments, cache, KaTeX pre-render (`throwOnError`), R2 image URLs, `\alph*)` sub-lists | | Dec 5 |
@@ -29,7 +29,7 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
   1.5 MB raw target. Options then: split the page, or drop KaTeX MathML output (worse for screen readers).
 - The T6 deploy must fail on any `"uploaded": false` entry in `figures.lock.json`.
 - T6 must also attach astroolymp.com to the Pages project.
-- Old PDFs stay in earlier git history (the repo appears private; owner to confirm).
+- Old PDFs stay in earlier git history (the repo is private).
 - Local `content/figures/` is the only original copy besides R2: back it up.
 
 ## After the MVP

@@ -1,0 +1,16 @@
+{# Shown by search.js; without JavaScript there is nothing to search with. #}
+{% from "_macros.html" import both %}
+<div class="search" hidden>
+  <form role="search">
+    <input type="search" autocomplete="off" aria-label="{{ ui.search_label.ru }}" data-label-ru="{{ ui.search_label.ru }}" data-label-en="{{ ui.search_label.en }}" placeholder="{{ ui.search_label.ru }}" data-hint-ru="{{ ui.search_label.ru }}" data-hint-en="{{ ui.search_label.en }}">
+    <svg class="search-rule" viewBox="0 0 800 8" preserveAspectRatio="none" aria-hidden="true"><path d="M1 4 C 150 2, 320 7, 500 4 S 720 2, 799 5" fill="none" stroke="#161616" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
+  </form>
+  <p class="search-status mono" aria-live="polite">
+    <span data-state="found" hidden>{{ both(ui.search_found) }}</span>
+    <span data-state="more" hidden>{{ both(ui.search_more) }}</span>
+    <span data-state="none" hidden>{{ both(ui.search_none) }}</span>
+    <span data-state="failed" hidden>{{ both(ui.search_failed) }}</span>
+    <span class="search-total"></span>
+  </p>
+  <ol class="search-results"></ol>
+</div>

@@ -33,5 +33,5 @@ problems show in their original language.
 - `python scripts/validate.py` (`--selftest`, `--tex [files]` needs XeLaTeX)
 - `python scripts/figures.py push` (`--local` without R2), `python scripts/figures.py selftest`
 - Deploy: merging into `main` publishes to Cloudflare Pages (`.github/workflows/deploy.yml`).
-- `npm ci` once, then `python scripts/build.py --serve` (needs pandoc 3.14 and Node)
+- `pip install -r requirements.txt` and `npm ci` once, then `python scripts/build.py --serve` (needs pandoc 3.14 and Node)
 - `python scripts/render.py` (self-test of pandoc + KaTeX)

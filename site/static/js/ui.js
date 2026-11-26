@@ -12,6 +12,9 @@
     document.querySelectorAll("[data-text-ru]").forEach(function (el) {
       el.textContent = lang === "en" ? el.dataset.textEn : el.dataset.textRu;
     });
+    document.querySelectorAll("[data-hint-ru]").forEach(function (el) {
+      el.placeholder = lang === "en" ? el.dataset.hintEn : el.dataset.hintRu;
+    });
     document.querySelectorAll("[data-label-ru]").forEach(function (el) {
       el.setAttribute("aria-label", lang === "en" ? el.dataset.labelEn : el.dataset.labelRu);
     });

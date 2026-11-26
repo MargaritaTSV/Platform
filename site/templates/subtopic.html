@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="/static/katex.min.css">
 <link rel="stylesheet" href="/static/statement.css">
 <script src="/static/js/filters.js" defer></script>
+<script src="/static/js/search.js" defer></script>
 {% endblock %}
 
 {# <option> holds plain text only, so ui.js swaps it from these attributes. #}
@@ -44,6 +45,7 @@
   </aside>
 
   <div class="problems">
+    {% include "_search.html" %}
     <h1 class="serif topic-title">{{ both(subtopic.name) }}</h1>
     <p class="topic-desc">{{ both(subtopic.description) }}</p>
 

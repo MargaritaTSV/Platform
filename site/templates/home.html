@@ -1,80 +1,69 @@
 {% extends "base.html" %}
-{% set active_nav = 'home' %}
+{% from "_macros.html" import both %}
+
+{% block head %}
+<script src="/static/js/map.js" defer></script>
+{% endblock %}
 
 {% block content %}
 <div class="hero">
-  <h1 class="serif hero-title">{{ t.hero_title_start }} <span class="hero-highlight">{{ t.hero_title_highlight }}</span></h1>
+  <h1 class="serif hero-title">{{ both(ui.hero_start) }} <span class="hero-highlight">{{ both(ui.hero_highlight) }}</span></h1>
 </div>
 
 <div class="map-outer">
+  {# Lines join the `star` positions in taxonomy.yml: move a star and its lines here together. #}
   <svg class="map-lines" viewBox="0 0 1088 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
     <g fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round">
-      <!-- spherical-astronomy -> eclipses -->
       <path d="M110 150 Q 220 112 330 90"/>
-      <!-- spherical-astronomy -> optics -->
       <path d="M110 150 Q 122 255 120 360"/>
-      <!-- eclipses -> celestial-mechanics -->
       <path d="M330 90 Q 437 112 545 150"/>
-      <!-- celestial-mechanics -> galaxies -->
       <path d="M545 150 Q 652 114 760 95"/>
-      <!-- galaxies -> cosmology -->
       <path d="M760 95 Q 862 114 965 150"/>
-      <!-- celestial-mechanics -> astrophysics -->
       <path d="M545 150 Q 434 280 340 410"/>
-      <!-- astrophysics -> radiation -->
       <path d="M340 410 Q 450 388 560 350"/>
-      <!-- radiation -> special-relativity -->
       <path d="M560 350 Q 665 390 770 415"/>
-      <!-- special-relativity -> history-of-astronomy -->
       <path d="M770 415 Q 867 395 965 360"/>
-      <!-- astrophysics -> optics -->
       <path d="M340 410 Q 230 393 120 360"/>
     </g>
   </svg>
   <ul class="map-stars">
-    {% for area in taxonomy.areas %}
-    <li class="map-star{% if loop.first %} is-active{% endif %}" data-area="{{ area.key }}" style="left: {{ '%.3f' % (area.star.x / 1088 * 100) }}%; top: {{ '%.3f' % (area.star.y / 520 * 100) }}%;">
-      <a class="map-star-link" href="{{ lang_prefix }}/topics/{{ area.key }}/" data-area="{{ area.key }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">
+    {% for topic in topics %}
+    <li class="map-star{% if loop.first %} is-active{% endif %}" data-topic="{{ topic.key }}" style="left: {{ '%.3f' % (topic.star.x / 1088 * 100) }}%; top: {{ '%.3f' % (topic.star.y / 520 * 100) }}%;">
+      <button type="button" class="map-star-link" aria-pressed="{{ 'true' if loop.first else 'false' }}">
         <span class="map-star-mark">
           <svg class="map-star-ring" viewBox="0 0 60 60" aria-hidden="true"><path d="M30 4 C 46 3, 57 15, 56 30 C 55 46, 43 57, 29 56 C 14 55, 4 44, 4 29 C 5 15, 15 5, 32 5" fill="none" stroke="#161616" stroke-width="1.3" stroke-linecap="round"/></svg>
-          <svg class="map-star-icon" viewBox="0 0 100 100" width="{{ area.star.size }}" height="{{ area.star.size }}" aria-hidden="true">
-            <path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="{{ '#161616' if area.star.filled else '#FDFCFA' }}" stroke="#161616" stroke-width="{{ '4' if area.star.filled else '6' }}" stroke-linejoin="round"/>
+          <svg class="map-star-icon" viewBox="0 0 100 100" width="{{ topic.star['size'] }}" height="{{ topic.star['size'] }}" aria-hidden="true">
+            <path d="M50 5 L62 37 L97 39 L69 60 L79 94 L50 73 L20 93 L32 59 L4 37 L39 37 Z" fill="{{ '#161616' if topic.star.filled else '#FDFCFA' }}" stroke="#161616" stroke-width="{{ '4' if topic.star.filled else '6' }}" stroke-linejoin="round"/>
           </svg>
         </span>
-        <span class="serif map-star-label">{{ area.name[lang] }}</span>
-        <span class="mono map-star-count">{{ area_count[area.key] }}</span>
-      </a>
+        <span class="serif map-star-label">{{ both(topic.name) }}</span>
+        <span class="mono map-star-count">{{ topic_counts[topic.key] }}</span>
+      </button>
     </li>
     {% endfor %}
   </ul>
 </div>
 
 <div class="topic-blocks">
-  {% for area in taxonomy.areas %}
-  <section class="topic-block{% if loop.first %} is-active{% endif %}" data-area="{{ area.key }}" aria-label="{{ area.name[lang] }}">
+  {% for topic in topics %}
+  <section class="topic-block{% if loop.first %} is-active{% endif %}" data-topic="{{ topic.key }}">
     <div class="topic-block-head">
-      <h2 class="serif topic-block-title">{{ area.name[lang] }}</h2>
-      <a class="mono all-problems-link" href="{{ lang_prefix }}/topics/{{ area.key }}/">{{ t.all_problems }} ({{ area_count[area.key] }})</a>
+      <h2 class="serif topic-block-title">{{ both(topic.name) }}</h2>
+      <span class="mono muted">{{ both(ui.problem_count) }}: {{ topic_counts[topic.key] }}</span>
     </div>
-    {% if area.description[lang] or area.description.en %}
-    <p class="topic-block-desc">{{ area.description[lang] or area.description.en }}</p>
-    {% endif %}
+    <p class="topic-block-desc">{{ both(topic.description) }}</p>
     <ul class="subtopic-rows">
-      {% for s in area.subtopics %}
+      {% for sub in topic.subtopics %}
       <li>
         {% if not loop.first %}
         <svg class="row-rule" viewBox="0 0 1000 8" preserveAspectRatio="none" aria-hidden="true">
-          {% if loop.index0 % 2 == 0 %}
-          <path d="M1 4 C 60 1, 130 7, 210 3 C 300 6, 390 2, 480 5 C 570 7, 660 2, 750 5 C 830 3, 910 7, 999 4" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
-          {% else %}
-          <path d="M1 5 C 70 7, 150 2, 230 6 C 320 3, 400 7, 490 3 C 580 6, 660 1, 750 6 C 840 2, 910 6, 999 3" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
-          {% endif %}
+          <path d="{{ 'M1 4 C 60 1, 130 7, 210 3 C 300 6, 390 2, 480 5 C 570 7, 660 2, 750 5 C 830 3, 910 7, 999 4' if loop.index0 % 2 == 0 else 'M1 5 C 70 7, 150 2, 230 6 C 320 3, 400 7, 490 3 C 580 6, 660 1, 750 6 C 840 2, 910 6, 999 3' }}" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
         </svg>
         {% endif %}
-        <a class="subtopic-row" href="{{ lang_prefix }}/topics/{{ area.key }}/?sub={{ s.key }}">
-          <span class="serif subtopic-row-name">{{ s.name[lang] }}</span>
-          <span class="subtopic-row-desc">{{ s.description[lang] or s.description.en }}</span>
-          <span class="mono subtopic-row-count">{{ sub_count[area.key][s.key] }}</span>
+        <a class="subtopic-row" href="/problems/{{ topic.key }}/{{ sub.key }}/">
+          <span class="serif subtopic-row-name">{{ both(sub.name) }}</span>
+          <span class="subtopic-row-desc">{{ both(sub.description) }}</span>
+          <span class="mono subtopic-row-count">{{ counts[topic.key, sub.key] }}</span>
         </a>
       </li>
       {% endfor %}
@@ -83,29 +72,5 @@
   {% endfor %}
 </div>
 
-<svg class="divider" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
-  <path d="M1 4 C 60 8, 130 2, 210 6 C 290 9, 370 3, 450 7 C 540 2, 620 8, 700 3 C 790 7, 860 2, 930 6 C 960 4, 980 7, 999 5" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
-</svg>
-
-<section id="games" class="games-section" aria-label="{{ t.games_heading }}">
-  <div class="games-heading-row">
-    <h2 class="serif games-heading">{{ t.games_heading }}</h2>
-    <span class="mono muted">{{ t.games_tagline }}</span>
-  </div>
-  <div class="games-grid">
-    {% for game in games %}
-    {% if not loop.first %}
-    <svg class="games-divider" viewBox="0 0 2 300" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M1 1 C 1.7 50, 0.3 90, 1.4 140 C 2.1 180, 0.2 220, 1.3 260 C 1.8 280, 0.3 295, 1 299" stroke="#161616" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/>
-    </svg>
-    {% endif %}
-    <a class="game-card" href="{{ game.url }}">
-      <img class="game-cover" src="/static/svg/{{ game.cover.split('/')[-1] }}" alt="" aria-hidden="true">
-      <span class="serif game-name">{{ game.name[lang] }}</span>
-      <span class="game-blurb">{{ game.blurb[lang] or game.blurb.en }}</span>
-      <span class="mono play-link">{{ t.play }}</span>
-    </a>
-    {% endfor %}
-  </div>
-</section>
+<p class="games-note"><a href="{{ site.games_url }}">{{ both(ui.nav_games) }}</a> <span class="mono soon">{{ both(ui.soon) }}</span></p>
 {% endblock %}

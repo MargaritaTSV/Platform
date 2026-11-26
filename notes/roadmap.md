@@ -14,7 +14,7 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
 | [~] | T6 | CI: `validate.yml` written (never run yet); `deploy.yml`, coming-soon page, remove GH Pages/CNAME open | token + account id as repo secrets | Dec 3 |
 | [x] | T7 | build.py: pandoc fragments, cache, KaTeX pre-render (`throwOnError`), R2 image URLs, `\alph*)` sub-lists | | Dec 5 |
 | [x] | T8 | Layout: header, footer, RU/EN button, name from site.yml, tabs (Задачи / Теория / Игры) | | Dec 6 |
-| [ ] | T9 | Home: star map (design/map.json, `star` in taxonomy), subtopic panel, counts | | Dec 8 |
+| [x] | T9 | Home: star map (design/map.json, `star` in taxonomy), subtopic panel, counts | | Dec 8 |
 | [ ] | T10 | Problems page per subtopic: rail, rows, filters (difficulty, source, year, grade), URL state | | Dec 10 |
 | [ ] | T11 | Pagefind search (home + problems page), results link to `#<id>` | | Dec 11 |
 | [ ] | T12 | Theory placeholder, games link | | Dec 11 |
@@ -24,8 +24,8 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
 
 ## Open notes
 - `--tex` has not run anywhere yet (no XeLaTeX locally); the first CI run tests it.
-- Home and subtopic pages are temporary (`site/templates/plain_*.html`); T9 and T10 replace them and
-  reuse `home.html`, `area.html`, `map.js`, `filters.js`.
+- Subtopic pages are temporary (`site/templates/plain_subtopic.html`); T10 replaces them and reuses
+  `area.html` and `filters.js`.
 - T12 is mostly done with T8: theory placeholder and games link exist.
 - The games link leads nowhere until the games subdomain exists.
 - T6: add a `404.html`, otherwise Cloudflare Pages serves the home page for unknown addresses.
@@ -35,6 +35,9 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
 - The T6 deploy must fail on any `"uploaded": false` entry in `figures.lock.json`.
 - T6 must also attach astroolymp.com to the Pages project.
 - Old PDFs stay in earlier git history (the repo is private).
+- Map lines are hand-written in `site/templates/home.html` and match `star` in taxonomy.yml.
+- Russian topic descriptions were written by Claude: owner to review.
+- Cloudflare secrets added in GitHub (owner, Nov 27); T6 can proceed.
 - Local `content/figures/` is the only original copy besides R2: back it up.
 
 ## After the MVP

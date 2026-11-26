@@ -216,8 +216,25 @@ select:focus-visible {
   color: var(--ink);
 }
 
+button.map-star-link {
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
 .map-star-link:hover {
   color: var(--hover);
+}
+
+.map-star.is-active .map-star-label {
+  font-style: italic;
+}
+
+.games-note {
+  margin: 0;
+  padding: 16px 0 56px;
 }
 
 .map-star-label {

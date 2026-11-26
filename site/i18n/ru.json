@@ -6,12 +6,14 @@
   "nav_games": "Игры",
   "soon": "скоро",
   "lang_label": "Язык интерфейса",
-  "footer_made": "сделано командой Starsy",
   "footer_source": "у каждой задачи есть свой источник",
   "notes_heading": "Теория",
   "notes_placeholder": "Этот раздел ещё в разработке.",
   "notes_back": "Пока можно решать задачи",
   "no_problems": "Пока нет задач.",
   "grade": "класс",
-  "difficulty": "сложность"
+  "difficulty": "сложность",
+  "hero_start": "Выберите",
+  "hero_highlight": "созвездие",
+  "problem_count": "задач в теме"
 }

@@ -36,6 +36,18 @@ def load_ui():
     return {key: {"ru": ru[key], "en": en[key]} for key in ru}
 
 
+def check_names(taxonomy):
+    """Everything shown in the interface needs both languages."""
+    missing = []
+    for topic in taxonomy["topics"]:
+        for item in [topic, *topic["subtopics"]]:
+            for field in ("name", "description"):
+                if not all(item.get(field, {}).get(lang) for lang in ("ru", "en")):
+                    missing.append(f"{item['key']}.{field}")
+    if missing:
+        sys.exit(f"build: taxonomy.yml needs ru and en text for: {', '.join(missing)}")
+
+
 def load_problems():
     """The original-language variant of every problem (MVP shows no translations or solutions)."""
     problems = []
@@ -74,7 +86,8 @@ def build():
     (static / "svg").mkdir()
     for source, folder in (
         ("design/tokens.css", ""), ("site/static/app.css", ""), ("site/static/statement.css", ""),
-        ("site/static/js/ui.js", "js"), ("design/svg/logo_star.svg", "svg"),
+        ("site/static/js/ui.js", "js"), ("site/static/js/map.js", "js"),
+        ("design/svg/logo_star.svg", "svg"),
     ):
         shutil.copy(ROOT / source, static / folder)
     shutil.copy(render.KATEX / "dist" / "katex.min.css", static)
@@ -91,14 +104,16 @@ def build():
         html = env.get_template(template).render(site=site, ui=ui, title=title, tab=tab, **data)
         target.write_text(html, encoding="utf-8")
 
-    counts = {}
+    check_names(taxonomy)
+    counts, topic_counts = {}, {}
     for topic in taxonomy["topics"]:
         for sub in topic["subtopics"]:
             rows = [p for p in problems if (p["topic"], p["subtopic"]) == (topic["key"], sub["key"])]
             counts[topic["key"], sub["key"]] = len(rows)
             page(f"problems/{topic['key']}/{sub['key']}", "plain_subtopic.html", sub["name"],
                  topic=topic, subtopic=sub, problems=rows, sources=sources)
-    page("", "plain_home.html", ui["tagline"], topics=taxonomy["topics"], counts=counts)
+        topic_counts[topic["key"]] = sum(p["topic"] == topic["key"] for p in problems)
+    page("", "home.html", ui["tagline"], topics=taxonomy["topics"], counts=counts, topic_counts=topic_counts)
     page("notes", "notes.html", ui["notes_heading"], tab="notes")
     print(f"build: {len(problems)} problems ({rendered} rendered, {len(problems) - rendered} cached) -> {DIST.name}/")
 

@@ -6,12 +6,14 @@
   "nav_games": "Games",
   "soon": "soon",
   "lang_label": "Interface language",
-  "footer_made": "made by Starsy",
   "footer_source": "every problem shows its original source",
   "notes_heading": "Theory",
   "notes_placeholder": "This section is still in development.",
   "notes_back": "Meanwhile, try some problems",
   "no_problems": "No problems yet.",
   "grade": "grade",
-  "difficulty": "difficulty"
+  "difficulty": "difficulty",
+  "hero_start": "Choose a",
+  "hero_highlight": "constellation",
+  "problem_count": "problems in this topic"
 }

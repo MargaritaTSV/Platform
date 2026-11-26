@@ -6,147 +6,147 @@
 topics:
   - key: spherical-astronomy
     name: { en: "Spherical astronomy", ru: "Сферическая астрономия" }
-    description: { en: "Positions on the sky: coordinates, time and the celestial sphere.", ru: "" }
+    description: { en: "Positions on the sky: coordinates, time and the celestial sphere.", ru: "Положения на небе: координаты, время и небесная сфера." }
     star: { x: 110, y: 150, size: 26, filled: true }
     subtopics:
       - key: the-celestial-sphere
         name: { en: "The celestial sphere", ru: "Небесная сфера" }
-        description: { en: "Equatorial and horizontal coordinates", ru: "" }
+        description: { en: "Equatorial and horizontal coordinates", ru: "Экваториальные и горизонтальные координаты" }
       - key: coordinate-systems
         name: { en: "Coordinate systems", ru: "Системы координат" }
-        description: { en: "Converting between coordinate systems", ru: "" }
+        description: { en: "Converting between coordinate systems", ru: "Переход между системами координат" }
       - key: angular-sizes
         name: { en: "Angular sizes", ru: "Угловые размеры" }
-        description: { en: "Sizes and separations on the sky", ru: "" }
+        description: { en: "Sizes and separations on the sky", ru: "Размеры и расстояния на небе" }
       - key: time-and-calendars
         name: { en: "Time and calendars", ru: "Время и календари" }
-        description: { en: "Sidereal, solar and standard time", ru: "" }
+        description: { en: "Sidereal, solar and standard time", ru: "Звёздное, солнечное и поясное время" }
 
   - key: celestial-mechanics
     name: { en: "Celestial mechanics", ru: "Небесная механика" }
-    description: { en: "How bodies move under gravity: orbits, periods, speeds and masses.", ru: "" }
+    description: { en: "How bodies move under gravity: orbits, periods, speeds and masses.", ru: "Как тела движутся под действием тяготения: орбиты, периоды, скорости и массы." }
     star: { x: 545, y: 150, size: 30, filled: true }
     subtopics:
       - key: keplers-laws
         name: { en: "Kepler’s laws", ru: "Законы Кеплера" }
-        description: { en: "Periods, semi-major axes, areal velocity", ru: "" }
+        description: { en: "Periods, semi-major axes, areal velocity", ru: "Периоды, большие полуоси, секториальная скорость" }
       - key: orbital-speed-and-energy
         name: { en: "Orbital speed and energy", ru: "Орбитальные скорости и энергия" }
-        description: { en: "Vis-viva, circular and escape speeds", ru: "" }
+        description: { en: "Vis-viva, circular and escape speeds", ru: "Интеграл энергии, круговая и параболическая скорости" }
       - key: planet-phases
         name: { en: "Planet phases", ru: "Фазы планет" }
-        description: { en: "Phases and visibility of planets", ru: "" }
+        description: { en: "Phases and visibility of planets", ru: "Фазы и видимость планет" }
       - key: synodic-and-sidereal-periods
         name: { en: "Synodic and sidereal periods", ru: "Синодический и сидерический периоды" }
-        description: { en: "Conjunctions, oppositions, configurations", ru: "" }
+        description: { en: "Conjunctions, oppositions, configurations", ru: "Соединения, противостояния, конфигурации" }
       - key: two-body-problem
         name: { en: "The two-body problem", ru: "Задача двух тел" }
-        description: { en: "Masses of planets and binaries", ru: "" }
+        description: { en: "Masses of planets and binaries", ru: "Массы планет и двойных звёзд" }
 
   - key: eclipses
     name: { en: "Eclipses", ru: "Затмения" }
-    description: { en: "Alignments of the Sun, Earth and Moon: solar and lunar eclipses.", ru: "" }
+    description: { en: "Alignments of the Sun, Earth and Moon: solar and lunar eclipses.", ru: "Расположение Солнца, Земли и Луны: солнечные и лунные затмения." }
     star: { x: 330, y: 90, size: 18, filled: false }
     subtopics:
       - key: solar-eclipses
         name: { en: "Solar eclipses", ru: "Солнечные затмения" }
-        description: { en: "Geometry and visibility", ru: "" }
+        description: { en: "Geometry and visibility", ru: "Геометрия и условия видимости" }
       - key: lunar-eclipses
         name: { en: "Lunar eclipses", ru: "Лунные затмения" }
-        description: { en: "Umbra, penumbra, timing", ru: "" }
+        description: { en: "Umbra, penumbra, timing", ru: "Тень, полутень и время затмения" }
 
   - key: optics
     name: { en: "Optics", ru: "Оптика" }
-    description: { en: "How instruments collect light: telescopes, resolution and detectors.", ru: "" }
+    description: { en: "How instruments collect light: telescopes, resolution and detectors.", ru: "Как приборы собирают свет: телескопы, разрешение и приёмники." }
     star: { x: 120, y: 360, size: 20, filled: false }
     subtopics:
       - key: ccd-photometry
         name: { en: "CCD photometry", ru: "ПЗС-фотометрия" }
-        description: { en: "Detectors, noise and signal-to-noise", ru: "" }
+        description: { en: "Detectors, noise and signal-to-noise", ru: "Матрицы, шумы и отношение сигнал/шум" }
       - key: telescopes
         name: { en: "Telescopes", ru: "Телескопы" }
-        description: { en: "Apertures, focal length, mounts", ru: "" }
+        description: { en: "Apertures, focal length, mounts", ru: "Апертура, фокусное расстояние, монтировки" }
       - key: resolution-and-magnification
         name: { en: "Resolution and magnification", ru: "Разрешение и увеличение" }
-        description: { en: "Diffraction limit, eyepieces", ru: "" }
+        description: { en: "Diffraction limit, eyepieces", ru: "Дифракционный предел, окуляры" }
 
   - key: astrophysics
     name: { en: "Astrophysics", ru: "Астрофизика" }
-    description: { en: "How stars shine and how far away they are: light, spectra and evolution.", ru: "" }
+    description: { en: "How stars shine and how far away they are: light, spectra and evolution.", ru: "Как светят звёзды и как далеко они находятся: свет, спектры и эволюция." }
     star: { x: 340, y: 410, size: 30, filled: true }
     subtopics:
       - key: magnitudes-and-distances
         name: { en: "Magnitudes and distances", ru: "Звёздные величины и расстояния" }
-        description: { en: "Parallax, distance modulus", ru: "" }
+        description: { en: "Parallax, distance modulus", ru: "Параллакс и модуль расстояния" }
       - key: stellar-structure-and-evolution
         name: { en: "Structure and evolution", ru: "Строение и эволюция звёзд" }
-        description: { en: "The HR diagram, stellar lifetimes", ru: "" }
+        description: { en: "The HR diagram, stellar lifetimes", ru: "Диаграмма Герцшпрунга–Рассела, время жизни звёзд" }
       - key: stellar-atmospheres
         name: { en: "Stellar atmospheres", ru: "Атмосферы звёзд" }
-        description: { en: "Optical depth and limb darkening", ru: "" }
+        description: { en: "Optical depth and limb darkening", ru: "Оптическая глубина и потемнение к краю" }
       - key: spectra
         name: { en: "Spectra", ru: "Спектры" }
-        description: { en: "Spectral classes, Doppler shift", ru: "" }
+        description: { en: "Spectral classes, Doppler shift", ru: "Спектральные классы, эффект Доплера" }
 
   - key: galaxies
     name: { en: "Galaxies", ru: "Галактики" }
-    description: { en: "Our galaxy and others: structure, types and distances.", ru: "" }
+    description: { en: "Our galaxy and others: structure, types and distances.", ru: "Наша Галактика и другие: строение, типы и расстояния." }
     star: { x: 760, y: 95, size: 22, filled: false }
     subtopics:
       - key: the-milky-way
         name: { en: "The Milky Way", ru: "Млечный Путь" }
-        description: { en: "Structure and rotation", ru: "" }
+        description: { en: "Structure and rotation", ru: "Строение и вращение" }
       - key: types-of-galaxies
         name: { en: "Types of galaxies", ru: "Типы галактик" }
-        description: { en: "Classification and distances", ru: "" }
+        description: { en: "Classification and distances", ru: "Классификация и расстояния" }
 
   - key: radiation
     name: { en: "Radiation", ru: "Излучение" }
-    description: { en: "How light carries energy: black-body radiation and the radiation laws.", ru: "" }
+    description: { en: "How light carries energy: black-body radiation and the radiation laws.", ru: "Как свет переносит энергию: излучение чёрного тела и законы излучения." }
     star: { x: 560, y: 350, size: 22, filled: false }
     subtopics:
       - key: radiation-laws
         name: { en: "Radiation laws", ru: "Законы излучения" }
-        description: { en: "Wien, Stefan–Boltzmann", ru: "" }
+        description: { en: "Wien, Stefan–Boltzmann", ru: "Законы Вина и Стефана–Больцмана" }
       - key: black-body
         name: { en: "Black-body radiation", ru: "Излучение чёрного тела" }
-        description: { en: "The Planck spectrum", ru: "" }
+        description: { en: "The Planck spectrum", ru: "Спектр Планка" }
 
   - key: cosmology
     name: { en: "Cosmology", ru: "Космология" }
-    description: { en: "The universe as a whole: redshift, expansion and its age.", ru: "" }
+    description: { en: "The universe as a whole: redshift, expansion and its age.", ru: "Вселенная как целое: красное смещение, расширение и возраст." }
     star: { x: 965, y: 150, size: 20, filled: true }
     subtopics:
       - key: hubbles-law
         name: { en: "Hubble’s law", ru: "Закон Хаббла" }
-        description: { en: "Redshift and recession speed", ru: "" }
+        description: { en: "Redshift and recession speed", ru: "Красное смещение и скорость удаления" }
       - key: expansion-of-the-universe
         name: { en: "Expansion of the universe", ru: "Расширение Вселенной" }
-        description: { en: "Scale factor, the age of the universe", ru: "" }
+        description: { en: "Scale factor, the age of the universe", ru: "Масштабный фактор, возраст Вселенной" }
 
   - key: special-relativity
     name: { en: "Special relativity", ru: "СТО" }
-    description: { en: "Fast-moving light and matter: time dilation and mass–energy.", ru: "" }
+    description: { en: "Fast-moving light and matter: time dilation and mass–energy.", ru: "Быстро движущиеся тела: замедление времени и связь массы с энергией." }
     star: { x: 770, y: 415, size: 18, filled: false }
     subtopics:
       - key: time-dilation
         name: { en: "Time dilation", ru: "Замедление времени" }
-        description: { en: "Moving clocks and length contraction", ru: "" }
+        description: { en: "Moving clocks and length contraction", ru: "Движущиеся часы и сокращение длины" }
       - key: mass-energy
         name: { en: "Mass and energy", ru: "Масса и энергия" }
-        description: { en: "E = mc^2, relativistic energy", ru: "" }
+        description: { en: "E = mc², relativistic energy", ru: "E = mc², релятивистская энергия" }
 
   - key: history-of-astronomy
     name: { en: "History of astronomy", ru: "История астрономии" }
-    description: { en: "How our picture of the sky was built, from antiquity to today.", ru: "" }
+    description: { en: "How our picture of the sky was built, from antiquity to today.", ru: "Как складывалась наша картина неба, от древности до наших дней." }
     star: { x: 965, y: 360, size: 20, filled: true }
     subtopics:
       - key: ancient-astronomy
         name: { en: "Ancient astronomy", ru: "Древняя астрономия" }
-        description: { en: "Early models of the sky", ru: "" }
+        description: { en: "Early models of the sky", ru: "Ранние модели неба" }
       - key: great-discoveries
         name: { en: "Great discoveries", ru: "Великие открытия" }
-        description: { en: "Milestones and the people behind them", ru: "" }
+        description: { en: "Milestones and the people behind them", ru: "Главные открытия и люди, стоящие за ними" }
 
 sources:
   - key: struve

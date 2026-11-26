@@ -1,3 +1,5 @@
+> Superseded by `notes/decisions.md` and `notes/roadmap.md`. Kept for reference.
+
 # StellarTask: Technical Specification
 
 > Exported from the design artifact (`claude.ai/artifact/X4917SAgKYrmikJGqpACPa`) so the repository is self-contained. Keep `CLAUDE.md` as the short operational rules; this file is the full reference.

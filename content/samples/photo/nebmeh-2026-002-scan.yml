@@ -1,0 +1,15 @@
+# Sidecar metadata for a problem that exists only as an image (no text source).
+# Same fields as the .tex header, plus the image file and a text flag.
+id: nebmeh-2026-002
+title: Пролив Дрейка
+topic: stars
+subtopic: star-clusters
+difficulty: 3
+source: camp
+event: Небмех I, сборы к ЗЭ Струве 2026
+year: 2026
+grade: 7-8
+lang: ru
+image: nebmeh-2026-002-scan.png
+has_text_source: false
+note: stand-in made by cropping a PDF page; replace with a real phone photo or scan

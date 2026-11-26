@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% from "_macros.html" import both %}
+
+{% block content %}
+<div class="topic-head">
+  <h1 class="serif topic-title">{{ both(ui.not_found) }}</h1>
+  <p><a href="/">{{ both(ui.back_to_map) }}</a></p>
+</div>
+{% endblock %}

@@ -1,729 +1,165 @@
-#!/usr/bin/env python3
+"""Build the static site into site-dist/.
+
+    python scripts/build.py            build
+    python scripts/build.py --serve    build, then serve on http://localhost:8000
+
+Needs Python (jinja2, pyyaml), pandoc, Node and `npm ci` (KaTeX).
 """
-StellarTask build script.
-
-Turns `content/` + `site/` + `design/` + `games/` into the static site in
-`site-dist/`, ready to be served by GitHub Pages (or locally with --serve).
-
-Scope implemented so far:
-  - parse content/taxonomy.yml and content/games.yml
-  - discover + validate content/problems/*.yml
-  - write data/index.json (areas with counts, problem metadata, search text)
-  - render the home page per language (with per-area problem counts)
-  - render a topic (area) problem-list page per area, per language
-  - render a single-problem page per problem, per language
-  - copy static assets (site/static/, design/tokens.css, design/svg/)
-  - copy games/ (if present)
-  - write site-dist/CNAME and site-dist/.nojekyll
-
-Still deferred to later milestones: real Typst -> SVG compilation (statements
-are rendered as text for now), PDF/photo scan processing, content-hash
-caching, the MiniSearch index, and the interactive filter/search UI.
-
-Usage:
-    python scripts/build.py            # build once, exit 0
-    python scripts/build.py --serve    # build, then serve site-dist/ on
-                                        # http://localhost:8000
-
-Dependencies: Python 3, jinja2, pyyaml (standard library otherwise).
-"""
-
-from __future__ import annotations
-
 import argparse
+import functools
 import json
 import shutil
 import sys
-from datetime import datetime, timezone
-from pathlib import Path
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-try:
-    import yaml
-except ImportError:  # pragma: no cover - friendly error for missing dep
-    print(
-        "ERROR: the 'pyyaml' package is required. Install it with:\n"
-        "    pip install pyyaml",
-        file=sys.stderr,
-    )
-    sys.exit(1)
+import yaml
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
-try:
-    from jinja2 import Environment, FileSystemLoader
-except ImportError:  # pragma: no cover - friendly error for missing dep
-    print(
-        "ERROR: the 'jinja2' package is required. Install it with:\n"
-        "    pip install jinja2",
-        file=sys.stderr,
-    )
-    sys.exit(1)
+import render
+import validate
+from validate import PROBLEMS, ROOT
+
+DIST = ROOT / "site-dist"
+CACHE = ROOT / ".build-cache" / "html"
+ALT = {"ru": "Рисунок к задаче", "en": "Figure for the problem"}
 
 
-# ---------------------------------------------------------------------------
-# Paths. Everything is resolved relative to the repository root, which is
-# derived from this script's own location so the build works regardless of
-# the caller's current working directory.
-# ---------------------------------------------------------------------------
-
-REPO_ROOT = Path(__file__).resolve().parent.parent
-
-CONTENT_DIR = REPO_ROOT / "content"
-TAXONOMY_FILE = CONTENT_DIR / "taxonomy.yml"
-GAMES_FILE = CONTENT_DIR / "games.yml"
-PROBLEMS_DIR = CONTENT_DIR / "problems"
-NOTES_DIR = CONTENT_DIR / "notes"
-
-SITE_DIR = REPO_ROOT / "site"
-TEMPLATES_DIR = SITE_DIR / "templates"
-STATIC_DIR = SITE_DIR / "static"
-I18N_DIR = SITE_DIR / "i18n"
-
-DESIGN_DIR = REPO_ROOT / "design"
-DESIGN_TOKENS_CSS = DESIGN_DIR / "tokens.css"
-DESIGN_SVG_DIR = DESIGN_DIR / "svg"
-
-GAMES_DIR = REPO_ROOT / "games"
-
-DIST_DIR = REPO_ROOT / "site-dist"
-
-LANGUAGES = ["en", "ru"]
-DEFAULT_LANGUAGE = "en"
-CNAME_DOMAIN = "tsvetkovaspace.com"
+def load_yaml(path):
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
-class BuildError(RuntimeError):
-    """Raised for any build-stopping, user-facing error."""
+def load_ui():
+    """Interface strings as {key: {ru, en}}. Both languages must have the same keys."""
+    ru, en = (json.loads((ROOT / "site" / "i18n" / f"{lang}.json").read_text(encoding="utf-8")) for lang in ("ru", "en"))
+    if ru.keys() != en.keys():
+        sys.exit(f"build: site/i18n keys differ between ru and en: {', '.join(sorted(ru.keys() ^ en.keys()))}")
+    return {key: {"ru": ru[key], "en": en[key]} for key in ru}
 
 
-# ---------------------------------------------------------------------------
-# Loading content
-# ---------------------------------------------------------------------------
-
-def load_yaml(path: Path) -> dict:
-    if not path.is_file():
-        raise BuildError(f"missing required file: {path.relative_to(REPO_ROOT)}")
-    with path.open("r", encoding="utf-8") as fh:
-        try:
-            data = yaml.safe_load(fh) or {}
-        except yaml.YAMLError as exc:
-            raise BuildError(
-                f"{path.relative_to(REPO_ROOT)}: invalid YAML ({exc})"
-            ) from exc
-    return data
+def check_names(taxonomy):
+    """Everything shown in the interface needs both languages."""
+    missing = []
+    for topic in taxonomy["topics"]:
+        for item in [topic, *topic["subtopics"]]:
+            for field in ("name", "description"):
+                if not all(item.get(field, {}).get(lang) for lang in ("ru", "en")):
+                    missing.append(f"{item['key']}.{field}")
+    if missing:
+        sys.exit(f"build: taxonomy.yml needs ru and en text for: {', '.join(missing)}")
 
 
-def load_taxonomy() -> dict:
-    """Parse content/taxonomy.yml. Must contain an `areas` list."""
-    data = load_yaml(TAXONOMY_FILE)
-    if "areas" not in data or not isinstance(data["areas"], list):
-        raise BuildError(
-            f"{TAXONOMY_FILE.relative_to(REPO_ROOT)}: missing required field 'areas' (list)"
-        )
-    return data
+def filter_choices(rows, ui, sources):
+    """The filters of one page, offering only values that occur on it."""
+    def same(values):
+        return [(v, {"ru": v, "en": v}) for v in values]
+
+    grades = sorted({g for p in rows for g in range(p["grade_low"], p["grade_high"] + 1)})
+    return [
+        {"name": "difficulty", "label": ui["difficulty"], "any": ui["any_f"],
+         "options": same(sorted({p["difficulty"] for p in rows}))},
+        {"name": "source", "label": ui["source"], "any": ui["any_m"],
+         "options": [(key, name) for key, name in sources.items() if any(p["source"] == key for p in rows)]},
+        {"name": "year", "label": ui["year"], "any": ui["any_m"],
+         "options": same(sorted({p["year"] for p in rows}, reverse=True))},
+        {"name": "grade", "label": ui["grade"], "any": ui["any_m"], "options": same(grades)},
+    ]
 
 
-def load_games() -> list:
-    """Parse content/games.yml. Must contain a `games` list."""
-    data = load_yaml(GAMES_FILE)
-    games = data.get("games")
-    if not isinstance(games, list):
-        raise BuildError(
-            f"{GAMES_FILE.relative_to(REPO_ROOT)}: missing required field 'games' (list)"
-        )
-    return games
-
-
-def load_i18n(lang: str) -> dict:
-    """Load site/i18n/<lang>.json. Fails clearly if the file is missing."""
-    path = I18N_DIR / f"{lang}.json"
-    if not path.is_file():
-        raise BuildError(
-            f"missing required i18n file: {path.relative_to(REPO_ROOT)} "
-            f"(expected one JSON file of interface strings per language)"
-        )
-    with path.open("r", encoding="utf-8") as fh:
-        try:
-            return json.load(fh)
-        except json.JSONDecodeError as exc:
-            raise BuildError(
-                f"{path.relative_to(REPO_ROOT)}: invalid JSON ({exc})"
-            ) from exc
-
-
-# ---------------------------------------------------------------------------
-# Problems: discovery + validation (a broken problem fails the whole build)
-# ---------------------------------------------------------------------------
-
-def taxonomy_maps(taxonomy: dict) -> dict:
-    """Build lookup maps from the taxonomy for validation and rendering."""
-    areas = {a["key"]: a for a in taxonomy["areas"]}
-    subtopics = {
-        a["key"]: {s["key"]: s for s in a.get("subtopics", [])}
-        for a in taxonomy["areas"]
-    }
-    olympiads = {o["key"]: o for o in taxonomy.get("olympiads") or []}
-    return {"areas": areas, "subtopics": subtopics, "olympiads": olympiads}
-
-
-def discover_problems() -> list[dict]:
-    """Read every content/problems/*.yml. The file stem is the permanent id."""
-    if not PROBLEMS_DIR.is_dir():
-        return []
+def load_problems():
+    """The original-language variant of every problem (MVP shows no translations or solutions)."""
     problems = []
-    for path in sorted(PROBLEMS_DIR.glob("*.yml")):
-        data = load_yaml(path)
-        if not isinstance(data, dict):
-            raise BuildError(f"{path.relative_to(REPO_ROOT)}: expected a YAML mapping")
-        data["id"] = path.stem
-        data["_path"] = path
-        problems.append(data)
+    for path in sorted(PROBLEMS.rglob("*.tex")):
+        text = path.read_text(encoding="utf-8-sig").replace("\r\n", "\n")
+        header, _, body, _ = validate.split_header(text)
+        if header.get("translation_status") != "original" or header.get("kind") == "solution":
+            continue
+        low, _, high = str(header["grade"]).partition("-")
+        problems.append(dict(header, grade_low=int(low), grade_high=int(high or low), path=path, body=body))
+    problems.sort(key=lambda p: (-p["year"], p["source"], p["id"]))
     return problems
 
 
-def validate_problems(problems: list[dict], maps: dict) -> list[dict]:
-    """Validate against the data contract; raise BuildError listing all issues.
-
-    Drops drafts. Derives `languages` and `format`. Returns the publishable list.
-    """
-    errors: list[str] = []
-    seen_ids: dict[str, Path] = {}
-    published: list[dict] = []
-
-    for p in problems:
-        pid = p["id"]
-        where = p["_path"].relative_to(REPO_ROOT)
-
-        if pid in seen_ids:
-            errors.append(f"duplicate problem id '{pid}' ({where})")
-        seen_ids[pid] = where
-
-        if p.get("draft") is True:
-            continue
-
-        area = p.get("area")
-        subtopic = p.get("subtopic")
-        difficulty = p.get("difficulty")
-
-        if not area:
-            errors.append(f"{where}: missing required field 'area'")
-        elif area not in maps["areas"]:
-            errors.append(f"{where}: unknown area '{area}'")
-        elif not subtopic:
-            errors.append(f"{where}: missing required field 'subtopic'")
-        elif subtopic not in maps["subtopics"][area]:
-            errors.append(
-                f"{where}: subtopic '{subtopic}' is not in area '{area}'"
-            )
-
-        if difficulty is None:
-            errors.append(f"{where}: missing required field 'difficulty'")
-        elif not isinstance(difficulty, int) or not (1 <= difficulty <= 5):
-            errors.append(f"{where}: difficulty must be an integer 1..5 (got {difficulty!r})")
-
-        statement = p.get("statement")
-        scan = p.get("scan")
-        if not statement and not scan:
-            errors.append(f"{where}: needs either a 'statement' or a 'scan'")
-
-        olympiad = p.get("olympiad")
-        if olympiad and olympiad not in maps["olympiads"]:
-            errors.append(f"{where}: unknown olympiad '{olympiad}'")
-
-        # Derive languages + format.
-        if isinstance(statement, dict):
-            p["languages"] = [l for l in LANGUAGES if statement.get(l)]
-            p["format"] = "typst"
-        elif scan:
-            p["languages"] = [scan.get("lang")] if scan.get("lang") else []
-            fmt = "pdf" if str(scan.get("file", "")).lower().endswith(".pdf") else "image"
-            p["format"] = fmt
-        else:
-            p["languages"] = []
-            p["format"] = "unknown"
-
-        published.append(p)
-
+def build(deploy=False):
+    errors = validate.check_all()
     if errors:
-        raise BuildError(
-            "problem validation failed:\n  - " + "\n  - ".join(errors)
-        )
-    return published
+        validate.report(errors)
+        sys.exit(1)
+    site = load_yaml(ROOT / "site.yml")
+    taxonomy = load_yaml(ROOT / "content" / "taxonomy.yml")
+    lock = validate.load_lock()
+    waiting = [name for name, info in lock.items() if not info.get("uploaded")]
+    if deploy and waiting:
+        sys.exit(f"build: figures not uploaded to R2 (run scripts/figures.py push): {', '.join(waiting)}")
+    problems = load_problems()
 
-
-# ---------------------------------------------------------------------------
-# Theory notes (content/notes/<slug>.yml): title, area, optional subtopic, body
-# ---------------------------------------------------------------------------
-
-def discover_notes() -> list[dict]:
-    if not NOTES_DIR.is_dir():
-        return []
-    notes = []
-    for path in sorted(NOTES_DIR.glob("*.yml")):
-        data = load_yaml(path)
-        if not isinstance(data, dict):
-            raise BuildError(f"{path.relative_to(REPO_ROOT)}: expected a YAML mapping")
-        data["slug"] = path.stem
-        data["_path"] = path
-        notes.append(data)
-    return notes
-
-
-def validate_notes(notes: list[dict], maps: dict) -> list[dict]:
-    errors: list[str] = []
-    published: list[dict] = []
-    for n in notes:
-        where = n["_path"].relative_to(REPO_ROOT)
-        if n.get("draft") is True:
-            continue
-        area = n.get("area")
-        subtopic = n.get("subtopic")
-        if not n.get("title"):
-            errors.append(f"{where}: missing required field 'title'")
-        if not area:
-            errors.append(f"{where}: missing required field 'area'")
-        elif area not in maps["areas"]:
-            errors.append(f"{where}: unknown area '{area}'")
-        elif subtopic and subtopic not in maps["subtopics"][area]:
-            errors.append(f"{where}: subtopic '{subtopic}' is not in area '{area}'")
-        if not isinstance(n.get("body"), dict) or not any(
-            n["body"].get(l) for l in LANGUAGES
-        ):
-            errors.append(f"{where}: needs a 'body' with at least one language")
-        else:
-            n["languages"] = [l for l in LANGUAGES if n["body"].get(l)]
-        published.append(n)
-    if errors:
-        raise BuildError("note validation failed:\n  - " + "\n  - ".join(errors))
-    return published
-
-
-def note_view(n: dict, maps: dict, lang: str) -> dict:
-    area = maps["areas"][n["area"]]
-    sub = None
-    if n.get("subtopic"):
-        sub = maps["subtopics"][n["area"]][n["subtopic"]]
-    body = n.get("body") or {}
-    text, shown, fallback = None, None, False
-    if body.get(lang):
-        text, shown = body[lang].rstrip(), lang
-    else:
-        for other in LANGUAGES:
-            if body.get(other):
-                text, shown, fallback = body[other].rstrip(), other, True
-                break
-    return {
-        "slug": n["slug"],
-        "title": (n["title"].get(lang) or n["title"].get("en")) if isinstance(n["title"], dict) else n["title"],
-        "area_key": n["area"],
-        "area_name": area["name"][lang],
-        "subtopic_name": sub["name"][lang] if sub else None,
-        "body": {"text": text, "shown_lang": shown, "fallback": fallback},
-    }
-
-
-# ---------------------------------------------------------------------------
-# Derived views + index.json
-# ---------------------------------------------------------------------------
-
-def source_line(p: dict, maps: dict) -> str:
-    """e.g. 'IAO 2023, theory, problem 1' from the available metadata."""
-    parts = []
-    olympiad = p.get("olympiad")
-    if olympiad:
-        parts.append(olympiad.upper())
-    if p.get("year"):
-        parts.append(str(p["year"]))
-    head = " ".join(parts)
-    tail = []
-    if p.get("round"):
-        tail.append(str(p["round"]))
-    if p.get("number"):
-        tail.append(f"problem {p['number']}")
-    pieces = [x for x in [head, ", ".join(tail)] if x]
-    return ", ".join(pieces)
-
-
-def statement_text(p: dict, lang: str) -> dict:
-    """Return the statement for `lang` with fallback info.
-
-    { 'text': str|None, 'shown_lang': 'en'|'ru'|None, 'fallback': bool }
-    """
-    st = p.get("statement")
-    if isinstance(st, dict):
-        if st.get(lang):
-            return {"text": st[lang].rstrip(), "shown_lang": lang, "fallback": False}
-        for other in LANGUAGES:
-            if st.get(other):
-                return {"text": st[other].rstrip(), "shown_lang": other, "fallback": True}
-    return {"text": None, "shown_lang": None, "fallback": False}
-
-
-def problem_view(p: dict, maps: dict, lang: str) -> dict:
-    """A flat dict of everything a template needs to render one problem."""
-    area = maps["areas"][p["area"]]
-    sub = maps["subtopics"][p["area"]][p["subtopic"]]
-    olympiad_key = p.get("olympiad")
-    olympiad_name = (
-        maps["olympiads"][olympiad_key]["name"][lang] if olympiad_key else None
-    )
-    return {
-        "id": p["id"],
-        "area_key": p["area"],
-        "area_name": area["name"][lang],
-        "subtopic_key": p["subtopic"],
-        "subtopic_name": sub["name"][lang],
-        "difficulty": p["difficulty"],
-        "number": p.get("number"),
-        "grade": p.get("grade"),
-        "olympiad": olympiad_key,
-        "olympiad_name": olympiad_name,
-        "year": p.get("year"),
-        "languages": p["languages"],
-        "format": p["format"],
-        "source": source_line(p, maps),
-        "statement": statement_text(p, lang),
-    }
-
-
-def build_index(taxonomy: dict, problems: list[dict], maps: dict) -> dict:
-    """Assemble data/index.json: areas with counts + per-problem metadata."""
-    area_counts = {k: 0 for k in maps["areas"]}
-    sub_counts = {k: {s: 0 for s in maps["subtopics"][k]} for k in maps["areas"]}
+    html, failed, rendered = render.render_many({p["id"]: p["body"] for p in problems}, CACHE)
+    if failed:
+        paths = {p["id"]: p["path"] for p in problems}
+        validate.report([(paths[pid], 1, message) for pid, message in sorted(failed.items())])
+        sys.exit(1)
     for p in problems:
-        area_counts[p["area"]] += 1
-        sub_counts[p["area"]][p["subtopic"]] += 1
+        p["html"] = render.rewrite_images(html[p["id"]], lock, site["media_url"], ALT[p["lang"]])
 
-    areas_out = []
-    for a in taxonomy["areas"]:
-        areas_out.append({
-            "key": a["key"],
-            "name": a["name"],
-            "description": a.get("description", {}),
-            "star": a.get("star", {}),
-            "count": area_counts[a["key"]],
-            "subtopics": [
-                {
-                    "key": s["key"],
-                    "name": s["name"],
-                    "description": s.get("description", {}),
-                    "count": sub_counts[a["key"]][s["key"]],
-                }
-                for s in a.get("subtopics", [])
-            ],
-        })
+    shutil.rmtree(DIST, ignore_errors=True)
+    static = DIST / "static"
+    (static / "js").mkdir(parents=True)
+    (static / "svg").mkdir()
+    for source, folder in (
+        ("design/tokens.css", ""), ("site/static/app.css", ""), ("site/static/statement.css", ""),
+        ("site/static/js/ui.js", "js"), ("site/static/js/map.js", "js"), ("site/static/js/filters.js", "js"),
+        ("design/svg/logo_star.svg", "svg"),
+    ):
+        shutil.copy(ROOT / source, static / folder)
+    shutil.copy(render.KATEX / "dist" / "katex.min.css", static)
+    shutil.copytree(render.KATEX / "dist" / "fonts", static / "fonts")
 
-    problems_out = []
-    for p in problems:
-        st = p.get("statement") if isinstance(p.get("statement"), dict) else {}
-        search = {
-            l: (st.get(l) or "").replace("\n", " ").strip()
-            for l in LANGUAGES if st.get(l)
-        }
-        problems_out.append({
-            "id": p["id"],
-            "area": p["area"],
-            "subtopic": p["subtopic"],
-            "difficulty": p["difficulty"],
-            "olympiad": p.get("olympiad"),
-            "year": p.get("year"),
-            "grade": p.get("grade"),
-            "round": p.get("round"),
-            "number": p.get("number"),
-            "languages": p["languages"],
-            "format": p["format"],
-            "search": search,
-        })
+    env = Environment(loader=FileSystemLoader(ROOT / "site" / "templates"), autoescape=True,
+                      undefined=StrictUndefined)
+    sources = {s["key"]: s["name"] for s in taxonomy["sources"]}
+    ui = load_ui()
 
-    return {
-        "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "areas": areas_out,
-        "problems": problems_out,
-    }
+    def page(url, template, title, tab="problems", **data):
+        target = DIST / url if url.endswith(".html") else DIST / url / "index.html"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        html = env.get_template(template).render(site=site, ui=ui, title=title, tab=tab, **data)
+        target.write_text(html, encoding="utf-8")
+
+    check_names(taxonomy)
+    def rows_of(topic, sub):
+        return [p for p in problems if (p["topic"], p["subtopic"]) == (topic["key"], sub["key"])]
+
+    topics = taxonomy["topics"]
+    counts = {(t["key"], s["key"]): len(rows_of(t, s)) for t in topics for s in t["subtopics"]}
+    topic_counts = {t["key"]: sum(counts[t["key"], s["key"]] for s in t["subtopics"]) for t in topics}
+    # "Other topics" opens the first subtopic that has problems.
+    first_subtopic = {t["key"]: next((s["key"] for s in t["subtopics"] if counts[t["key"], s["key"]]),
+                                     t["subtopics"][0]["key"]) for t in topics}
+    for topic in topics:
+        for sub in topic["subtopics"]:
+            rows = rows_of(topic, sub)
+            page(f"problems/{topic['key']}/{sub['key']}", "subtopic.html", sub["name"],
+                 topics=topics, topic=topic, subtopic=sub, problems=rows, sources=sources, counts=counts,
+                 first_subtopic=first_subtopic, filters=filter_choices(rows, ui, sources))
+    page("", "home.html", ui["tagline"], topics=taxonomy["topics"], counts=counts, topic_counts=topic_counts)
+    page("notes", "notes.html", ui["notes_heading"], tab="notes")
+    # Without a 404 page, Cloudflare Pages answers every unknown address with the home page.
+    page("404.html", "404.html", ui["not_found"])
+    print(f"build: {len(problems)} problems ({rendered} rendered, {len(problems) - rendered} cached) -> {DIST.name}/")
 
 
-# ---------------------------------------------------------------------------
-# Output helpers
-# ---------------------------------------------------------------------------
-
-def clean_dist() -> None:
-    """Remove and recreate site-dist/ so every build is reproducible."""
-    if DIST_DIR.exists():
-        shutil.rmtree(DIST_DIR)
-    DIST_DIR.mkdir(parents=True, exist_ok=True)
-
-
-def lang_prefix(lang: str) -> str:
-    return "" if lang == DEFAULT_LANGUAGE else f"/{lang}"
-
-
-def page_urls(suffix: str) -> dict:
-    """URL of a page in each language. `suffix` is '' (home) or 'topics/x/' etc."""
-    return {l: (lang_prefix(l) + "/" + suffix) for l in LANGUAGES}
-
-
-def write_page(env: Environment, template_name: str, out_path: Path, **context) -> Path:
-    tmpl = env.get_template(template_name)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(tmpl.render(**context), encoding="utf-8")
-    return out_path
-
-
-def render_site(env: Environment, taxonomy: dict, games: list,
-                problems: list[dict], notes: list[dict], maps: dict,
-                index: dict) -> list[Path]:
-    """Render home, topic (area), problem and theory-note pages per language."""
-    written: list[Path] = []
-
-    area_count = {a["key"]: a["count"] for a in index["areas"]}
-    sub_count = {
-        a["key"]: {s["key"]: s["count"] for s in a["subtopics"]}
-        for a in index["areas"]
-    }
-    total_problems = len(problems)
-
-    # Group problems by area, preserving a stable order.
-    by_area: dict[str, list[dict]] = {a["key"]: [] for a in taxonomy["areas"]}
-    for p in problems:
-        by_area[p["area"]].append(p)
-
-    for lang in LANGUAGES:
-        t = load_i18n(lang)
-
-        def common(suffix: str) -> dict:
-            urls = page_urls(suffix)
-            return {
-                "lang": lang, "t": t,
-                "url_en": urls["en"], "url_ru": urls["ru"],
-                "lang_prefix": lang_prefix(lang),
-            }
-
-        # Home.
-        home_ctx = dict(common(""), taxonomy=taxonomy, games=games,
-                        area_count=area_count, sub_count=sub_count,
-                        total_problems=total_problems)
-        targets = [DIST_DIR / lang_prefix(lang).lstrip("/") / "index.html"]
-        if lang == DEFAULT_LANGUAGE:
-            targets = [DIST_DIR / "index.html", DIST_DIR / "en" / "index.html"]
-        for target in targets:
-            written.append(write_page(env, "home.html", target, **home_ctx))
-
-        # Topic (area) pages.
-        for area in taxonomy["areas"]:
-            group = by_area[area["key"]]
-            views = [problem_view(p, maps, lang) for p in group]
-
-            grades = sorted({p.get("grade") for p in group if p.get("grade")})
-            olympiads, oly_keys = [], set()
-            for p in group:
-                ok = p.get("olympiad")
-                if ok and ok not in oly_keys:
-                    oly_keys.add(ok)
-                    olympiads.append({"key": ok, "name": maps["olympiads"][ok]["name"][lang]})
-
-            ctx = dict(
-                common(f"topics/{area['key']}/"),
-                area={
-                    "key": area["key"],
-                    "name": area["name"][lang],
-                    "description": (area.get("description") or {}).get(lang, ""),
-                    "subtopics": [
-                        {"key": s["key"], "name": s["name"][lang],
-                         "count": sub_count[area["key"]][s["key"]]}
-                        for s in area.get("subtopics", [])
-                    ],
-                },
-                problems=views,
-                area_count=area_count[area["key"]],
-                filter_options={"grades": grades, "olympiads": olympiads},
-            )
-            out = DIST_DIR / lang_prefix(lang).lstrip("/") / "topics" / area["key"] / "index.html"
-            written.append(write_page(env, "area.html", out, **ctx))
-
-        # Single-problem pages (prev/next within the same area).
-        for area in taxonomy["areas"]:
-            group = by_area[area["key"]]
-            for i, p in enumerate(group):
-                view = problem_view(p, maps, lang)
-                prev_p = group[i - 1] if i > 0 else None
-                next_p = group[i + 1] if i < len(group) - 1 else None
-                ctx = dict(
-                    common(f"problems/{p['id']}/"),
-                    problem=view,
-                    area_url=lang_prefix(lang) + f"/topics/{area['key']}/",
-                    prev_url=(lang_prefix(lang) + f"/problems/{prev_p['id']}/") if prev_p else None,
-                    next_url=(lang_prefix(lang) + f"/problems/{next_p['id']}/") if next_p else None,
-                )
-                out = DIST_DIR / lang_prefix(lang).lstrip("/") / "problems" / p["id"] / "index.html"
-                written.append(write_page(env, "problem.html", out, **ctx))
-
-        # Theory notes: an index grouped by area, plus one page per note.
-        note_views = [note_view(n, maps, lang) for n in notes]
-        by_area_notes: dict[str, list[dict]] = {}
-        for nv in note_views:
-            by_area_notes.setdefault(nv["area_key"], []).append(nv)
-        notes_groups = [
-            {"area_key": a["key"], "area_name": a["name"][lang],
-             "notes": by_area_notes[a["key"]]}
-            for a in taxonomy["areas"] if a["key"] in by_area_notes
-        ]
-        index_ctx = dict(common("notes/"), notes_groups=notes_groups,
-                         notes_total=len(note_views))
-        out = DIST_DIR / lang_prefix(lang).lstrip("/") / "notes" / "index.html"
-        written.append(write_page(env, "notes.html", out, **index_ctx))
-
-        for n in notes:
-            nv = note_view(n, maps, lang)
-            ctx = dict(
-                common(f"notes/{nv['slug']}/"),
-                note=nv,
-                area_url=lang_prefix(lang) + f"/topics/{nv['area_key']}/",
-                notes_url=lang_prefix(lang) + "/notes/",
-            )
-            out = DIST_DIR / lang_prefix(lang).lstrip("/") / "notes" / nv["slug"] / "index.html"
-            written.append(write_page(env, "note.html", out, **ctx))
-
-    return written
-
-
-def copy_static_assets() -> list[str]:
-    """Copy site/static/, design/tokens.css and design/svg/ into site-dist/static/."""
-    notes = []
-    dest_static = DIST_DIR / "static"
-    dest_static.mkdir(parents=True, exist_ok=True)
-
-    if STATIC_DIR.is_dir():
-        shutil.copytree(STATIC_DIR, dest_static, dirs_exist_ok=True)
-        notes.append(f"copied {STATIC_DIR.relative_to(REPO_ROOT)} -> {dest_static.relative_to(REPO_ROOT)}")
-    else:
-        notes.append(f"note: {STATIC_DIR.relative_to(REPO_ROOT)} not found, skipped")
-
-    if DESIGN_TOKENS_CSS.is_file():
-        shutil.copy2(DESIGN_TOKENS_CSS, dest_static / "tokens.css")
-        notes.append(f"copied {DESIGN_TOKENS_CSS.relative_to(REPO_ROOT)} -> {(dest_static / 'tokens.css').relative_to(REPO_ROOT)}")
-    else:
-        raise BuildError(
-            f"missing required file: {DESIGN_TOKENS_CSS.relative_to(REPO_ROOT)}"
-        )
-
-    dest_svg = dest_static / "svg"
-    if DESIGN_SVG_DIR.is_dir():
-        dest_svg.mkdir(parents=True, exist_ok=True)
-        shutil.copytree(DESIGN_SVG_DIR, dest_svg, dirs_exist_ok=True)
-        notes.append(f"copied {DESIGN_SVG_DIR.relative_to(REPO_ROOT)} -> {dest_svg.relative_to(REPO_ROOT)}")
-    else:
-        raise BuildError(
-            f"missing required directory: {DESIGN_SVG_DIR.relative_to(REPO_ROOT)}"
-        )
-
-    return notes
-
-
-def copy_games() -> str:
-    """Copy games/ -> site-dist/games/, if the games/ tree exists."""
-    if not GAMES_DIR.is_dir():
-        return f"note: {GAMES_DIR.relative_to(REPO_ROOT)} not found, skipped (no games built yet)"
-    dest = DIST_DIR / "games"
-    dest.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(GAMES_DIR, dest, dirs_exist_ok=True)
-    return f"copied {GAMES_DIR.relative_to(REPO_ROOT)} -> {dest.relative_to(REPO_ROOT)}"
-
-
-def write_index_json(index: dict) -> Path:
-    out = DIST_DIR / "data" / "index.json"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
-    return out
-
-
-def write_meta_files() -> list[Path]:
-    """Write site-dist/CNAME and site-dist/.nojekyll."""
-    cname_path = DIST_DIR / "CNAME"
-    cname_path.write_text(CNAME_DOMAIN + "\n", encoding="utf-8")
-
-    nojekyll_path = DIST_DIR / ".nojekyll"
-    nojekyll_path.write_text("", encoding="utf-8")
-
-    return [cname_path, nojekyll_path]
-
-
-# ---------------------------------------------------------------------------
-# Later milestones plug in here: Typst -> SVG, scan processing, content-hash
-# caching, and the MiniSearch per-language index.
-# ---------------------------------------------------------------------------
-
-
-def build() -> None:
-    print(f"StellarTask build starting (repo root: {REPO_ROOT})")
-
-    clean_dist()
-    print(f"  cleaned {DIST_DIR.relative_to(REPO_ROOT)}/")
-
-    taxonomy = load_taxonomy()
-    maps = taxonomy_maps(taxonomy)
-    print(f"  loaded {TAXONOMY_FILE.relative_to(REPO_ROOT)} ({len(taxonomy.get('areas', []))} areas)")
-
-    games = load_games()
-    print(f"  loaded {GAMES_FILE.relative_to(REPO_ROOT)} ({len(games)} games)")
-
-    problems = validate_problems(discover_problems(), maps)
-    print(f"  validated {len(problems)} problem(s)")
-
-    notes = validate_notes(discover_notes(), maps)
-    print(f"  validated {len(notes)} note(s)")
-
-    index = build_index(taxonomy, problems, maps)
-    print(f"  wrote {write_index_json(index).relative_to(REPO_ROOT)}")
-
-    env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=True)
-    written_pages = render_site(env, taxonomy, games, problems, notes, maps, index)
-    print(f"  rendered {len(written_pages)} HTML page(s)")
-
-    for note in copy_static_assets():
-        print(f"  {note}")
-
-    print(f"  {copy_games()}")
-
-    for meta_path in write_meta_files():
-        print(f"  wrote {meta_path.relative_to(REPO_ROOT)}")
-
-    print("Build complete.")
-
-
-def serve() -> None:
-    import functools
-    import http.server
-
-    handler = functools.partial(
-        http.server.SimpleHTTPRequestHandler, directory=str(DIST_DIR)
-    )
-    addr = ("localhost", 8000)
-    with http.server.HTTPServer(addr, handler) as httpd:
-        print(f"Serving {DIST_DIR.relative_to(REPO_ROOT)} at http://{addr[0]}:{addr[1]}/ (Ctrl+C to stop)")
-        try:
-            httpd.serve_forever()
-        except KeyboardInterrupt:
-            print("\nStopped.")
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description="Build the StellarTask static site.")
-    parser.add_argument(
-        "--serve",
-        action="store_true",
-        help="after building, serve site-dist/ on http://localhost:8000",
-    )
+def main():
+    sys.stdout.reconfigure(encoding="utf-8")
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--serve", action="store_true")
+    parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--deploy", action="store_true", help="also require every figure to be on R2")
     args = parser.parse_args()
-
-    try:
-        build()
-    except BuildError as exc:
-        print(f"BUILD FAILED: {exc}", file=sys.stderr)
-        return 1
-
+    build(args.deploy)
     if args.serve:
-        serve()
-
-    return 0
+        handler = functools.partial(SimpleHTTPRequestHandler, directory=DIST)
+        print(f"serving http://localhost:{args.port} (Ctrl+C to stop)")
+        ThreadingHTTPServer(("127.0.0.1", args.port), handler).serve_forever()
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

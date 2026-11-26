@@ -4,3 +4,15 @@ __pycache__/
 site-dist/
 .build-cache/
 .claude/worktrees/
+.claude/settings.local.json
+
+# The repo is public: other people's PDFs stay local. Figure originals go to R2.
+content/_source/
+content/figures/
+content/**/*.pdf
+content/samples/figures/
+content/samples/photo/*.png
+
+# wrangler cache holds the account id and email
+.wrangler/
+node_modules/

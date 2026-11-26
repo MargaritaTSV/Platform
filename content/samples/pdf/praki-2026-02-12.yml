@@ -1,0 +1,14 @@
+# Sidecar metadata for a PDF-only problem set (no source files).
+id: praki-2026
+kind: problem-set
+title: Праки
+file: praki-2026-02-12.pdf
+pages: 4
+problems: 5
+source: camp
+event: Сборы к регу 2025, Праки
+year: 2026
+grade: 10
+lang: ru
+has_text_source: false
+note: problems 1 and 2 are converted to .tex in ../problems (praki-2026-001, -002); 3-5 are PDF-only

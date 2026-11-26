@@ -1,40 +1,31 @@
-// Home star map: clicking a topic (star) reveals that area's subtopics in the
-// block under the map. Progressive enhancement — with JS off, every topic
-// block is shown and each star is a plain link to that area's problem list.
+// Home star map: choosing a star shows that topic's subtopics under the map.
+// Without JavaScript every topic block stays visible.
 (function () {
   "use strict";
-
   var blocks = document.querySelector(".topic-blocks");
-  if (!blocks) return;
-
-  var stars = document.querySelector(".map-stars");
+  var stars = Array.from(document.querySelectorAll(".map-star"));
+  if (!blocks || !stars.length) return;
   blocks.classList.add("has-js"); // CSS now shows one block at a time
 
-  function activate(key) {
-    var blockList = blocks.querySelectorAll(".topic-block");
-    for (var i = 0; i < blockList.length; i++) {
-      blockList[i].classList.toggle(
-        "is-active",
-        blockList[i].getAttribute("data-area") === key
-      );
-    }
-    if (stars) {
-      var starList = stars.querySelectorAll(".map-star");
-      for (var j = 0; j < starList.length; j++) {
-        var on = starList[j].getAttribute("data-area") === key;
-        starList[j].classList.toggle("is-active", on);
-        var link = starList[j].querySelector(".map-star-link");
-        if (link) link.setAttribute("aria-pressed", on ? "true" : "false");
-      }
-    }
-  }
-
-  if (stars) {
-    stars.addEventListener("click", function (e) {
-      var link = e.target.closest ? e.target.closest(".map-star-link") : null;
-      if (!link) return;
-      e.preventDefault(); // stay on the home page; just swap the subtopics
-      activate(link.getAttribute("data-area"));
+  function select(key) {
+    if (!stars.some(function (s) { return s.dataset.topic === key; })) return;
+    blocks.querySelectorAll(".topic-block").forEach(function (block) {
+      block.classList.toggle("is-active", block.dataset.topic === key);
+    });
+    stars.forEach(function (star) {
+      var on = star.dataset.topic === key;
+      star.classList.toggle("is-active", on);
+      star.querySelector("button").setAttribute("aria-pressed", String(on));
     });
   }
+
+  stars.forEach(function (star) {
+    star.querySelector("button").addEventListener("click", function () {
+      select(star.dataset.topic);
+      // Kept in the address, so Back from a problem list returns to the same topic.
+      history.replaceState(null, "", "#" + star.dataset.topic);
+    });
+  });
+  window.addEventListener("hashchange", function () { select(location.hash.slice(1)); });
+  select(location.hash.slice(1));
 })();

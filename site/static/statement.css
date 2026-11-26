@@ -1,0 +1,15 @@
+/* Problem statements: HTML produced by pandoc and KaTeX. */
+.statement { margin: 16px 0 48px; max-width: 46rem; font-family: var(--font-serif); font-weight: 500; font-size: 21px; line-height: 1.55; }
+.statement .katex { font-size: 1em; }
+.statement img { max-width: 100%; height: auto; }
+.statement .center { text-align: center; }
+.statement table { border-collapse: collapse; margin: 1em auto; }
+.statement td, .statement th { padding: 0.15em 0.7em; vertical-align: top; }
+.statement .katex-display { overflow-x: auto; overflow-y: hidden; }
+
+@counter-style ru-letters { system: fixed; symbols: "а" "б" "в" "г" "д" "е" "ж" "з" "и" "к" "л" "м" "н"; suffix: ") "; }
+@counter-style en-letters { system: extends lower-alpha; suffix: ") "; }
+@counter-style numbers-paren { system: extends decimal; suffix: ") "; }
+.statement:lang(ru) ol[type="a"] { list-style-type: ru-letters; }
+.statement:lang(en) ol[type="a"] { list-style-type: en-letters; }
+.statement ol[type="1"] { list-style-type: numbers-paren; }

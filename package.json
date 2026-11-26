@@ -1,0 +1,4 @@
+{
+  "private": true,
+  "dependencies": { "katex": "0.19.1" }
+}

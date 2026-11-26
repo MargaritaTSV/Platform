@@ -1,5 +1,6 @@
-name: Deploy to GitHub Pages
+name: deploy
 
+# Only main reaches the live site; pull requests are checked by validate.yml.
 on:
   push:
     branches: [main]
@@ -7,51 +8,37 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: deploy
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      # --- MAINTENANCE MODE ---
-      # Publishing the maintenance page instead of the full build.
-      # To restore the real site: uncomment the build steps below,
-      # delete the maintenance upload step, and push.
-      #
-      # - name: Install dependencies
-      #   run: pip install jinja2 pyyaml
-      #
-      # - name: Build site
-      #   run: python scripts/build.py
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - run: pip install pyyaml jinja2
+      - uses: pandoc/actions/setup@v1
         with:
-          path: maintenance
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          version: "3.14"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: .build-cache/html
+          key: html-${{ github.run_id }}
+          restore-keys: html-
+      - run: python scripts/build.py --deploy
+      - name: Publish to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4.168.0 pages deploy site-dist --project-name stellartask --branch main

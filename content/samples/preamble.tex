@@ -1,0 +1,14 @@
+% Shared preamble for PDF builds and the .tex bundle. Macros live in macros.tex.
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{russian}
+\setotherlanguage{english}
+% Any font WITH Cyrillic glyphs (TeX Gyre Termes here had none). Pick yours:
+\setmainfont{DejaVu Serif}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[a4paper,margin=1.8cm]{geometry}
+
+\sloppy
+\input{macros}

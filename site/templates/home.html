@@ -3,11 +3,13 @@
 
 {% block head %}
 <script src="/static/js/map.js" defer></script>
+<script src="/static/js/search.js" defer></script>
 {% endblock %}
 
 {% block content %}
 <div class="hero">
   <h1 class="serif hero-title">{{ both(ui.hero_start) }} <span class="hero-highlight">{{ both(ui.hero_highlight) }}</span></h1>
+  {% include "_search.html" %}
 </div>
 
 <div class="map-outer">

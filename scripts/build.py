@@ -3,7 +3,7 @@
     python scripts/build.py            build
     python scripts/build.py --serve    build, then serve on http://localhost:8000
 
-Needs Python (jinja2, pyyaml), pandoc, Node and `npm ci` (KaTeX).
+Needs Python (requirements.txt), pandoc, Node and `npm ci` (KaTeX).
 """
 import argparse
 import functools
@@ -16,6 +16,7 @@ import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 import render
+import search
 import validate
 from validate import PROBLEMS, ROOT
 
@@ -107,6 +108,7 @@ def build(deploy=False):
     for source, folder in (
         ("design/tokens.css", ""), ("site/static/app.css", ""), ("site/static/statement.css", ""),
         ("site/static/js/ui.js", "js"), ("site/static/js/map.js", "js"), ("site/static/js/filters.js", "js"),
+        ("site/static/js/search.js", "js"),
         ("design/svg/logo_star.svg", "svg"),
     ):
         shutil.copy(ROOT / source, static / folder)
@@ -144,6 +146,7 @@ def build(deploy=False):
     page("notes", "notes.html", ui["notes_heading"], tab="notes")
     # Without a 404 page, Cloudflare Pages answers every unknown address with the home page.
     page("404.html", "404.html", ui["not_found"])
+    search.write_index(problems, topics, sources, DIST / "pagefind")
     print(f"build: {len(problems)} problems ({rendered} rendered, {len(problems) - rendered} cached) -> {DIST.name}/")
 
 

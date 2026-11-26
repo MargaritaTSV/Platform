@@ -573,6 +573,22 @@ button.map-star-link {
   color: var(--faint);
 }
 
+/* ---------- search ---------- */
+
+.search { text-align: left; }
+.search[hidden] { display: none; }
+.hero .search { max-width: 640px; margin: 40px auto 0; }
+.problems .search { margin-bottom: 48px; }
+.search input { display: block; width: 100%; font: 300 17px var(--font-sans); padding: 8px 0 4px; border: 0; background: transparent; color: var(--ink); }
+.search-rule { display: block; width: 100%; height: 8px; }
+.search-status { margin: 10px 0 0; font-size: 12px; color: var(--muted); }
+.search-results { margin: 0; padding: 0; list-style: none; }
+.search-results a { display: flex; flex-direction: column; gap: 4px; padding: 16px 0; text-decoration: none; }
+.result-title { font-size: 23px; }
+.result-place { font-size: 11.5px; color: var(--muted); }
+.result-excerpt { font-size: 14px; line-height: 1.55; color: var(--muted); }
+.result-excerpt mark { background: none; color: var(--ink); text-decoration: underline wavy var(--wavy-underline); text-underline-offset: 4px; }
+
 /* ---------- problem list ---------- */
 
 .problems-layout {

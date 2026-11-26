@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pyyaml pillow jinja2
+      - run: pip install -r requirements.txt
       - run: python scripts/validate.py --selftest
       - run: python scripts/figures.py selftest
       - run: python scripts/validate.py
@@ -37,6 +37,7 @@ jobs:
           key: html-${{ github.run_id }}
           restore-keys: html-
       - run: python scripts/render.py
+      - run: python scripts/search.py
       # Fails on any math KaTeX cannot render.
       - run: python scripts/build.py
       - name: Install TeX

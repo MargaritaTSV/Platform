@@ -1,5 +1,5 @@
 {
-  "tagline": "astronomy olympiad problems",
+  "tagline": "Astronomy olympiad problems",
   "nav_label": "Main menu",
   "nav_problems": "Problems",
   "nav_notes": "Theory",
@@ -26,5 +26,10 @@
   "clear_filters": "clear",
   "shown": "problems shown",
   "nothing_found": "No problems match these filters.",
-  "not_found": "This page does not exist"
+  "not_found": "This page does not exist",
+  "search_label": "Search all problems",
+  "search_found": "problems found:",
+  "search_more": "showing the first 20 of:",
+  "search_none": "Nothing found.",
+  "search_failed": "Search did not load. Reload the page."
 }

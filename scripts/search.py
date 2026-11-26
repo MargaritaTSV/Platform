@@ -67,10 +67,10 @@ def records(problems, topics, sources):
 
 def write_index(problems, topics, sources, folder):
     async def run():
-        async with PagefindIndex(config=IndexConfig()) as index:
+        # Leaving the block writes the files. Without output_path they also land in ./pagefind.
+        async with PagefindIndex(config=IndexConfig(output_path=str(folder))) as index:
             for record in records(problems, topics, sources):
                 await index.add_custom_record(**record)
-            await index.write_files(output_path=str(folder))
 
     asyncio.run(run())
 

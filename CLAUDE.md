@@ -2,14 +2,14 @@
 
 Static astronomy problem bank (RU/EN). Only the owner adds content.
 **Read `notes/roadmap.md` first**: it says what is done and what is next. Update it when a task ends.
-Decisions: `notes/decisions.md`. `docs/spec.md` and the old `scripts/build.py` are superseded.
+Decisions: `notes/decisions.md`. `docs/spec.md` is superseded.
 
 ## Rules
 - Static only, no server, no database. Cloudflare Pages (site) + R2 (figures), deployed by GitHub Actions.
 - Python + Jinja build, plain HTML/CSS/JS. No frontend framework. Node only for KaTeX pre-render and wrangler.
 - Site name, domain and URLs live only in `site.yml`.
 - New content reaches the live site only through a pull request that passes `validate`.
-- The repo is public: no solutions of others, PDFs, figure originals or secrets in git.
+- Never commit other people's PDFs or solutions, figure originals, tool caches (`.wrangler/`) or secrets.
 - Roadmap order, one small task at a time; commit after each.
 
 ## Folders
@@ -32,4 +32,5 @@ problems show in their original language.
 ## Commands
 - `python scripts/validate.py` (`--selftest`, `--tex [files]` needs XeLaTeX)
 - `python scripts/figures.py push` (`--local` without R2), `python scripts/figures.py selftest`
-- `python scripts/build.py --serve` (from task T7)
+- `npm ci` once, then `python scripts/build.py --serve` (needs pandoc 3.14 and Node)
+- `python scripts/render.py` (self-test of pandoc + KaTeX)

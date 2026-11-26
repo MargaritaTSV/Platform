@@ -51,7 +51,8 @@ LIST_OPTIONS = {r"[label=\alph*)]", r"[label=\arabic*)]"}
 FIGURE_RE = re.compile(r"^\[width=(?:0?\.\d+|1(?:\.0+)?)?\\linewidth\]\{figures/([A-Za-z0-9._-]+\.(?:png|jpg))\}$")
 
 TOKEN = re.compile(
-    r"(?P<link>\\(?:url|href)\{[^{}\\\n]*\})"
+    # Only web and mail links: a javascript: link would run on the site.
+    r"(?P<link>\\(?:url|href)\{(?:https?://|mailto:)[^{}\\\n]*\})"
     r"|(?P<env>\\(?P<edge>begin|end)\{(?P<envname>[A-Za-z]+\*?)\})"
     r"|(?P<fig>\\includegraphics(?![A-Za-z])(?P<figargs>(?:\[[^\]\n]*\])?(?:\{[^{}\n]*\})?))"
     r"|(?P<cmd>\\(?:[A-Za-z]+\*?|[\s\S]))"
@@ -247,6 +248,8 @@ def check_body(body, first_line, lock):
                     yield line, f"\\{name} without an opening delimiter"
                 elif bare in MATH_ONLY:
                     yield line, f"\\{bare} is math-only: write $\\{bare}{{...}}$"
+                elif name in ("url", "href"):
+                    yield line, "links must start with https://, http:// or mailto:"
                 elif name[0].isalpha():
                     if name not in TEXT_COMMANDS:
                         yield line, f"command \\{name} is not allowed in text"
@@ -399,6 +402,19 @@ def selftest():
     return 1 if failures else 0
 
 
+def check_all():
+    """Every static check on the repo. Returns a list of (path, line, message)."""
+    topics, sources = load_taxonomy()
+    lock = load_lock()
+    return check_bank(PROBLEMS, topics, sources, lock) + list(check_figures(lock)) + list(check_overleaf())
+
+
+def report(errors):
+    for path, line, msg in errors:
+        rel = path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
+        print(f"{rel.as_posix()}:{line}: {msg}")
+
+
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -407,18 +423,14 @@ def main():
     args = parser.parse_args()
     if args.selftest:
         return selftest()
-    topics, sources = load_taxonomy()
-    lock = load_lock()
-    errors = check_bank(PROBLEMS, topics, sources, lock) + list(check_figures(lock)) + list(check_overleaf())
+    errors = check_all()
     # Compile only files that pass the static check: it also blocks file-access commands.
     if args.tex is not None and not errors:
         targets = [Path(f).resolve() for f in args.tex] or sorted(PROBLEMS.rglob("*.tex"))
         for path in targets:
             if path.suffix == ".tex" and path.is_relative_to(PROBLEMS) and path.exists():
                 errors += compile_tex(path)
-    for path, line, msg in errors:
-        rel = path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
-        print(f"{rel.as_posix()}:{line}: {msg}")
+    report(errors)
     count = sum(1 for _ in PROBLEMS.rglob("*.tex"))
     print(f"validate: {count} files, {len(errors)} errors")
     return 1 if errors else 0

@@ -19,10 +19,26 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pyyaml pillow
+      - run: pip install pyyaml pillow jinja2
       - run: python scripts/validate.py --selftest
       - run: python scripts/figures.py selftest
       - run: python scripts/validate.py
+      - uses: pandoc/actions/setup@v1
+        with:
+          version: "3.14"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: .build-cache/html
+          key: html-${{ github.run_id }}
+          restore-keys: html-
+      - run: python scripts/render.py
+      # Fails on any math KaTeX cannot render.
+      - run: python scripts/build.py
       - name: Install TeX
         run: |
           sudo apt-get update -q

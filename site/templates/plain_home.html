@@ -1,0 +1,20 @@
+{# Temporary home page; replaced by the star map (T9). #}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>{{ site.name.ru }}</title>
+  <link rel="stylesheet" href="/static/tokens.css">
+</head>
+<body style="max-width: 50rem; margin: 2rem auto; padding: 0 1rem">
+  <h1>{{ site.name.ru }}</h1>
+  {% for topic in topics %}
+  <h2>{{ topic.name.ru }}</h2>
+  <ul>
+    {% for sub in topic.subtopics %}
+    <li><a href="/problems/{{ topic.key }}/{{ sub.key }}/">{{ sub.name.ru }}</a> ({{ counts[topic.key, sub.key] }})</li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</body>
+</html>

@@ -2,12 +2,12 @@
 
 Menu names in the dashboard may differ slightly.
 
-1. **Domain** (start first, it can take up to 24 h). Dashboard → Add a domain → `tsvetkovaspace.com` → Free plan.
+1. **Domain** (start first, it can take up to 24 h). Dashboard → Add a domain → `astroolymp.com` → Free plan.
    Check that the imported DNS records match what your current DNS provider shows, then replace the nameservers
    at your registrar with the two Cloudflare gives you. Wait until the domain shows "Active".
 2. **R2.** Dashboard → R2. Activating it asks for a payment method even on the free tier.
-   Create bucket `stellartask-media`.
-3. **Media address** (after step 1 is active). Bucket → Settings → Custom domains → add `media.tsvetkovaspace.com`.
+   Create bucket `astroolymp`.
+3. **Media address** (after step 1 is active). Bucket → Settings → Custom domains → add `files.astroolymp.com`.
 4. **Pages project**, in a terminal: `npx wrangler login`, then
    `npx wrangler pages project create stellartask --production-branch main`.
 5. **Upload figures:** `python scripts/figures.py push`, then commit `content/figures.lock.json`.

@@ -1,15 +1,15 @@
 # Roadmap (MVP target: mid-December 2026)
 
 Status: `[x]` done, `[~]` partly, `[ ]` open. Big sessions until Sun Nov 29, then one task per short session.
-Work branch: `latex-mvp` (not pushed; `main` still serves the maintenance page).
+Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance page). Domain: astroolymp.com.
 
 | Status | # | Task | Needs from owner | Latest |
 |---|---|---|---|---|
 | [x] | T0 | CLAUDE.md, roadmap, site.yml, validator + fixtures | | Nov 27 |
 | [x] | T1 | Cleanup of old content, games, subagents; .gitignore | | Nov 28 |
-| [ ] | T2 | Cloudflare: nameservers, R2 bucket, media domain, Pages project (`notes/cloudflare.md`) | do the steps, start early | Nov 29 |
+| [x] | T2 | Cloudflare: nameservers, R2 bucket `astroolymp` at files.astroolymp.com, Pages project `stellartask` | | Nov 29 |
 | [~] | T3 | Real taxonomy.yml + sources | check names and subtopics; grades need no list | Nov 30 |
-| [~] | T4 | figures.py + lock; samples migrated | confirm topics/difficulties; after T2: `figures.py push` | Dec 1 |
+| [~] | T4 | figures.py + lock; samples migrated; 4 figures live on R2 | confirm topics/difficulties | Dec 1 |
 | [~] | T5 | Overleaf starter | upload and compile once | Dec 2 |
 | [~] | T6 | CI: `validate.yml` written (never run yet); `deploy.yml`, coming-soon page, remove GH Pages/CNAME open | token + account id as repo secrets | Dec 3 |
 | [ ] | T7 | build.py: pandoc fragments, cache, KaTeX pre-render (`throwOnError`), R2 image URLs, `\alph*)` sub-lists | | Dec 5 |
@@ -25,7 +25,8 @@ Work branch: `latex-mvp` (not pushed; `main` still serves the maintenance page).
 ## Open notes
 - `--tex` has not run anywhere yet (no XeLaTeX locally); the first CI run tests it.
 - Unknown math macros are caught only by `--tex` and, from T7, KaTeX.
-- `figures.lock.json` entries have `"uploaded": false` until R2 exists; the T6 deploy must fail on any.
+- The T6 deploy must fail on any `"uploaded": false` entry in `figures.lock.json`.
+- T6 must also attach astroolymp.com to the Pages project.
 - Replaced figures keep their URL: the build must append `?v=<sha>`.
 - Old PDFs in `content/_source/` stay in earlier git history of the public repo.
 - Local `content/figures/` is the only original copy besides R2: back it up.

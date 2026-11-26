@@ -12,3 +12,6 @@ content/figures/
 content/**/*.pdf
 content/samples/figures/
 content/samples/photo/*.png
+
+# wrangler cache holds the account id and email
+.wrangler/

@@ -7,12 +7,13 @@ Needs Python (jinja2, pyyaml), pandoc, Node and `npm ci` (KaTeX).
 """
 import argparse
 import functools
+import json
 import shutil
 import sys
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 import yaml
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 import render
 import validate
@@ -25,6 +26,14 @@ ALT = {"ru": "Рисунок к задаче", "en": "Figure for the problem"}
 
 def load_yaml(path):
     return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def load_ui():
+    """Interface strings as {key: {ru, en}}. Both languages must have the same keys."""
+    ru, en = (json.loads((ROOT / "site" / "i18n" / f"{lang}.json").read_text(encoding="utf-8")) for lang in ("ru", "en"))
+    if ru.keys() != en.keys():
+        sys.exit(f"build: site/i18n keys differ between ru and en: {', '.join(sorted(ru.keys() ^ en.keys()))}")
+    return {key: {"ru": ru[key], "en": en[key]} for key in ru}
 
 
 def load_problems():
@@ -60,28 +69,37 @@ def build():
         p["html"] = render.rewrite_images(html[p["id"]], lock, site["media_url"], ALT[p["lang"]])
 
     shutil.rmtree(DIST, ignore_errors=True)
-    (DIST / "static").mkdir(parents=True)
-    shutil.copy(ROOT / "design" / "tokens.css", DIST / "static")
-    shutil.copy(ROOT / "site" / "static" / "statement.css", DIST / "static")
-    shutil.copy(render.KATEX / "dist" / "katex.min.css", DIST / "static")
-    shutil.copytree(render.KATEX / "dist" / "fonts", DIST / "static" / "fonts")
+    static = DIST / "static"
+    (static / "js").mkdir(parents=True)
+    (static / "svg").mkdir()
+    for source, folder in (
+        ("design/tokens.css", ""), ("site/static/app.css", ""), ("site/static/statement.css", ""),
+        ("site/static/js/ui.js", "js"), ("design/svg/logo_star.svg", "svg"),
+    ):
+        shutil.copy(ROOT / source, static / folder)
+    shutil.copy(render.KATEX / "dist" / "katex.min.css", static)
+    shutil.copytree(render.KATEX / "dist" / "fonts", static / "fonts")
 
-    env = Environment(loader=FileSystemLoader(ROOT / "site" / "templates"), autoescape=True)
+    env = Environment(loader=FileSystemLoader(ROOT / "site" / "templates"), autoescape=True,
+                      undefined=StrictUndefined)
     sources = {s["key"]: s["name"] for s in taxonomy["sources"]}
+    ui = load_ui()
 
-    def page(url, template, **data):
+    def page(url, template, title, tab="problems", **data):
         target = DIST / url / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(env.get_template(template).render(site=site, **data), encoding="utf-8")
+        html = env.get_template(template).render(site=site, ui=ui, title=title, tab=tab, **data)
+        target.write_text(html, encoding="utf-8")
 
     counts = {}
     for topic in taxonomy["topics"]:
         for sub in topic["subtopics"]:
             rows = [p for p in problems if (p["topic"], p["subtopic"]) == (topic["key"], sub["key"])]
             counts[topic["key"], sub["key"]] = len(rows)
-            page(f"problems/{topic['key']}/{sub['key']}", "plain_subtopic.html",
+            page(f"problems/{topic['key']}/{sub['key']}", "plain_subtopic.html", sub["name"],
                  topic=topic, subtopic=sub, problems=rows, sources=sources)
-    page("", "plain_home.html", topics=taxonomy["topics"], counts=counts)
+    page("", "plain_home.html", ui["tagline"], topics=taxonomy["topics"], counts=counts)
+    page("notes", "notes.html", ui["notes_heading"], tab="notes")
     print(f"build: {len(problems)} problems ({rendered} rendered, {len(problems) - rendered} cached) -> {DIST.name}/")
 
 

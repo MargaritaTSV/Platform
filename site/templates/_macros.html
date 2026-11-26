@@ -1,0 +1,4 @@
+{# Every interface string is written in both languages; CSS shows the chosen one. #}
+{% macro both(value) -%}
+<span class="ru" lang="ru">{{ value.ru }}</span><span class="en" lang="en">{{ value.en }}</span>
+{%- endmacro %}

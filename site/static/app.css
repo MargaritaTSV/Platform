@@ -41,6 +41,8 @@
 }
 
 .logo-star {
+  /* The drawing has a white background of its own. */
+  mix-blend-mode: multiply;
   display: block;
   width: 44px;
   height: 44px;
@@ -88,16 +90,38 @@
 }
 
 .lang-link {
+  font: inherit;
   color: var(--muted);
-  text-decoration: none;
+  background: none;
+  border: 0;
+  padding: 10px 2px;
+  cursor: pointer;
 }
 
 .lang-link:hover {
   color: var(--hover);
 }
 
-.lang-link.is-active {
+.lang-link[aria-pressed="true"] {
   color: var(--ink);
+  text-decoration: underline wavy var(--wavy-underline);
+  text-underline-offset: 6px;
+}
+
+/* Interface text exists in both languages; show the chosen one. */
+html[lang="ru"] .en,
+html[lang="en"] .ru {
+  display: none;
+}
+
+.nav-link[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.soon {
+  font-size: 11px;
+  color: var(--muted);
 }
 
 .lang-sep {
@@ -628,8 +652,6 @@ select.pick:hover {
 .rail-heading {
   margin: 0 0 16px;
   font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
   color: var(--faint);
   font-weight: 400;
 }
@@ -808,14 +830,6 @@ select.pick:hover {
   color: var(--faint);
 }
 
-.statement {
-  margin: 28px 0 40px;
-  font-size: 22px;
-  line-height: 1.6;
-  color: var(--ink);
-  white-space: pre-line;
-}
-
 .prevnext {
   display: flex;
   justify-content: space-between;
@@ -906,9 +920,5 @@ select.pick:hover {
 
   .problem-number {
     font-size: 54px;
-  }
-
-  .statement {
-    font-size: 19px;
   }
 }

@@ -10,10 +10,10 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
 | [x] | T2 | Cloudflare: nameservers, R2 bucket `astroolymp` at files.astroolymp.com, Pages project `stellartask` | | Nov 29 |
 | [~] | T3 | Real taxonomy.yml + sources | check names and subtopics; grades need no list | Nov 30 |
 | [x] | T4 | figures.py + lock; samples migrated; 4 figures live on R2 |  | Dec 1 |
-| [~] | T5 | Overleaf starter | upload and compile once | Dec 2 |
+| [x] | T5 | Overleaf starter |  | Dec 2 |
 | [~] | T6 | CI: `validate.yml` written (never run yet); `deploy.yml`, coming-soon page, remove GH Pages/CNAME open | token + account id as repo secrets | Dec 3 |
 | [x] | T7 | build.py: pandoc fragments, cache, KaTeX pre-render (`throwOnError`), R2 image URLs, `\alph*)` sub-lists | | Dec 5 |
-| [ ] | T8 | Layout: header, footer, RU/EN button, name from site.yml, tabs (Задачи / Теория / Игры) | | Dec 6 |
+| [x] | T8 | Layout: header, footer, RU/EN button, name from site.yml, tabs (Задачи / Теория / Игры) | | Dec 6 |
 | [ ] | T9 | Home: star map (design/map.json, `star` in taxonomy), subtopic panel, counts | | Dec 8 |
 | [ ] | T10 | Problems page per subtopic: rail, rows, filters (difficulty, source, year, grade), URL state | | Dec 10 |
 | [ ] | T11 | Pagefind search (home + problems page), results link to `#<id>` | | Dec 11 |
@@ -24,7 +24,12 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
 
 ## Open notes
 - `--tex` has not run anywhere yet (no XeLaTeX locally); the first CI run tests it.
-- T7 pages are temporary (`site/templates/plain_*.html`); T8-T10 replace them and the old templates.
+- Home and subtopic pages are temporary (`site/templates/plain_*.html`); T9 and T10 replace them and
+  reuse `home.html`, `area.html`, `map.js`, `filters.js`.
+- T12 is mostly done with T8: theory placeholder and games link exist.
+- The games link leads nowhere until the games subdomain exists.
+- T6: add a `404.html`, otherwise Cloudflare Pages serves the home page for unknown addresses.
+- `design/svg/logo_star.svg` comes from a Vecteezy stock file (250 KB): check its licence before launch.
 - T13: math HTML averages ~9 KB per problem, so a 500-row page is ~4 MB raw (~0.8 MB gzipped), over the
   1.5 MB raw target. Options then: split the page, or drop KaTeX MathML output (worse for screen readers).
 - The T6 deploy must fail on any `"uploaded": false` entry in `figures.lock.json`.

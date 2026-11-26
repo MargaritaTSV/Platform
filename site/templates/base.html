@@ -1,34 +1,33 @@
+{% from "_macros.html" import both %}
+{% set full_title = {'ru': title.ru ~ ' · ' ~ site.name.ru, 'en': title.en ~ ' · ' ~ site.name.en} %}
 <!doctype html>
-<html lang="{{ lang }}">
+<html lang="ru" data-title-ru="{{ full_title.ru }}" data-title-en="{{ full_title.en }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ t.site_title }}</title>
+<title>{{ full_title.ru }}</title>
+{# Before the first paint, so an English visitor never sees a flash of Russian. #}
+<script>try{if(localStorage.getItem("lang")==="en"){document.documentElement.lang="en";document.title=document.documentElement.dataset.titleEn}}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&amp;family=Onest:wght@300;400;500&amp;family=JetBrains+Mono:wght@400&amp;display=swap">
 <link rel="stylesheet" href="/static/tokens.css">
 <link rel="stylesheet" href="/static/app.css">
-<script src="/static/js/i18n.js" defer></script>
-<script src="/static/js/map.js" defer></script>
-<script src="/static/js/filters.js" defer></script>
+{% block head %}{% endblock %}
+<script src="/static/js/ui.js" defer></script>
 </head>
 <body>
 <div class="page">
   <div class="wrap">
     <header class="site-header">
-      <a class="logo-link" href="{{ '/' if lang == 'en' else '/ru/' }}">
-        <img class="logo-star" src="/static/svg/logo_star.svg" alt="" aria-hidden="true" width="44" height="44">
-        <span class="logo-text serif">StellarTask</span>
+      <a class="logo-link" href="/">
+        <img class="logo-star" src="/static/svg/logo_star.svg" alt="" width="44" height="44">
+        <span class="logo-text serif">{{ both(site.name) }}</span>
       </a>
-      <nav class="main-nav" aria-label="Main">
-        <a class="nav-link" href="{{ '/' if lang == 'en' else '/ru/' }}"{% if (active_nav | default('')) in ['home', 'topics'] %} aria-current="page"{% endif %}>{{ t.nav_topics }}</a>
-        <a class="nav-link" href="{{ lang_prefix }}/notes/"{% if (active_nav | default('')) == 'notes' %} aria-current="page"{% endif %}>{{ t.nav_notes }}</a>
-        <a class="nav-link" href="{{ lang_prefix }}/#games">{{ t.nav_games }}</a>
-        <span class="lang-switch mono" role="group" aria-label="{{ t.lang_ru }} / {{ t.lang_en }}">
-          {% if lang == 'en' %}
-          <a class="lang-link" href="{{ url_ru }}" aria-pressed="false">{{ t.lang_ru }}</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link is-active" href="{{ url_en }}" aria-pressed="true" aria-current="page">{{ t.lang_en }}</a>
-          {% else %}
-          <a class="lang-link is-active" href="{{ url_ru }}" aria-pressed="true" aria-current="page">{{ t.lang_ru }}</a><span class="lang-sep" aria-hidden="true">·</span><a class="lang-link" href="{{ url_en }}" aria-pressed="false">{{ t.lang_en }}</a>
-          {% endif %}
+      <nav class="main-nav" aria-label="{{ ui.nav_label.ru }}" data-label-ru="{{ ui.nav_label.ru }}" data-label-en="{{ ui.nav_label.en }}">
+        <a class="nav-link" href="/"{% if tab == 'problems' %} aria-current="page"{% endif %}>{{ both(ui.nav_problems) }}</a>
+        <a class="nav-link" href="/notes/"{% if tab == 'notes' %} aria-current="page"{% endif %}>{{ both(ui.nav_notes) }}</a>
+        <a class="nav-link" href="{{ site.games_url }}">{{ both(ui.nav_games) }} <span class="soon mono">{{ both(ui.soon) }}</span></a>
+        <span class="lang-switch mono" role="group" aria-label="{{ ui.lang_label.ru }}" data-label-ru="{{ ui.lang_label.ru }}" data-label-en="{{ ui.lang_label.en }}">
+          <button type="button" class="lang-link" data-set-lang="ru" lang="ru" aria-pressed="true">ru</button><span class="lang-sep" aria-hidden="true">·</span><button type="button" class="lang-link" data-set-lang="en" lang="en" aria-pressed="false">en</button>
         </span>
       </nav>
     </header>
@@ -37,14 +36,16 @@
       <path d="M1 5 C 70 2, 140 8, 210 4 C 300 1, 380 9, 460 4 C 550 7, 630 2, 710 6 C 800 3, 880 8, 950 4 C 970 3, 985 6, 999 5" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
     </svg>
 
+    <main>
     {% block content %}{% endblock %}
+    </main>
 
     <svg class="divider divider-muted" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
       <path d="M1 6 C 65 3, 150 8, 230 5 C 310 2, 390 7, 470 3 C 560 8, 640 3, 720 7 C 800 4, 870 1, 940 6 C 965 7, 985 4, 999 5" fill="none" stroke="#BDB7AB" stroke-width="1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
     </svg>
     <footer class="site-footer mono">
-      <span>{{ t.footer_made }}</span>
-      <span>{{ t.footer_source }}</span>
+      <span>{{ both(site.name) }} · {{ both(ui.footer_made) }}</span>
+      <span>{{ both(ui.footer_source) }}</span>
     </footer>
   </div>
 </div>

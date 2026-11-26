@@ -1,4 +1,6 @@
 /* Problem statements: HTML produced by pandoc and KaTeX. */
+.statement { margin: 16px 0 48px; max-width: 46rem; font-family: var(--font-serif); font-weight: 500; font-size: 21px; line-height: 1.55; }
+.statement .katex { font-size: 1em; }
 .statement img { max-width: 100%; height: auto; }
 .statement .center { text-align: center; }
 .statement table { border-collapse: collapse; margin: 1em auto; }

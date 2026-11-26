@@ -1,24 +1,23 @@
-{# Temporary page for checking the build; replaced by the designed pages (T8, T10). #}
-<!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <title>{{ subtopic.name.ru }} · {{ site.name.ru }}</title>
-  <link rel="stylesheet" href="/static/tokens.css">
-  <link rel="stylesheet" href="/static/katex.min.css">
-  <link rel="stylesheet" href="/static/statement.css">
-</head>
-<body style="max-width: 50rem; margin: 2rem auto; padding: 0 1rem">
-  <p><a href="/">{{ site.name.ru }}</a></p>
-  <h1>{{ topic.name.ru }}: {{ subtopic.name.ru }}</h1>
-  {% for p in problems %}
-  <article id="{{ p.id }}">
-    <h2>{{ p.title or p.id }}</h2>
-    <p>{{ sources[p.source].ru }} · {{ p.year }} · класс {{ p.grade }} · сложность {{ p.difficulty }}</p>
-    <div class="statement" lang="{{ p.lang }}">{{ p.html | safe }}</div>
-  </article>
-  {% else %}
-  <p>Пока нет задач.</p>
-  {% endfor %}
-</body>
-</html>
+{# Temporary content; the designed problem list comes in T10. #}
+{% extends "base.html" %}
+{% from "_macros.html" import both %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/katex.min.css">
+<link rel="stylesheet" href="/static/statement.css">
+{% endblock %}
+
+{% block content %}
+<div class="topic-head">
+  <h1 class="serif topic-title">{{ both(topic.name) }}: {{ both(subtopic.name) }}</h1>
+</div>
+{% for p in problems %}
+<article id="{{ p.id }}">
+  <h2 class="serif">{{ p.get('title') or p.id }}</h2>
+  <p class="muted">{{ both(sources[p.source]) }} · {{ p.year }} · {{ both(ui.grade) }} {{ p.grade }} · {{ both(ui.difficulty) }} {{ p.difficulty }}</p>
+  <div class="statement" lang="{{ p.lang }}">{{ p.html | safe }}</div>
+</article>
+{% else %}
+<p class="empty mono">{{ both(ui.no_problems) }}</p>
+{% endfor %}
+{% endblock %}

@@ -25,5 +25,6 @@
   "year": "year",
   "clear_filters": "clear",
   "shown": "problems shown",
-  "nothing_found": "No problems match these filters."
+  "nothing_found": "No problems match these filters.",
+  "not_found": "This page does not exist"
 }

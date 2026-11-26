@@ -79,7 +79,7 @@ def load_problems():
     return problems
 
 
-def build():
+def build(deploy=False):
     errors = validate.check_all()
     if errors:
         validate.report(errors)
@@ -87,6 +87,9 @@ def build():
     site = load_yaml(ROOT / "site.yml")
     taxonomy = load_yaml(ROOT / "content" / "taxonomy.yml")
     lock = validate.load_lock()
+    waiting = [name for name, info in lock.items() if not info.get("uploaded")]
+    if deploy and waiting:
+        sys.exit(f"build: figures not uploaded to R2 (run scripts/figures.py push): {', '.join(waiting)}")
     problems = load_problems()
 
     html, failed, rendered = render.render_many({p["id"]: p["body"] for p in problems}, CACHE)
@@ -116,7 +119,7 @@ def build():
     ui = load_ui()
 
     def page(url, template, title, tab="problems", **data):
-        target = DIST / url / "index.html"
+        target = DIST / url if url.endswith(".html") else DIST / url / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
         html = env.get_template(template).render(site=site, ui=ui, title=title, tab=tab, **data)
         target.write_text(html, encoding="utf-8")
@@ -139,6 +142,8 @@ def build():
                  first_subtopic=first_subtopic, filters=filter_choices(rows, ui, sources))
     page("", "home.html", ui["tagline"], topics=taxonomy["topics"], counts=counts, topic_counts=topic_counts)
     page("notes", "notes.html", ui["notes_heading"], tab="notes")
+    # Without a 404 page, Cloudflare Pages answers every unknown address with the home page.
+    page("404.html", "404.html", ui["not_found"])
     print(f"build: {len(problems)} problems ({rendered} rendered, {len(problems) - rendered} cached) -> {DIST.name}/")
 
 
@@ -147,8 +152,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--serve", action="store_true")
     parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--deploy", action="store_true", help="also require every figure to be on R2")
     args = parser.parse_args()
-    build()
+    build(args.deploy)
     if args.serve:
         handler = functools.partial(SimpleHTTPRequestHandler, directory=DIST)
         print(f"serving http://localhost:{args.port} (Ctrl+C to stop)")

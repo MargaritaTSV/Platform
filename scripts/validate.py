@@ -345,7 +345,9 @@ def compile_tex(path):
     with tempfile.TemporaryDirectory() as tmp:
         Path(tmp, "body.tex").write_text(text, encoding="utf-8")
         Path(tmp, "check.tex").write_text(wrapper, encoding="utf-8")
-        env = dict(os.environ, TEXINPUTS=f"{ROOT / 'latex'}{os.pathsep}", openin_any="p", openout_any="p")
+        for name in ("preamble.tex", "macros.tex"):
+            shutil.copy(ROOT / "latex" / name, tmp)
+        env = dict(os.environ, openin_any="p", openout_any="p")
         run = subprocess.run(
             ["xelatex", "-interaction=nonstopmode", "-halt-on-error", "-no-shell-escape", "check.tex"],
             cwd=tmp, env=env, capture_output=True, timeout=120,

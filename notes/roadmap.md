@@ -1,7 +1,7 @@
 # Roadmap (MVP target: mid-December 2026)
 
 Status: `[x]` done, `[~]` partly, `[ ]` open. Big sessions until Sun Nov 29, then one task per short session.
-Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance page). Domain: astroolymp.com.
+Work branch: `latex-mvp`, goes to `main` by pull request. Domain: astroolymp.com.
 
 | Status | # | Task | Needs from owner | Latest |
 |---|---|---|---|---|
@@ -11,7 +11,7 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
 | [~] | T3 | Real taxonomy.yml + sources | check names and subtopics; grades need no list | Nov 30 |
 | [x] | T4 | figures.py + lock; samples migrated; 4 figures live on R2 |  | Dec 1 |
 | [x] | T5 | Overleaf starter |  | Dec 2 |
-| [~] | T6 | CI: `validate.yml` written (never run yet); `deploy.yml`, coming-soon page, remove GH Pages/CNAME open | token + account id as repo secrets | Dec 3 |
+| [~] | T6 | `validate.yml` + `deploy.yml` (publish on merge to main), 404 page; GH Pages files removed | merge the pull request; attach astroolymp.com to Pages | Dec 3 |
 | [x] | T7 | build.py: pandoc fragments, cache, KaTeX pre-render (`throwOnError`), R2 image URLs, `\alph*)` sub-lists | | Dec 5 |
 | [x] | T8 | Layout: header, footer, RU/EN button, name from site.yml, tabs (Задачи / Теория / Игры) | | Dec 6 |
 | [x] | T9 | Home: star map (design/map.json, `star` in taxonomy), subtopic panel, counts | | Dec 8 |
@@ -26,12 +26,12 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
 - `--tex` has not run anywhere yet (no XeLaTeX locally); the first CI run tests it.
 - T12 is mostly done with T8: theory placeholder and games link exist.
 - The games link leads nowhere until the games subdomain exists.
-- T6: add a `404.html`, otherwise Cloudflare Pages serves the home page for unknown addresses.
+- Back up of source PDFs: `../Platform-source-backup/` (pulling `main` can delete `content/_source/`).
 - `design/svg/logo_star.svg` comes from a Vecteezy stock file (250 KB): check its licence before launch.
 - T13: math HTML averages ~9 KB per problem, so a 500-row page is ~4 MB raw (~0.8 MB gzipped), over the
   1.5 MB raw target. Options then: split the page, or drop KaTeX MathML output (worse for screen readers).
-- The T6 deploy must fail on any `"uploaded": false` entry in `figures.lock.json`.
-- T6 must also attach astroolymp.com to the Pages project.
+- After the first deploy: Pages project → Custom domains → add astroolymp.com.
+- The old GitHub Pages maintenance page stays published until Pages is switched off in repo settings.
 - Old PDFs stay in earlier git history (the repo is private).
 - Map lines are hand-written in `site/templates/home.html` and match `star` in taxonomy.yml.
 - Russian topic descriptions were written by Claude: owner to review.

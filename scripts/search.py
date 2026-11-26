@@ -2,7 +2,21 @@
 import asyncio
 from html.parser import HTMLParser
 
+import pagefind.service
 from pagefind.index import IndexConfig, PagefindIndex
+
+
+class _NoDelay:
+    """pagefind 1.6.0 sleeps 0.1 s before reading each reply: over 16 minutes for 10k problems."""
+
+    def __getattr__(self, name):
+        return getattr(asyncio, name)
+
+    async def sleep(self, _):
+        await asyncio.sleep(0)  # still yields, so the waiting request can continue
+
+
+pagefind.service.asyncio = _NoDelay()
 
 VOID = {"br", "img", "hr", "col", "input", "meta", "link", "source", "wbr"}
 BLOCKS = {"p", "li", "tr", "td", "th", "div", "br", "table", "ol", "ul"}

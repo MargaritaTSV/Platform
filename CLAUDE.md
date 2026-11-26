@@ -35,3 +35,4 @@ problems show in their original language.
 - Deploy: merging into `main` publishes to Cloudflare Pages (`.github/workflows/deploy.yml`).
 - `pip install -r requirements.txt` and `npm ci` once, then `python scripts/build.py --serve` (needs pandoc 3.14 and Node)
 - `python scripts/render.py` (self-test of pandoc + KaTeX)
+- `python scripts/scale.py` (10k synthetic problems, checks build time, file count, page size; ~10 min)

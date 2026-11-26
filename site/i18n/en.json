@@ -15,5 +15,15 @@
   "difficulty": "difficulty",
   "hero_start": "Choose a",
   "hero_highlight": "constellation",
-  "problem_count": "problems in this topic"
+  "problem_count": "problems in this topic",
+  "back_to_map": "back to the map",
+  "other_topics": "other topics",
+  "filters": "Filters",
+  "any_f": "any",
+  "any_m": "any",
+  "source": "source",
+  "year": "year",
+  "clear_filters": "clear",
+  "shown": "problems shown",
+  "nothing_found": "No problems match these filters."
 }

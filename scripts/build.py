@@ -48,6 +48,23 @@ def check_names(taxonomy):
         sys.exit(f"build: taxonomy.yml needs ru and en text for: {', '.join(missing)}")
 
 
+def filter_choices(rows, ui, sources):
+    """The filters of one page, offering only values that occur on it."""
+    def same(values):
+        return [(v, {"ru": v, "en": v}) for v in values]
+
+    grades = sorted({g for p in rows for g in range(p["grade_low"], p["grade_high"] + 1)})
+    return [
+        {"name": "difficulty", "label": ui["difficulty"], "any": ui["any_f"],
+         "options": same(sorted({p["difficulty"] for p in rows}))},
+        {"name": "source", "label": ui["source"], "any": ui["any_m"],
+         "options": [(key, name) for key, name in sources.items() if any(p["source"] == key for p in rows)]},
+        {"name": "year", "label": ui["year"], "any": ui["any_m"],
+         "options": same(sorted({p["year"] for p in rows}, reverse=True))},
+        {"name": "grade", "label": ui["grade"], "any": ui["any_m"], "options": same(grades)},
+    ]
+
+
 def load_problems():
     """The original-language variant of every problem (MVP shows no translations or solutions)."""
     problems = []
@@ -86,7 +103,7 @@ def build():
     (static / "svg").mkdir()
     for source, folder in (
         ("design/tokens.css", ""), ("site/static/app.css", ""), ("site/static/statement.css", ""),
-        ("site/static/js/ui.js", "js"), ("site/static/js/map.js", "js"),
+        ("site/static/js/ui.js", "js"), ("site/static/js/map.js", "js"), ("site/static/js/filters.js", "js"),
         ("design/svg/logo_star.svg", "svg"),
     ):
         shutil.copy(ROOT / source, static / folder)
@@ -105,14 +122,21 @@ def build():
         target.write_text(html, encoding="utf-8")
 
     check_names(taxonomy)
-    counts, topic_counts = {}, {}
-    for topic in taxonomy["topics"]:
+    def rows_of(topic, sub):
+        return [p for p in problems if (p["topic"], p["subtopic"]) == (topic["key"], sub["key"])]
+
+    topics = taxonomy["topics"]
+    counts = {(t["key"], s["key"]): len(rows_of(t, s)) for t in topics for s in t["subtopics"]}
+    topic_counts = {t["key"]: sum(counts[t["key"], s["key"]] for s in t["subtopics"]) for t in topics}
+    # "Other topics" opens the first subtopic that has problems.
+    first_subtopic = {t["key"]: next((s["key"] for s in t["subtopics"] if counts[t["key"], s["key"]]),
+                                     t["subtopics"][0]["key"]) for t in topics}
+    for topic in topics:
         for sub in topic["subtopics"]:
-            rows = [p for p in problems if (p["topic"], p["subtopic"]) == (topic["key"], sub["key"])]
-            counts[topic["key"], sub["key"]] = len(rows)
-            page(f"problems/{topic['key']}/{sub['key']}", "plain_subtopic.html", sub["name"],
-                 topic=topic, subtopic=sub, problems=rows, sources=sources)
-        topic_counts[topic["key"]] = sum(p["topic"] == topic["key"] for p in problems)
+            rows = rows_of(topic, sub)
+            page(f"problems/{topic['key']}/{sub['key']}", "subtopic.html", sub["name"],
+                 topics=topics, topic=topic, subtopic=sub, problems=rows, sources=sources, counts=counts,
+                 first_subtopic=first_subtopic, filters=filter_choices(rows, ui, sources))
     page("", "home.html", ui["tagline"], topics=taxonomy["topics"], counts=counts, topic_counts=topic_counts)
     page("notes", "notes.html", ui["notes_heading"], tab="notes")
     print(f"build: {len(problems)} problems ({rendered} rendered, {len(problems) - rendered} cached) -> {DIST.name}/")

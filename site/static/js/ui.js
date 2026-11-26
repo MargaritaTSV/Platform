@@ -9,6 +9,9 @@
     document.querySelectorAll("[data-set-lang]").forEach(function (button) {
       button.setAttribute("aria-pressed", String(button.dataset.setLang === lang));
     });
+    document.querySelectorAll("[data-text-ru]").forEach(function (el) {
+      el.textContent = lang === "en" ? el.dataset.textEn : el.dataset.textRu;
+    });
     document.querySelectorAll("[data-label-ru]").forEach(function (el) {
       el.setAttribute("aria-label", lang === "en" ? el.dataset.labelEn : el.dataset.labelRu);
     });

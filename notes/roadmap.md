@@ -15,7 +15,7 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
 | [x] | T7 | build.py: pandoc fragments, cache, KaTeX pre-render (`throwOnError`), R2 image URLs, `\alph*)` sub-lists | | Dec 5 |
 | [x] | T8 | Layout: header, footer, RU/EN button, name from site.yml, tabs (Задачи / Теория / Игры) | | Dec 6 |
 | [x] | T9 | Home: star map (design/map.json, `star` in taxonomy), subtopic panel, counts | | Dec 8 |
-| [ ] | T10 | Problems page per subtopic: rail, rows, filters (difficulty, source, year, grade), URL state | | Dec 10 |
+| [x] | T10 | Problems page per subtopic: rail, rows, filters (difficulty, source, year, grade), URL state | | Dec 10 |
 | [ ] | T11 | Pagefind search (home + problems page), results link to `#<id>` | | Dec 11 |
 | [ ] | T12 | Theory placeholder, games link | | Dec 11 |
 | [ ] | T13 | Scale test with 10k synthetic problems (build < 20 min, < 20k files, page < 1.5 MB) | | Dec 12 |
@@ -24,8 +24,6 @@ Work branch: `latex-mvp` (pushed to GitHub; `main` still serves the maintenance 
 
 ## Open notes
 - `--tex` has not run anywhere yet (no XeLaTeX locally); the first CI run tests it.
-- Subtopic pages are temporary (`site/templates/plain_subtopic.html`); T10 replaces them and reuses
-  `area.html` and `filters.js`.
 - T12 is mostly done with T8: theory placeholder and games link exist.
 - The games link leads nowhere until the games subdomain exists.
 - T6: add a `404.html`, otherwise Cloudflare Pages serves the home page for unknown addresses.

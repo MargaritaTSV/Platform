@@ -2,25 +2,25 @@
   "annular-eclipse-negative.png": {
     "height": 698,
     "sha256": "e06e6c82ae9c3eafb171cd1b37c150af736f8fb8d2ef753eca8ad1f71d7c1c2b",
-    "uploaded": false,
+    "uploaded": true,
     "width": 792
   },
   "comet-lovejoy.jpg": {
     "height": 655,
     "sha256": "0cfa3b2eadefb74ea8ba9fb86f6a6fc77ebbcca211bc498a3912055f923e96b4",
-    "uploaded": false,
+    "uploaded": true,
     "width": 984
   },
   "comet-star-map.png": {
     "height": 724,
     "sha256": "4194a2ec9ccf5e175212b016a83280321de2da996a6aa66f545be1a2ea15ed2c",
-    "uploaded": false,
+    "uploaded": true,
     "width": 1019
   },
   "sun-limb-angle-diagram.png": {
     "height": 218,
     "sha256": "7fbd5be6a60e72b212b3652c12d0f681a591c3176e09496547c3e1cef9468faf",
-    "uploaded": false,
+    "uploaded": true,
     "width": 1310
   }
 }

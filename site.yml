@@ -1,6 +1,6 @@
 # The only place with the site name and addresses. Change them here.
 name: { ru: "StellarTask", en: "StellarTask" }
-domain: tsvetkovaspace.com
-media_url: https://media.tsvetkovaspace.com   # R2 custom domain for figures
-games_url: https://games.tsvetkovaspace.com   # placeholder link until games are ready
-r2_bucket: stellartask-media                  # R2 bucket behind media_url
+domain: astroolymp.com
+media_url: https://files.astroolymp.com  # R2 custom domain for figures
+games_url: https://games.astroolymp.com   # placeholder link until games are ready
+r2_bucket: astroolymp                # R2 bucket behind media_url

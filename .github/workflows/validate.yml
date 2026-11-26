@@ -42,7 +42,7 @@ jobs:
       - name: Install TeX
         run: |
           sudo apt-get update -q
-          sudo apt-get install -yq --no-install-recommends texlive-xetex texlive-lang-cyrillic texlive-latex-extra fonts-dejavu
+          sudo apt-get install -yq --no-install-recommends texlive-xetex texlive-lang-cyrillic texlive-latex-extra texlive-fonts-recommended fonts-dejavu
       - name: XeLaTeX check
         env:
           BASE: ${{ github.base_ref }}

@@ -76,7 +76,7 @@
 }
 
 .nav-link.is-disabled {
-  color: var(--faint);
+  color: var(--muted);
   cursor: default;
   pointer-events: none;
 }
@@ -182,7 +182,7 @@ select:focus-visible {
   width: 100%;
   max-width: 1088px;
   aspect-ratio: 1088 / 520;
-  margin: 0 auto 64px;
+  margin: 0 auto;
 }
 
 .map-lines {
@@ -232,7 +232,7 @@ button.map-star-link {
   font-style: italic;
 }
 
-.map-aux { display: flex; justify-content: center; gap: 56px; margin: 0; padding: 24px 0 40px; list-style: none; }
+.map-aux { display: flex; justify-content: center; gap: 56px; margin: 0; padding: 0 0 72px; list-style: none; }
 .map-aux-link { font-size: 21px; font-weight: 500; color: var(--ink); background: none; border: 0; padding: 0; cursor: pointer; }
 .map-aux-link:hover { color: var(--hover); }
 .map-aux-item.is-active .map-aux-link { font-style: italic; text-decoration: underline wavy var(--wavy-underline); text-underline-offset: 6px; }
@@ -585,6 +585,7 @@ button.map-star-link {
 .hero .search { max-width: 640px; margin: 40px auto 0; }
 .problems .search { margin-bottom: 48px; }
 .search input { display: block; width: 100%; font: 300 17px var(--font-sans); padding: 8px 0 4px; border: 0; background: transparent; color: var(--ink); }
+.search input::placeholder { color: var(--muted); opacity: 1; }
 .search-rule { display: block; width: 100%; height: 8px; }
 .search-status { margin: 10px 0 0; font-size: 12px; color: var(--muted); }
 .search-results { margin: 0; padding: 0; list-style: none; }

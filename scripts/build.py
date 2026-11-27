@@ -130,7 +130,7 @@ def build(deploy=False):
         ("design/tokens.css", ""), ("site/static/app.css", ""), ("site/static/statement.css", ""),
         ("site/static/js/ui.js", "js"), ("site/static/js/map.js", "js"), ("site/static/js/filters.js", "js"),
         ("site/static/js/search.js", "js"),
-        ("design/svg/logo_star.svg", "svg"),
+        ("design/svg/logo_star.svg", "svg"), ("design/svg/logo-star.svg", "svg"),
     ):
         shutil.copy(ROOT / source, static / folder)
     shutil.copy(render.KATEX / "dist" / "katex.min.css", static)

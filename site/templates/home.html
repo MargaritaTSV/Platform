@@ -80,5 +80,5 @@
   {% endfor %}
 </div>
 
-<p class="games-note"><a href="{{ site.games_url }}">{{ both(ui.nav_games) }}</a> <span class="mono soon">{{ both(ui.soon) }}</span></p>
+<p class="games-note">{% if site.games_url %}<a href="{{ site.games_url }}">{{ both(ui.nav_games) }}</a>{% else %}{{ both(ui.nav_games) }}{% endif %} <span class="mono soon">{{ both(ui.soon) }}</span></p>
 {% endblock %}

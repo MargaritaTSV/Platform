@@ -20,10 +20,10 @@ Each task: a branch from `main`, then a pull request. Domain: astroolymp.com (li
 | [x] | T12 | Theory placeholder, games link | | Dec 11 |
 | [x] | T13 | Scale test with 10k synthetic problems (build < 20 min, < 20k files, page < 1.5 MB) | | Dec 12 |
 | [x] | T14 | Branch protection + required `validate` check; `notes/routine.md` | | Dec 13 |
-| [ ] | T15 | Design pass, launch checklist, go live | final look | Dec 15 |
+| [~] | T15 | Design pass, launch checklist, go live | owner items in `notes/launch.md` | Dec 15 |
 
 ## Open notes
-- The games link leads nowhere until the games subdomain exists.
+- "Games" shows without a link until `games_url` in site.yml is set.
 - Back up of source PDFs: `../Platform-source-backup/` (pulling `main` can delete `content/_source/`).
 - `design/svg/logo_star.svg` comes from a Vecteezy stock file (250 KB): check its licence before launch.
 - T13 (`python scripts/scale.py`, Nov 27, 10k problems): cold build 343 s, cached 183 s, 10,704 files,

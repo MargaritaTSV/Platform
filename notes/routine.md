@@ -27,6 +27,33 @@ Work in the main checkout: `content/_source/` and `content/figures/` are gitigno
 
 Translations are a separate task: `translation_status: machine-translated-needs-review` until the owner reviews.
 
+## Big question bank
+Classify everything first; write problems only from rows the owner approved.
+
+### 1. Classify (no `.tex` yet)
+1. Owner: put the files (mostly LaTeX, sometimes PDF or Word) in `content/_source/<bank>/` and copy them to
+   `../Platform-source-backup/`.
+2. Claude: split them into single problems and write `notes/intake/<bank>.csv` (UTF-8 with BOM, `;` separator),
+   one row per problem, with these columns:
+   `id;file;locator;first_words;lang;title;topic;subtopic;difficulty;source;year;grade;event;number;max_score;figures;duplicate_of;flag;status`
+   - `first_words`: only enough to recognise the problem, never the statement or solution.
+   - `id`: new and unique across `content/problems/` and all intake files.
+   - Keys come from `content/taxonomy.yml`. Propose a missing source or subtopic in `flag`; don't add it yet.
+   - Never guess `year`, `grade` or `source`: leave them empty and say so in `flag`. Flag doubtful classification too.
+   - Same problem already published or listed (any year or language): fill `duplicate_of`.
+   - `status`: `new`.
+3. A large bank may take several sessions: append to the same file and say which source files are done.
+4. Pull request `intake/<bank>-classify` with the CSV only.
+5. Owner: review it, fix cells, set `status` to `approved` or `skip`. In Excel or Google Sheets, import `grade`
+   as text (otherwise `9-11` becomes a date) and save as CSV again.
+6. Claude: check the keys and required fields of approved rows, add approved new keys to `content/taxonomy.yml`,
+   and commit both to the same pull request.
+
+### 2. Write
+Follow the Claude steps above for the next 5–15 `approved` rows, taking the YAML header from the row
+(`translation_status: original`). Set written rows to `done` in the same pull request. If a statement doesn't fit
+the allowed LaTeX or a figure is unreadable, set `flag`, set `status` to `blocked` and skip it.
+
 ## When something fails
 - `validate` is red: open the run, fix the `file:line` it names, push to the same branch.
 - Deploy is red: the live site keeps the previous version. Fix through a new pull request.

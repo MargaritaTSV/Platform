@@ -23,6 +23,8 @@ Each task: a branch from `main`, then a pull request. Domain: astroolymp.com (li
 | [~] | T15 | Design pass, launch checklist, go live | owner items in `notes/launch.md` | Dec 15 |
 
 ## Open notes
+- Big question bank: classify into `notes/intake/<bank>.csv`, owner approves, then write (`notes/routine.md`).
+  Waiting for the owner's files.
 - "Games" shows without a link until `games_url` in site.yml is set.
 - Back up of source PDFs: `../Platform-source-backup/` (pulling `main` can delete `content/_source/`).
 - `design/svg/logo_star.svg` comes from a Vecteezy stock file (250 KB): check its licence before launch.

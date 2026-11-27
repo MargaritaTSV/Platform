@@ -65,8 +65,9 @@ def records(problems, topics, sources):
         # Names in both languages, so "Struve 2023" and "Струве 2023" both find the problem.
         extra = [title, source["ru"], source["en"], p.get("event"), p["year"],
                  topic["name"]["ru"], topic["name"]["en"], sub["name"]["ru"], sub["name"]["en"]]
+        page = f"{p['page']}/" if p["page"] > 1 else ""
         yield {
-            "url": f"/problems/{p['topic']}/{p['subtopic']}/#{p['id']}",
+            "url": f"/problems/{p['topic']}/{p['subtopic']}/{page}#{p['id']}",
             # The statement comes first, so excerpts are taken from it.
             "content": " · ".join([plain_text(p["html"]), *(str(x) for x in extra if x)]),
             # One index for the whole bank, whatever the interface language is.

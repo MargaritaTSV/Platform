@@ -8,6 +8,7 @@ Needs Python (requirements.txt), pandoc, Node and `npm ci` (KaTeX).
 import argparse
 import functools
 import json
+import math
 import shutil
 import sys
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -23,6 +24,26 @@ from validate import PROBLEMS, ROOT
 DIST = ROOT / "site-dist"
 CACHE = ROOT / ".build-cache" / "html"
 ALT = {"ru": "Рисунок к задаче", "en": "Figure for the problem"}
+PER_PAGE = 20
+# What filters.js needs to know about a problem that is on another page.
+ROW_FIELDS = ("id", "page", "difficulty", "source", "year", "grade_low", "grade_high")
+
+
+def pager(page, count):
+    """Page numbers to link, with None where some are left out. filters.js has the same rule."""
+    numbers, last = [], 0
+    for n in (1, page - 1, page, page + 1, count):
+        if last < n <= count:
+            if n > last + 1:
+                numbers.append(None)
+            numbers.append(n)
+            last = n
+    return numbers
+
+
+assert pager(1, 1) == [1]
+assert pager(5, 25) == [1, None, 4, 5, 6, None, 25]
+assert pager(25, 25) == [1, None, 24, 25]
 
 
 def load_yaml(path):
@@ -139,9 +160,19 @@ def build(deploy=False):
     for topic in topics:
         for sub in topic["subtopics"]:
             rows = rows_of(topic, sub)
-            page(f"problems/{topic['key']}/{sub['key']}", "subtopic.html", sub["name"],
-                 topics=topics, topic=topic, subtopic=sub, problems=rows, sources=sources, counts=counts,
-                 first_subtopic=first_subtopic, filters=filter_choices(rows, ui, sources))
+            for i, p in enumerate(rows):
+                p["page"] = i // PER_PAGE + 1
+            index = [{field: p[field] for field in ROW_FIELDS} for p in rows]
+            filters = filter_choices(rows, ui, sources)
+            path = f"problems/{topic['key']}/{sub['key']}"
+            page_count = max(1, math.ceil(len(rows) / PER_PAGE))
+            for number in range(1, page_count + 1):
+                offset = (number - 1) * PER_PAGE
+                page(path if number == 1 else f"{path}/{number}", "subtopic.html", sub["name"],
+                     topics=topics, topic=topic, subtopic=sub, problems=rows[offset:offset + PER_PAGE],
+                     total=len(rows), index=index, base=f"/{path}/", offset=offset, per_page=PER_PAGE,
+                     page_no=number, page_count=page_count, numbers=pager(number, page_count),
+                     sources=sources, counts=counts, first_subtopic=first_subtopic, filters=filters)
     page("", "home.html", ui["tagline"], topics=taxonomy["topics"], counts=counts, topic_counts=topic_counts)
     page("notes", "notes.html", ui["notes_heading"], tab="notes")
     # Without a 404 page, Cloudflare Pages answers every unknown address with the home page.

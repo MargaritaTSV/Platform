@@ -85,3 +85,7 @@ Questions:
 - How many hours a week can you spend on this? Up to 10 hours of my time, but claude can work while I am having a rest
 - Claude usage budget: which plan, and how do you want to use it (a few big sessions or many small ones)? pro one, many small ones
 - Anything you refuse to do (for example run a backend, pay for hosting, use a framework you don't know)? I was suggested to use Astro for front, Pagefind, KaTeX 
+
+## 11. Problem lists (2026-11-27)
+- Numbered pages of 20 problems per subtopic (`/problems/<topic>/<subtopic>/<n>/`). The filters cover the whole
+  subtopic: the browser collects matching rows from the other static pages.

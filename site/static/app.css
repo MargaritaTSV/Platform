@@ -657,15 +657,21 @@ select.pick:hover { color: var(--hover); }
 .empty { font-size: 13px; color: var(--muted); }
 
 .problem-item { display: grid; grid-template-columns: 88px minmax(0, 1fr); column-gap: 32px; }
-.problem-item[hidden] { display: none; }
 .row-rule { grid-column: 1 / -1; display: block; width: 100%; height: 8px; }
-.problem-item.is-first .row-rule { visibility: hidden; }
+.problem-item:first-child .row-rule { visibility: hidden; }
 .problem-side { display: flex; flex-direction: column; gap: 14px; padding-top: 32px; }
 .row-num { font-size: 56px; line-height: 0.8; font-weight: 400; font-variant-numeric: lining-nums; }
 .stars { display: flex; gap: 3px; }
 .problem-main { min-width: 0; padding-top: 28px; }
 .problem-title { margin: 0; font-size: 28px; line-height: 1.2; scroll-margin-top: 40px; }
 .problem-source { margin: 8px 0 0; font-size: 11.5px; color: var(--muted); }
+
+.pager { display: flex; justify-content: center; align-items: baseline; gap: 32px; margin: var(--section-gap) 0; font-size: 13px; }
+.pager[hidden] { display: none; }
+.pager-numbers { display: flex; gap: 18px; }
+.pager a { text-decoration: none; }
+.pager a:hover { color: var(--hover); }
+.pager a[aria-current="page"] { font-weight: 700; text-decoration: underline wavy var(--wavy-underline); text-underline-offset: 6px; }
 
 /* ---------- theory notes ---------- */
 

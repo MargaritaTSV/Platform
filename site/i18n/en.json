@@ -31,5 +31,10 @@
   "search_found": "problems found:",
   "search_more": "showing the first 20 of:",
   "search_none": "Nothing found.",
-  "search_failed": "Search did not load. Reload the page."
+  "search_failed": "Search did not load. Reload the page.",
+  "pager_label": "Pages",
+  "prev_page": "previous",
+  "next_page": "next",
+  "loading": "Loading…",
+  "load_failed": "Problems did not load. Reload the page."
 }

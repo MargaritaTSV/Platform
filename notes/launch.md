@@ -5,7 +5,7 @@
 - [x] Merging into `main` deploys; `main` needs a pull request with a passing `validate` check.
 - [x] All 4 figures load from files.astroolymp.com. Cloudflare Web Analytics is on every page.
 - [x] No PDF, `.env` or `.wrangler` file is tracked in Git, and a pattern search found no keys.
-- [x] The 5 problem pages with content and the theory page: no horizontal scroll, no KaTeX error (1280 px).
+- [x] The 6 problem pages with content and the theory page: no horizontal scroll, no KaTeX error (1280 px).
 - [x] 10,000 problems fit the build time, file count and page size limits (T13, before the topic list grew).
 - [x] Page description and tab icon; "Games" has no link while `games_url` in `site.yml` is empty (live after merge).
 

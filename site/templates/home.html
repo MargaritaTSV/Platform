@@ -29,7 +29,7 @@
     </g>
   </svg>
   <ul class="map-stars">
-    {% for topic in topics %}
+    {% for topic in topics if topic.star is defined %}
     <li class="map-star{% if loop.first %} is-active{% endif %}" data-topic="{{ topic.key }}" style="left: {{ '%.3f' % (topic.star.x / 1088 * 100) }}%; top: {{ '%.3f' % (topic.star.y / 520 * 100) }}%;">
       <button type="button" class="map-star-link" aria-pressed="{{ 'true' if loop.first else 'false' }}">
         <span class="map-star-mark">
@@ -45,6 +45,12 @@
     {% endfor %}
   </ul>
 </div>
+
+<ul class="map-aux">
+  {% for topic in topics if topic.star is not defined %}
+  <li class="map-aux-item" data-topic="{{ topic.key }}"><button type="button" class="serif map-aux-link" aria-pressed="false">{{ both(topic.name) }}</button></li>
+  {% endfor %}
+</ul>
 
 <div class="topic-blocks">
   {% for topic in topics %}

@@ -8,7 +8,7 @@ Each task: a branch from `main`, then a pull request. Domain: astroolymp.com (li
 | [x] | T0 | CLAUDE.md, roadmap, site.yml, validator + fixtures | | Nov 27 |
 | [x] | T1 | Cleanup of old content, games, subagents; .gitignore | | Nov 28 |
 | [x] | T2 | Cloudflare: nameservers, R2 bucket `astroolymp` at files.astroolymp.com, Pages project `stellartask` | | Nov 29 |
-| [~] | T3 | Real taxonomy.yml + sources | check names and subtopics; grades need no list | Nov 30 |
+| [x] | T3 | Real taxonomy.yml + sources (from `notes/topicslist.txt`) | review Russian names | Nov 30 |
 | [x] | T4 | figures.py + lock; samples migrated; 4 figures live on R2 |  | Dec 1 |
 | [x] | T5 | Overleaf starter |  | Dec 2 |
 | [x] | T6 | `validate.yml` + `deploy.yml` (publish on merge to main); live at astroolymp.com since Nov 27 | | Dec 3 |
@@ -38,7 +38,8 @@ Each task: a branch from `main`, then a pull request. Domain: astroolymp.com (li
   With the list pages, the free Pages limit of
   20,000 files is reached at roughly 18,500 problems.
 - Map lines are hand-written in `site/templates/home.html` and match `star` in taxonomy.yml.
-- Russian topic descriptions were written by Claude: owner to review.
+- Short subtopic names, all Russian text and the auxiliary topic descriptions in taxonomy.yml were written by
+  Claude: owner to review.
 - Local `content/figures/` is the only original copy besides R2: back it up.
 
 ## After the MVP

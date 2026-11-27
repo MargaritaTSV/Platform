@@ -1,0 +1,129 @@
+Main sections
+
+Spherical Astronomy
+
+Coordinate transformations (horizontal, equatorial, ecliptic, galactic)
+Rising, setting, culmination, circumpolar objects
+Twilight, polar day and night, length of day
+Time and calendars (sidereal vs solar, equation of time, Julian date)
+Precession, nutation, aberration, parallax, refraction
+Planetary configurations, elongations, synodic periods, phases
+Gnomon, sundials, sextant and other practical positioning tasks
+
+Celestial Mechanics
+
+Kepler's laws and orbital elements
+Energy and velocities (vis-viva, escape velocity, circular velocity)
+Transfer orbits, Hohmann, Δv budgets, gravity assists
+Two-body problem with a barycenter, binary orbits
+Tides, Roche limit, tidal locking, Moon recession
+Lagrange points, Hill sphere, restricted three-body problem
+Non-gravitational effects (Poynting-Robertson, Yarkovsky, solar sail, drag)
+
+Eclipses
+
+Shadow cone geometry (umbra and penumbra lengths)
+Solar eclipses: path, duration, magnitude, totality vs annularity
+Lunar eclipses: contacts, duration, colour and brightness of the Moon
+Saros, draconic, anomalistic and synodic month relations
+Occultations and grazing events
+Planetary transits (depth, duration, timing)
+Eclipsing binary light curves
+
+Optics
+
+Telescope parameters (aperture, focal ratio, magnification, field of view)
+Diffraction limit, Rayleigh criterion, Airy disk, seeing
+Light gathering power and limiting magnitude
+Detectors and S/N (CCD, exposure time, noise sources)
+Spectrographs, diffraction gratings, resolving power
+Interferometry and baselines
+Aberrations and atmospheric effects
+
+Astrophysics
+
+Magnitudes, colour indices, bolometric corrections, distance modulus
+Distance ladder (parallax, standard candles, Cepheids, SNe Ia)
+Stellar scaling relations (mass-luminosity, main-sequence lifetime)
+Stellar structure (hydrostatic equilibrium, virial theorem, Eddington limit)
+Nuclear energy sources and timescales
+Compact objects (white dwarfs, neutron stars, black holes, Chandrasekhar limit)
+Binaries and exoplanets (mass function, radial velocity, transit method)
+
+Galaxies
+
+Rotation curves and dark matter estimates
+Milky Way structure, Oort constants, galactic rotation
+Surface brightness profiles, Tully-Fisher, Faber-Jackson
+Clusters of galaxies, virial mass
+AGN, quasars, accretion, Eddington luminosity
+Gravitational lensing and microlensing
+Supermassive black holes (Sgr A*, orbits of S-stars)
+
+Radiation
+
+Blackbody radiation (Planck, Wien, Stefan-Boltzmann, Rayleigh-Jeans)
+Spectral lines, Bohr model, Boltzmann and Saha equations
+Radiative transfer, optical depth, extinction
+Doppler shift, line broadening
+Thomson and Compton scattering, bremsstrahlung, synchrotron
+Radio astronomy (brightness temperature, 21 cm line)
+Flux, luminosity, intensity, surface brightness
+
+Cosmology
+
+Hubble law, redshift, distances (comoving, luminosity, angular diameter)
+Friedmann equations, critical density, density parameters
+Age of the Universe and lookback time
+CMB (temperature, dipole, recombination, horizon)
+Big Bang nucleosynthesis and thermal history
+Dark matter and dark energy evidence
+Horizons and expansion of the scale factor
+
+Special Relativity (SR)
+
+Lorentz transformations, time dilation, length contraction
+Relativistic velocity addition
+Relativistic Doppler effect
+Aberration and relativistic beaming
+Apparent superluminal motion in jets
+Energy-momentum, particle collisions, threshold energies
+Cosmic rays (GZK cutoff, pair production)
+
+History of Astronomy
+
+Ancient measurements (Eratosthenes, Aristarchus, Hipparchus)
+Ancient and medieval models (Ptolemy, epicycles, Copernicus, Tycho)
+Kepler, Galileo, Newton (reconstructing their arguments and calculations)
+Historical discoveries (Uranus, Neptune, Pluto, Cepheid P-L relation, Hubble)
+Calendars and chronology of historical events (eclipses, comets, supernovae)
+Auxiliary tabs
+
+Mathematics
+
+Spherical trigonometry
+Small-angle and series approximations
+Calculus tricks (integration, differentiation, optimisation)
+Error propagation and logarithmic scales
+Vectors and rotation matrices
+Fermi estimates and dimensional analysis
+Numerical methods
+
+Physics
+
+Mechanics (conservation laws, rotation, rocket equation)
+Thermodynamics and ideal gas
+Electromagnetism
+Optics and waves
+Atomic and nuclear physics
+Fluids and hydrostatics
+
+Astrophysical Objects
+
+Sun (structure, activity, solar wind)
+Earth and Moon
+Planets and their atmospheres
+Small bodies (asteroids, comets, meteors, Kuiper belt)
+Star clusters and stellar populations
+Nebulae, ISM, star formation
+Exoplanets and stellar remnants

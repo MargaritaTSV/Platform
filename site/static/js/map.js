@@ -3,7 +3,7 @@
 (function () {
   "use strict";
   var blocks = document.querySelector(".topic-blocks");
-  var stars = Array.from(document.querySelectorAll(".map-star"));
+  var stars = Array.from(document.querySelectorAll(".map-star, .map-aux-item"));
   if (!blocks || !stars.length) return;
   blocks.classList.add("has-js"); // CSS now shows one block at a time
 

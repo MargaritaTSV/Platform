@@ -232,6 +232,11 @@ button.map-star-link {
   font-style: italic;
 }
 
+.map-aux { display: flex; justify-content: center; gap: 56px; margin: 0; padding: 24px 0 40px; list-style: none; }
+.map-aux-link { font-size: 21px; font-weight: 500; color: var(--ink); background: none; border: 0; padding: 0; cursor: pointer; }
+.map-aux-link:hover { color: var(--hover); }
+.map-aux-item.is-active .map-aux-link { font-style: italic; text-decoration: underline wavy var(--wavy-underline); text-underline-offset: 6px; }
+
 .games-note {
   margin: 0;
   padding: 16px 0 56px;

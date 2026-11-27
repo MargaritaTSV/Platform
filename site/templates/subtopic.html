@@ -21,11 +21,12 @@
     <a class="mono rail-back" href="/#{{ topic.key }}">← {{ both(ui.back_to_map) }}</a>
     <nav aria-label="{{ topic.name.ru }}" data-label-ru="{{ topic.name.ru }}" data-label-en="{{ topic.name.en }}">
       <p class="serif rail-topic">{{ both(topic.name) }}</p>
-      <div class="rail-list-wrap">
-        <svg class="rail-line" viewBox="0 0 6 400" preserveAspectRatio="none" aria-hidden="true"><path d="M3 0 C 4.5 80, 1.5 170, 3.5 250 S 2.5 360, 3 400" stroke="#161616" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/></svg>
         <ul class="rail-list">
           {% for s in topic.subtopics %}
           <li>
+            {% if not loop.last %}
+            <svg class="rail-line" viewBox="0 0 6 40" preserveAspectRatio="none" aria-hidden="true"><path d="{{ loop.cycle('M3 0 C 4.2 12, 2 27, 3 40', 'M3 0 C 1.8 14, 4 26, 3 40') }}" stroke="#161616" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/></svg>
+            {% endif %}
             <a class="rail-item" href="/problems/{{ topic.key }}/{{ s.key }}/"{% if s.key == subtopic.key %} aria-current="page"{% endif %}>
               <svg class="rail-dot" viewBox="0 0 14 14" width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="{{ '#161616' if s.key == subtopic.key else '#FDFCFA' }}" stroke="#161616" stroke-width="1.2"/></svg>
               <span class="rail-name">{{ both(s.name) }}</span>
@@ -34,7 +35,6 @@
           </li>
           {% endfor %}
         </ul>
-      </div>
     </nav>
     <details class="rail-topics">
       <summary class="mono">{{ both(ui.other_topics) }}</summary>

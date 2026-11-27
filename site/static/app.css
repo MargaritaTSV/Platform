@@ -161,7 +161,7 @@ select:focus-visible {
 
 .hero {
   text-align: center;
-  padding: 80px 0 40px;
+  padding: 48px 0 16px;
 }
 
 .hero-title {
@@ -182,7 +182,8 @@ select:focus-visible {
   width: 100%;
   max-width: 1088px;
   aspect-ratio: 1088 / 520;
-  margin: 0 auto 64px;
+  /* The drawing has about 70px of its own air above the first star. */
+  margin: -32px auto 24px;
 }
 
 .map-lines {
@@ -566,8 +567,9 @@ button.map-star-link {
 
 .search { text-align: left; }
 .search[hidden] { display: none; }
-.hero .search { max-width: 640px; margin: 40px auto 0; }
-.problems .search { margin-bottom: 48px; }
+.hero .search { max-width: 640px; margin: 24px auto 0; }
+.problems .search { margin-bottom: 24px; }
+.problems .search input { font-size: 15px; }
 .search input { display: block; width: 100%; font: 300 17px var(--font-sans); padding: 8px 0 4px; border: 0; background: transparent; color: var(--ink); }
 .search input::placeholder { color: var(--muted); opacity: 1; }
 .search-rule { display: block; width: 100%; height: 8px; }
@@ -583,22 +585,24 @@ button.map-star-link {
 
 .problems-layout {
   display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
-  column-gap: 72px;
-  padding: 56px 0 72px;
+  grid-template-columns: 264px minmax(0, 1fr);
+  column-gap: 56px;
+  padding: 32px 0 72px;
 }
 
-.rail { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow-y: auto; padding: 4px; }
+/* The padding keeps focus outlines visible; the margin keeps the text on the page edge. */
+.rail { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow-y: auto; padding: 4px; margin-left: -4px; scrollbar-width: thin; scrollbar-gutter: stable; }
 .rail-back { display: inline-block; margin-bottom: 26px; font-size: 12px; color: var(--muted); text-decoration: none; }
 .rail-topic { margin: 0 0 16px; font-size: 24px; }
-.rail-list-wrap { position: relative; }
-.rail-line { position: absolute; left: 4px; top: 10px; width: 6px; height: calc(100% - 20px); }
+/* Each segment runs from its own dot to the next one, however many lines the names take. */
+.rail-list li { position: relative; }
+.rail-line { position: absolute; left: 4px; top: 19px; width: 6px; height: 100%; }
 .rail-list { margin: 0; padding: 0; list-style: none; }
-.rail-item { position: relative; display: flex; align-items: center; gap: 16px; min-height: 38px; font-size: 15px; text-decoration: none; }
+.rail-item { position: relative; display: flex; align-items: flex-start; gap: 14px; padding: 9px 0; font-size: 15px; line-height: 20px; text-decoration: none; }
 .rail-item[aria-current="page"] .rail-name { font-weight: 500; }
-.rail-dot { flex: none; }
-.rail-name { flex: 1; }
-.rail-count { font-size: 11px; color: var(--muted); }
+.rail-dot { flex: none; margin-top: 3px; }
+.rail-name { min-width: 0; }
+.rail-count { margin-left: -4px; font-size: 11px; color: var(--muted); }
 .rail-topics { margin-top: 28px; font-size: 15px; }
 .rail-topics summary { cursor: pointer; font-size: 12px; color: var(--muted); }
 .rail-topics ul { margin: 12px 0 0; padding: 0; list-style: none; }
@@ -606,10 +610,14 @@ button.map-star-link {
 .rail-topics a { text-decoration: none; }
 
 .problems { min-width: 0; }
-.problems .topic-title { line-height: 1; }
+.problems .topic-title { font-size: 48px; line-height: 1.05; }
+/* Numbers and stars hang in the gutter; every text starts on one edge. */
+.problems { --gutter: 96px; }
+.problems > .search, .problems > .topic-title, .problems > .topic-desc,
+.problems > .filter-form, .problems > .shown-count, .problems > .empty { margin-left: var(--gutter); }
 
-.filter-form { margin-top: 24px; }
-.filter-sentence { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 28px; margin: 0; }
+.filter-form { margin-top: 16px; }
+.filter-sentence { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 24px; margin: 0; }
 .filter-name { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: 22px; margin-right: 6px; }
 
 select.pick {
@@ -625,6 +633,8 @@ select.pick {
   text-underline-offset: 6px;
   appearance: none;
   -webkit-appearance: none;
+  /* shortcut: browsers without field-sizing keep the width of the longest option */
+  field-sizing: content;
 }
 
 select.pick:hover { color: var(--hover); }
@@ -643,14 +653,16 @@ select.pick:hover { color: var(--hover); }
 
 .filter-clear:hover { color: var(--hover); }
 
-.shown-count { margin: 28px 0 12px; font-size: 12px; color: var(--muted); }
+.shown-count { margin: 20px 0 8px; font-size: 12px; color: var(--muted); }
 .empty { font-size: 13px; color: var(--muted); }
 
-.problem-item { display: grid; grid-template-columns: 88px minmax(0, 1fr); column-gap: 32px; }
+.problem-item { display: grid; grid-template-columns: 72px minmax(0, 1fr); column-gap: 24px; }
 .row-rule { grid-column: 1 / -1; display: block; width: 100%; height: 8px; }
 .problem-item:first-child .row-rule { visibility: hidden; }
+.problem-item:first-child .problem-side { padding-top: 12px; }
+.problem-item:first-child .problem-main { padding-top: 8px; }
 .problem-side { display: flex; flex-direction: column; gap: 14px; padding-top: 32px; }
-.row-num { font-size: 56px; line-height: 0.8; font-weight: 400; font-variant-numeric: lining-nums; }
+.row-num { font-size: 44px; line-height: 0.8; font-weight: 400; font-variant-numeric: lining-nums; }
 .stars { display: flex; gap: 3px; }
 .problem-main { min-width: 0; padding-top: 28px; }
 .problem-title { margin: 0; font-size: 28px; line-height: 1.2; scroll-margin-top: 40px; }

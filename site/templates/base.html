@@ -33,15 +33,15 @@
         </span>
       </nav>
     </header>
-
-    <svg class="divider" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M1 5 C 70 2, 140 8, 210 4 C 300 1, 380 9, 460 4 C 550 7, 630 2, 710 6 C 800 3, 880 8, 950 4 C 970 3, 985 6, 999 5" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
-    </svg>
-
-    <main>
-    {% block content %}{% endblock %}
-    </main>
   </div>
+
+  <svg class="divider" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M1 5 C 70 2, 140 8, 210 4 C 300 1, 380 9, 460 4 C 550 7, 630 2, 710 6 C 800 3, 880 8, 950 4 C 970 3, 985 6, 999 5" fill="none" stroke="#161616" stroke-width="1.1" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+  </svg>
+
+  <main class="wrap">
+    {% block content %}{% endblock %}
+  </main>
 </div>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "21d21ef0b1e84b74afd8535b1f50dd12"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

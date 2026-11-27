@@ -24,6 +24,10 @@
       select(star.dataset.topic);
       // Kept in the address, so Back from a problem list returns to the same topic.
       history.replaceState(null, "", "#" + star.dataset.topic);
+      // The subtopics sit under the map: move only as far as needed to show them.
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      blocks.querySelector(".topic-block.is-active")
+        .scrollIntoView({ block: "nearest", behavior: still ? "auto" : "smooth" });
     });
   });
   window.addEventListener("hashchange", function () { select(location.hash.slice(1)); });

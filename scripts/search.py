@@ -2,7 +2,21 @@
 import asyncio
 from html.parser import HTMLParser
 
+import pagefind.service
 from pagefind.index import IndexConfig, PagefindIndex
+
+
+class _NoDelay:
+    """pagefind 1.6.0 sleeps 0.1 s before reading each reply: over 16 minutes for 10k problems."""
+
+    def __getattr__(self, name):
+        return getattr(asyncio, name)
+
+    async def sleep(self, _):
+        await asyncio.sleep(0)  # still yields, so the waiting request can continue
+
+
+pagefind.service.asyncio = _NoDelay()
 
 VOID = {"br", "img", "hr", "col", "input", "meta", "link", "source", "wbr"}
 BLOCKS = {"p", "li", "tr", "td", "th", "div", "br", "table", "ol", "ul"}
@@ -51,8 +65,9 @@ def records(problems, topics, sources):
         # Names in both languages, so "Struve 2023" and "Струве 2023" both find the problem.
         extra = [title, source["ru"], source["en"], p.get("event"), p["year"],
                  topic["name"]["ru"], topic["name"]["en"], sub["name"]["ru"], sub["name"]["en"]]
+        page = f"{p['page']}/" if p["page"] > 1 else ""
         yield {
-            "url": f"/problems/{p['topic']}/{p['subtopic']}/#{p['id']}",
+            "url": f"/problems/{p['topic']}/{p['subtopic']}/{page}#{p['id']}",
             # The statement comes first, so excerpts are taken from it.
             "content": " · ".join([plain_text(p["html"]), *(str(x) for x in extra if x)]),
             # One index for the whole bank, whatever the interface language is.

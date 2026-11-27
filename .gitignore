@@ -16,3 +16,6 @@ content/samples/photo/*.png
 # wrangler cache holds the account id and email
 .wrangler/
 node_modules/
+
+# games live in their own repos
+/games/

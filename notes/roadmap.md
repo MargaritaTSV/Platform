@@ -18,7 +18,7 @@ Each task: a branch from `main`, then a pull request. Domain: astroolymp.com (li
 | [x] | T10 | Problems page per subtopic: rail, rows, filters (difficulty, source, year, grade), URL state | | Dec 10 |
 | [x] | T11 | Pagefind search (home + problems page), results link to `#<id>` | | Dec 11 |
 | [x] | T12 | Theory placeholder, games link | | Dec 11 |
-| [ ] | T13 | Scale test with 10k synthetic problems (build < 20 min, < 20k files, page < 1.5 MB) | | Dec 12 |
+| [x] | T13 | Scale test with 10k synthetic problems (build < 20 min, < 20k files, page < 1.5 MB) | | Dec 12 |
 | [ ] | T14 | Branch protection + required `validate` check; `notes/routine.md` | enable in GitHub | Dec 13 |
 | [ ] | T15 | Design pass, launch checklist, go live | final look | Dec 15 |
 
@@ -26,12 +26,17 @@ Each task: a branch from `main`, then a pull request. Domain: astroolymp.com (li
 - The games link leads nowhere until the games subdomain exists.
 - Back up of source PDFs: `../Platform-source-backup/` (pulling `main` can delete `content/_source/`).
 - `design/svg/logo_star.svg` comes from a Vecteezy stock file (250 KB): check its licence before launch.
-- T13: math HTML averages ~9 KB per problem, so a 500-row page is ~4 MB raw (~0.8 MB gzipped), over the
-  1.5 MB raw target. Options then: split the page, or drop KaTeX MathML output (worse for screen readers).
+- T13 (`python scripts/scale.py`, Nov 27, 10k problems): cold build 343 s, cached 183 s, 10,704 files,
+  largest page 0.62 MB (20 rows). All pass.
+- Subtopic lists have numbered pages of 20; the filters cover the whole subtopic (`site/static/js/filters.js`).
+  A rare filter combination can fetch up to 20 pages for one view: check the speed once there are many problems.
+- Not measured: the full XeLaTeX check (weekly, and any PR touching `latex/` or the validator) compiles one file
+  at a time, so at 10k it may take hours and pass GitHub's 6-hour job limit.
 - The old GitHub Pages maintenance page stays published until Pages is switched off in repo settings.
 - Old PDFs stay in earlier git history (the repo is private).
 - Search (`scripts/search.py`): one Pagefind record per problem, so 10k problems = ~10k fragment files.
-  The free Pages limit is 20,000 files: check in T13.
+  With the list pages, the free Pages limit of
+  20,000 files is reached at roughly 18,500 problems.
 - Map lines are hand-written in `site/templates/home.html` and match `star` in taxonomy.yml.
 - Russian topic descriptions were written by Claude: owner to review.
 - Local `content/figures/` is the only original copy besides R2: back it up.

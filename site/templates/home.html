@@ -26,10 +26,13 @@
       <path d="M560 350 Q 665 390 770 415"/>
       <path d="M770 415 Q 867 395 965 360"/>
       <path d="M340 410 Q 230 393 120 360"/>
+      <path d="M110 150 Q 212 216 325 255"/>
+      <path d="M545 150 Q 650 222 765 260"/>
+      <path d="M765 260 Q 866 242 965 255"/>
     </g>
   </svg>
   <ul class="map-stars">
-    {% for topic in topics if topic.star is defined %}
+    {% for topic in topics %}
     <li class="map-star{% if loop.first %} is-active{% endif %}" data-topic="{{ topic.key }}" style="left: {{ '%.3f' % (topic.star.x / 1088 * 100) }}%; top: {{ '%.3f' % (topic.star.y / 520 * 100) }}%;">
       <button type="button" class="map-star-link" aria-pressed="{{ 'true' if loop.first else 'false' }}">
         <span class="map-star-mark">
@@ -45,12 +48,6 @@
     {% endfor %}
   </ul>
 </div>
-
-<ul class="map-aux">
-  {% for topic in topics if topic.star is not defined %}
-  <li class="map-aux-item" data-topic="{{ topic.key }}"><button type="button" class="serif map-aux-link" aria-pressed="false">{{ both(topic.name) }}</button></li>
-  {% endfor %}
-</ul>
 
 <div class="topic-blocks">
   {% for topic in topics %}

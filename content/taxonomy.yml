@@ -268,10 +268,10 @@ topics:
         name: { en: "Calendars and chronology", ru: "Календари и хронология" }
         description: { en: "Dates of eclipses, comets and supernovae", ru: "Даты затмений, комет и сверхновых" }
 
-  # Auxiliary topics have no `star`: they are links under the map.
   - key: mathematics
     name: { en: "Mathematics", ru: "Математика" }
     description: { en: "Tools for solving problems: trigonometry, approximations and estimates.", ru: "Инструменты для решения задач: тригонометрия, приближения и оценки." }
+    star: { x: 965, y: 255, size: 18, filled: false }
     subtopics:
       - key: spherical-trigonometry
         name: { en: "Spherical trigonometry", ru: "Сферическая тригонометрия" }
@@ -298,6 +298,7 @@ topics:
   - key: physics
     name: { en: "Physics", ru: "Физика" }
     description: { en: "The physics behind astronomy problems.", ru: "Физика, на которой держатся астрономические задачи." }
+    star: { x: 765, y: 260, size: 22, filled: true }
     subtopics:
       - key: mechanics
         name: { en: "Mechanics", ru: "Механика" }
@@ -321,6 +322,7 @@ topics:
   - key: astrophysical-objects
     name: { en: "Astrophysical objects", ru: "Астрофизические объекты" }
     description: { en: "Problems by object, from the Sun to nebulae.", ru: "Задачи по объектам: от Солнца до туманностей." }
+    star: { x: 325, y: 255, size: 24, filled: true }
     subtopics:
       - key: the-sun
         name: { en: "The Sun", ru: "Солнце" }

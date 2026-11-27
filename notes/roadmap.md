@@ -38,7 +38,7 @@ Each task: a branch from `main`, then a pull request. Domain: astroolymp.com (li
   With the list pages, the free Pages limit of
   20,000 files is reached at roughly 18,500 problems.
 - Map lines are hand-written in `site/templates/home.html` and match `star` in taxonomy.yml.
-- Short subtopic names, all Russian text and the auxiliary topic descriptions in taxonomy.yml were written by
+- Short subtopic names, all Russian text and the descriptions of the last three topics in taxonomy.yml were written by
   Claude: owner to review.
 - Local `content/figures/` is the only original copy besides R2: back it up.
 

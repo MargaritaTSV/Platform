@@ -8,6 +8,7 @@
 - [x] The 6 problem pages with content and the theory page: no horizontal scroll, no KaTeX error (1280 px).
 - [x] 10,000 problems fit the build time, file count and page size limits (T13, before the topic list grew).
 - [x] Page description and tab icon; "Games" has no link while `games_url` in `site.yml` is empty (live after merge).
+- [x] The star map shows all 13 topics (live after merge).
 
 ## Owner, before announcing the site
 - [ ] **Logo licence.** The header uses `design/svg/logo_star.svg`, made from a Vecteezy stock file (250 KB).

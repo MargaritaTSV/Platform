@@ -6,6 +6,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ full_title.ru }}</title>
+<meta name="description" content="{{ ui.tagline.ru }}">
+<link rel="icon" type="image/svg+xml" href="/static/svg/logo-star.svg">
 {# Before the first paint, so an English visitor never sees a flash of Russian. #}
 <script>try{if(localStorage.getItem("lang")==="en"){document.documentElement.lang="en";document.title=document.documentElement.dataset.titleEn}}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&amp;family=Onest:wght@300;400;500&amp;family=JetBrains+Mono:wght@400&amp;display=swap">
@@ -25,7 +27,7 @@
       <nav class="main-nav" aria-label="{{ ui.nav_label.ru }}" data-label-ru="{{ ui.nav_label.ru }}" data-label-en="{{ ui.nav_label.en }}">
         <a class="nav-link" href="/"{% if tab == 'problems' %} aria-current="page"{% endif %}>{{ both(ui.nav_problems) }}</a>
         <a class="nav-link" href="/notes/"{% if tab == 'notes' %} aria-current="page"{% endif %}>{{ both(ui.nav_notes) }}</a>
-        <a class="nav-link" href="{{ site.games_url }}">{{ both(ui.nav_games) }} <span class="soon mono">{{ both(ui.soon) }}</span></a>
+        <{% if site.games_url %}a class="nav-link" href="{{ site.games_url }}"{% else %}span class="nav-link is-disabled"{% endif %}>{{ both(ui.nav_games) }} <span class="soon mono">{{ both(ui.soon) }}</span></{{ 'a' if site.games_url else 'span' }}>
         <span class="lang-switch mono" role="group" aria-label="{{ ui.lang_label.ru }}" data-label-ru="{{ ui.lang_label.ru }}" data-label-en="{{ ui.lang_label.en }}">
           <button type="button" class="lang-link" data-set-lang="ru" lang="ru" aria-pressed="true">ru</button><span class="lang-sep" aria-hidden="true">·</span><button type="button" class="lang-link" data-set-lang="en" lang="en" aria-pressed="false">en</button>
         </span>

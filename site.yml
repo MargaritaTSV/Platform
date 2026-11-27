@@ -2,5 +2,5 @@
 name: { ru: "StellarTask", en: "StellarTask" }
 domain: astroolymp.com
 media_url: https://files.astroolymp.com  # R2 custom domain for figures
-games_url: https://games.astroolymp.com   # placeholder link until games are ready
+games_url: ""                         # empty until games are live: "Games" then shows without a link
 r2_bucket: astroolymp                # R2 bucket behind media_url

@@ -24,7 +24,7 @@ Each task: a branch from `main`, then a pull request. Domain: astroolymp.com (li
 
 ## Open notes
 - Big question bank: classify into `notes/intake/<bank>.csv`, owner approves, then write (`notes/routine.md`).
-  Waiting for the owner's files.
+  `astro-tasks`: 46 rows approved, 3 blocked (owner delegated the choices on Nov 28). Next: write in batches of 5–15.
 - "Games" shows without a link until `games_url` in site.yml is set.
 - Back up of source PDFs: `../Platform-source-backup/` (pulling `main` can delete `content/_source/`).
 - `design/svg/logo_star.svg` comes from a Vecteezy stock file (250 KB): check its licence before launch.

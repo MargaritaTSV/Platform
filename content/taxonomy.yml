@@ -357,3 +357,7 @@ sources:
     name: { en: "International Olympiad on Astronomy and Astrophysics", ru: "Международная олимпиада по астрономии и астрофизике" }
   - key: camp
     name: { en: "Training camps", ru: "Учебные сборы" }
+  - key: belao
+    name: { en: "BelAO", ru: "БелАО" }
+  - key: us-blitz
+    name: { en: "American blitz rounds", ru: "Американские блицы" }

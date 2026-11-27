@@ -32,9 +32,6 @@ Translations are a separate task: `translation_status: machine-translated-needs-
 - Deploy is red: the live site keeps the previous version. Fix through a new pull request.
 - A bad problem is live: revert its pull request in GitHub, then merge the revert.
 
-## GitHub setup (once)
-Settings → Rules → Rulesets → New branch ruleset:
-- name `main`, enforcement **Active**, bypass list empty, target: default branch;
-- **Restrict deletions** and **Block force pushes**;
-- **Require a pull request before merging**, 0 approvals (you cannot approve your own);
-- **Require status checks to pass**: add `validate`.
+## Protection of `main`
+The ruleset `main` (GitHub → Settings → Rules → Rulesets, active since 2026-11-27, no bypass) blocks deletion
+and force pushes, and requires a pull request (0 approvals) with a passing `validate` check.

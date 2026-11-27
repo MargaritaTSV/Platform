@@ -37,22 +37,30 @@ Classify everything first; write problems only from rows the owner approved.
    one row per problem, with these columns:
    `id;file;locator;first_words;lang;title;topic;subtopic;difficulty;source;year;grade;event;number;max_score;figures;duplicate_of;flag;status`
    - `first_words`: only enough to recognise the problem, never the statement or solution.
-   - `id`: new and unique across `content/problems/` and all intake files.
+   - `id` (`a-z`, `0-9`, `-`): new and unique across `content/problems/` and all intake files.
    - Keys come from `content/taxonomy.yml`. Propose a missing source or subtopic in `flag`; don't add it yet.
    - Never guess `year`, `grade` or `source`: leave them empty and say so in `flag`. Flag doubtful classification too.
    - Same problem already published or listed (any year or language): fill `duplicate_of`.
    - `status`: `new`.
 3. A large bank may take several sessions: append to the same file and say which source files are done.
 4. Pull request `intake/<bank>-classify` with the CSV only.
-5. Owner: review it, fix cells, set `status` to `approved` or `skip`. In Excel or Google Sheets, import `grade`
-   as text (otherwise `9-11` becomes a date) and save as CSV again.
-6. Claude: check the keys and required fields of approved rows, add approved new keys to `content/taxonomy.yml`,
-   and commit both to the same pull request.
+5. Owner: review it, fix cells, set `status` to `approved` or `skip`. Another language of a problem: keep its
+   `duplicate_of` and approve it. A repeat in the same language: `skip`.
+   - Import the file, don't double-click it, with every column as text (otherwise `9-11` or `7.1` can become a date).
+   - Save as CSV in UTF-8 (Excel: "CSV UTF-8").
+6. Claude: read the CSV with either `;` or `,`, check the keys and required fields of approved rows, add approved
+   new keys to `content/taxonomy.yml`, and commit both to the same pull request.
+7. Owner: merge the pull request. Writing starts only after that.
 
 ### 2. Write
-Follow the Claude steps above for the next 5–15 `approved` rows, taking the YAML header from the row
-(`translation_status: original`). Set written rows to `done` in the same pull request. If a statement doesn't fit
-the allowed LaTeX or a figure is unreadable, set `flag`, set `status` to `blocked` and skip it.
+Don't start a batch while an earlier one is unmerged. Follow the Claude steps above for the next 5–15 `approved`
+rows, taking the YAML header from the row and putting `number` in quotes.
+- No `duplicate_of`: `translation_status: original`.
+- Another language of `duplicate_of`: write `<duplicate_of id>.<lang>.tex` next to the original, in the same batch
+  or a later one. Its header has only `id` (the original's), `lang` and `translation_status: reviewed`.
+
+Set written rows to `done` in the same pull request. If a statement doesn't fit the allowed LaTeX or a figure is
+unreadable, set `flag`, set `status` to `blocked` and skip it.
 
 ## When something fails
 - `validate` is red: open the run, fix the `file:line` it names, push to the same branch.

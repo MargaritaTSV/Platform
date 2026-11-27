@@ -2,7 +2,7 @@
 
 Static astronomy problem bank (RU/EN). Only the owner adds content.
 **Read `notes/roadmap.md` first**: it says what is done and what is next. Update it when a task ends.
-Decisions: `notes/decisions.md`. `docs/spec.md` is superseded.
+Decisions: `notes/decisions.md`. Adding problems: `notes/routine.md`. `docs/spec.md` is superseded.
 
 ## Rules
 - Static only, no server, no database. Cloudflare Pages (site) + R2 (figures), deployed by GitHub Actions.

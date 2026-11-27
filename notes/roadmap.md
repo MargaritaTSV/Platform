@@ -19,7 +19,7 @@ Each task: a branch from `main`, then a pull request. Domain: astroolymp.com (li
 | [x] | T11 | Pagefind search (home + problems page), results link to `#<id>` | | Dec 11 |
 | [x] | T12 | Theory placeholder, games link | | Dec 11 |
 | [x] | T13 | Scale test with 10k synthetic problems (build < 20 min, < 20k files, page < 1.5 MB) | | Dec 12 |
-| [ ] | T14 | Branch protection + required `validate` check; `notes/routine.md` | enable in GitHub | Dec 13 |
+| [~] | T14 | Branch protection + required `validate` check; `notes/routine.md` | create the ruleset: end of `notes/routine.md` | Dec 13 |
 | [ ] | T15 | Design pass, launch checklist, go live | final look | Dec 15 |
 
 ## Open notes
